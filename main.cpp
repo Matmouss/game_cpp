@@ -1,9 +1,9 @@
 #include <iostream>
-#include "test.h"
+#include "affichage.h"
 
 using namespace std;
 
 int main() {
-    boucle();
+    test();
     return 0;
 }
