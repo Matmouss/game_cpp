@@ -1,66 +1,88 @@
 #include <iostream>
 #include <string>
-#include <chrono>
-#include <thread>
 #include <ncurses.h>
-
-// pour le reset terminal
-// Source - https://stackoverflow.com/a/52895729
-
+#include <map>
 
 using namespace std;
 
-string ajouter_sucre(string texte){
-    return "--------------------------------\n" + texte + "\n-------------------------------- ";
+
+
+WINDOW* creer_boite_jeu(int hauteur, int largeur) {
+    int starty = (LINES - hauteur) / 2;
+    int startx = (COLS - largeur) / 2;
+
+    WINDOW* win = newwin(hauteur, largeur, starty, startx);
+    box(win, 0, 0);
+    return win;
 }
 
+void dessiner_boite_jeu(WINDOW* win, const std::map<std::string, std::string>& data) {
+    werase(win);
+    box(win, 0, 0);
 
-void afficher_jeu(string texte){
-    texte = ajouter_sucre(texte);
-    cout<< u8"\033[2J\033[1;1H"; 
-    cout << texte << endl;
+    int ligne = 1;
+
+    for (const auto& [cle, valeur] : data) {
+        std::string texte = cle + " : " + valeur;
+        mvwprintw(win, ligne, 2, "%s", texte.c_str());
+        ligne++;
+    }
+
+    wrefresh(win);
 }
 
-void verifier_input(){
-    int ch;
-
+int jeu_test() {
     initscr();
     raw();
     keypad(stdscr, TRUE);
     noecho();
+    curs_set(0);
 
-    ch = getch();
-    cout << ch << '\n';
-    ch = getch();
-    cout << ch << '\n';
-    ch = getch();
-    cout << ch << '\n';
+    int hauteur = LINES - 4;
+    int largeur = COLS - 8;
 
+    if (hauteur < 10) hauteur = 10;
+    if (largeur < 20) largeur = 20;
 
-    refresh();
-    getch();
+    map<string, string> infos = {
+    {"Titre", "Into the RAM"},
+    {"Score", "150"},
+    {"Vie", "3"},
+    {"Niveau", "2"},
+    {"last_touche", ""}
+    };
+
+    WINDOW* jeu = creer_boite_jeu(hauteur, largeur);
+    dessiner_boite_jeu(jeu, infos);
+
+    int ch;
+    while ((ch = getch()) != 'q') {
+        if (ch == KEY_RESIZE) {
+            delwin(jeu);
+            clear();
+            refresh();
+
+            hauteur = LINES - 4;
+            largeur = COLS - 8;
+
+            if (hauteur < 10) hauteur = 10;
+            if (largeur < 20) largeur = 20;
+
+            jeu = creer_boite_jeu(hauteur, largeur);
+        } else {
+            infos["last_touche"] = to_string(ch);
+        }
+
+        dessiner_boite_jeu(jeu, infos);
+    }
+
+    delwin(jeu);
     endwin();
-}
-
-
-int boucle() {
-    cout<< u8"\033[2J\033[1;1H"; 
-
-
-    cout << "C'est l'heure du compteur" << endl;
-
-    for (int i = 5; i>0; i--) {
-        this_thread::sleep_for(chrono::seconds(1));
-        afficher_jeu(to_string(i));
-    }  
-
-
-    cout<< u8"\033[2J\033[1;1H"; 
     return 0;
 }
 
 int test(){
-    //boucle();
-    verifier_input();
+
+    jeu_test();
     return 0;
 }
