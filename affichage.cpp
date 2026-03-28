@@ -16,18 +16,26 @@ WINDOW* creer_boite_jeu(int hauteur, int largeur) {
     return win;
 }
 
-void dessiner_boite_jeu(WINDOW* win, const std::map<std::string, std::string>& data) {
+void dessiner_boite_jeu(WINDOW* win, const map<std::string, string>& data) {
     werase(win);
     box(win, 0, 0);
 
     int ligne = 1;
 
-    for (const auto& [cle, valeur] : data) {
-        std::string texte = cle + " : " + valeur;
+    string* debug = new string[5];
+    debug[0] = "Titre";
+    debug[1] = "Score";
+    debug[2] = "Vie";
+    debug[3] = "Niveau";
+    debug[4] = "last_touche";
+
+    for (int i = 0; i < 5; ++i) {
+        string texte = debug[i] + " : " + data.at(debug[i]);
         mvwprintw(win, ligne, 2, "%s", texte.c_str());
         ligne++;
     }
 
+    delete[] debug;
     wrefresh(win);
 }
 
@@ -48,7 +56,7 @@ int jeu_test() {
     {"Titre", "Into the RAM"},
     {"Score", "150"},
     {"Vie", "3"},
-    {"Niveau", "2"},
+    {"Niveau", "1"},
     {"last_touche", ""}
     };
 
