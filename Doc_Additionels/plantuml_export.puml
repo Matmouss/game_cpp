@@ -30,18 +30,20 @@ class Personnage {
   -nbTues : int
   -nbEpargnes : int
   -nbVictoires : int
-  -inventaire : vector<String>
+  -inventaire : vector<Item>
 
   +Personnage(nom : String, hpMax : int)
   +attaquer() : int
   +prendreDegats(degats : int) : void
   +seSoigner(valeur : int) : void
-  +utiliserItem(nomItem : String) : bool
+  +utiliserItem(item : Item) : bool
+  +ajouterItem(item : Item) : void
   +estVivant() : bool
   +gagnerVictoire() : void
   +incrementerTue() : void
   +incrementerEpargne() : void
   +afficherStats() : void
+  +afficherInventaire() : void
 }
 
 abstract class Monstre {
@@ -97,6 +99,19 @@ class ACT {
   +getIdentifiant() : String
 }
 
+class Item {
+  -nom : String
+  -type : String
+  -valeur : int
+  -quantite : int
+
+  +Item(nom : String, type : String, valeur : int, quantite : int)
+  +utiliser(p : Personnage) : bool
+  +reduireQuantite() : void
+  +estDisponible() : bool
+  +afficherInfos() : void
+}
+
 Monstre <|-- MonstreLambda
 Monstre <|-- MiniBoss
 Monstre <|-- Boss
@@ -104,6 +119,10 @@ Monstre <|-- Boss
 Partie *-- "1" Personnage : possède
 Partie o-- "0..*" Monstre : bestiaire / ennemis
 Partie o-- "8..*" ACT : catalogue ACT
+
+Personnage *-- "0..*" Item : inventaire
 Monstre "1" --> "2..4" ACT : actions disponibles
+ACT --> Monstre : modifie mercy
+Item --> Personnage : soigne / applique effet
 
 @enduml

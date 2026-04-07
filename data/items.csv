@@ -1,0 +1,5 @@
+nom,type,valeur
+Potion,HEAL,15
+Snack,HEAL,8
+SuperPotion,HEAL,30
+MegaPotion,HEAL,50
