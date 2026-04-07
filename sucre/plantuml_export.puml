@@ -1,0 +1,109 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Partie {
+  -joueur : Personnage
+  -bestiaire : vector<Monstre>
+  -ennemisPossibles : vector<Monstre>
+  -catalogueActs : vector<ACT>
+
+  +Partie(joueur : Personnage)
+  +demarrer() : void
+  +afficherMenuPrincipal() : void
+  +demarrerCombat() : void
+  +combattre(m : Monstre) : bool
+  +tirerMonstreAleatoire() : Monstre
+  +afficherBestiaire() : void
+  +afficherStatsPersonnage() : void
+  +afficherItems() : void
+  +chargerMonstres(fichier : String) : void
+  +chargerItems(fichier : String) : void
+  +initialiserCatalogueACT() : void
+  +verifierFinPartie() : bool
+  +afficherFin() : void
+}
+
+class Personnage {
+  -nom : String
+  -hpActuel : int
+  -hpMax : int
+  -nbTues : int
+  -nbEpargnes : int
+  -nbVictoires : int
+  -inventaire : vector<String>
+
+  +Personnage(nom : String, hpMax : int)
+  +attaquer() : int
+  +prendreDegats(degats : int) : void
+  +seSoigner(valeur : int) : void
+  +utiliserItem(nomItem : String) : bool
+  +estVivant() : bool
+  +gagnerVictoire() : void
+  +incrementerTue() : void
+  +incrementerEpargne() : void
+  +afficherStats() : void
+}
+
+abstract class Monstre {
+  -nom : String
+  -hp : int
+  -hpMax : int
+  -atk : int
+  -def : int
+  -mercy : int
+  -mercyGoal : int
+  -resultatCombat : String
+
+  +Monstre(nom : String, hpMax : int, atk : int, def : int, mercyGoal : int)
+  +attaquer() : int
+  +prendreDegats(degats : int) : void
+  +modifierMercy(valeur : int) : void
+  +peutEtreEpargne() : bool
+  +estVivant() : bool
+  +getNbActions() : int
+  +afficherInfos() : void
+}
+
+class "Monstre Lambda" as MonstreLambda {
+  -nbActions : int = 2
+
+  +MonstreLambda(nom : String, hpMax : int, atk : int, def : int, mercyGoal : int)
+  +getNbActions() : int
+}
+
+class "Mini boss" as MiniBoss {
+  -nbActions : int = 3
+
+  +MiniBoss(nom : String, hpMax : int, atk : int, def : int, mercyGoal : int)
+  +getNbActions() : int
+}
+
+class Boss {
+  -nbActions : int = 4
+
+  +Boss(nom : String, hpMax : int, atk : int, def : int, mercyGoal : int)
+  +getNbActions() : int
+}
+
+class ACT {
+  -identifiant : String
+  -texte : String
+  -impact : int
+
+  +ACT(id : String, texte : String, impact : int)
+  +executer(m : Monstre) : void
+  +afficherTexte() : void
+  +getImpact() : int
+  +getIdentifiant() : String
+}
+
+Monstre <|-- MonstreLambda
+Monstre <|-- MiniBoss
+Monstre <|-- Boss
+
+Partie *-- "1" Personnage : possède
+Partie o-- "0..*" Monstre : bestiaire / ennemis
+Partie o-- "8..*" ACT : catalogue ACT
+Monstre "1" --> "2..4" ACT : actions disponibles
+
+@enduml
