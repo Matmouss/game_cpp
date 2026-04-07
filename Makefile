@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 LDFLAGS = -lncurses
 
 TARGET = test
-SRC = main.cpp affichage.cpp
+SRC = main.cpp affichage.cpp csv.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(TARGET)
