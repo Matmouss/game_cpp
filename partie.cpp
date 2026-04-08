@@ -2,6 +2,10 @@
 #include "MonstreLambda.h"
 #include "miniBoss.h"
 #include "boss.h"
+#include "csv.h"
+#include "act.h"
+#include "personnage.h"
+#include "item.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -29,18 +33,28 @@ pair<Monstre**, int> initMonstresPossibles() {
 
 Partie::Partie()
 {
-   pair<Monstre**, int> result = this->initMonstresPossibles();
+   pair<Monstre**, int> result = initMonstresPossibles();
    this->monstresPossibles = result.first;
    this->tailleMonstresPossibles = result.second;
    this->tailleBestiaire = 0;
    this->bestiaire = new Monstre*[this->tailleBestiaire];
    this->personnage = Personnage();
-   this->catalogueACT = new ACT[1]{SerrerMain()};
+   this->tailleCatalogueACT = 1;
+   this->catalogueACT = new ACT*[tailleCatalogueACT];
+   this->catalogueACT[0] = new SerrerMain();
 }
-
 
 Partie::~Partie()
 {
-   for (Monstre *m : ennemisPossibles)
-      delete m;
+    for (int i = 0; i < tailleMonstresPossibles ; i++)
+        delete monstresPossibles[i];
+    delete monstresPossibles;
+
+    for (int i = 0; i < tailleBestiaire; i++)
+        delete bestiaire[i];
+    delete bestiaire;
+
+    for (int i = 0; i < tailleCatalogueACT; i++)
+        delete catalogueACT[i];
+    delete[] catalogueACT;
 }

@@ -5,7 +5,6 @@ using namespace std;
  
 class Monstre
 {
-    //commentaire
 private:
     string nom;
     int hp;
@@ -35,6 +34,7 @@ public:
  
     void setResultatCombat(string resultat);
     void setActionsDisponibles(string* actions, int nb);
+    void setMercy(int Mercy);
  
     int attaquer();
     void prendreDegats(int degats);

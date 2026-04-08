@@ -12,15 +12,18 @@ ACT::ACT(string identifiant, string texte) {
 }
 
 string ACT::getIdentifiant() {return identifiant;}
- 
+
+ACT::~ACT(){}
+
+void ACT::Impact(Personnage &p, Monstre &m){}
+
 #pragma endregion
 
 #pragma region SerrerMain 
 
-SerrerMain::SerrerMain(): ACT("serrer_main", "Vous serrez la main du monstre.") {}
+SerrerMain::SerrerMain() : ACT("serrer_main", "Vous serrez la main du monstre.") {}; 
 
 void SerrerMain::Impact(Personnage &p, Monstre &m) {
     m.setMercy((m.getMercy() + 1)*100);
 }
-
 #pragma endregion

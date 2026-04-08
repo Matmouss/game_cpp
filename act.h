@@ -8,13 +8,13 @@ class Monstre;
 
 class ACT
 {
-private:
+protected:
    string identifiant;
    string texte;
 
 public:
    ACT(string identifiant, string texte);
-   ~ACT();
+   virtual ~ACT();
    string getTexte();
    string getIdentifiant();
    virtual void Impact(Personnage &p, Monstre &m);

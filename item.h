@@ -5,7 +5,7 @@ using namespace std;
 
 class Personnage;
 
-class Item
+class    Item
 {
 private:
    string nom;

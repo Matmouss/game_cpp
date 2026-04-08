@@ -11,5 +11,5 @@ private:
 public:
    Boss(string nom = "Boss", int hpMax = 80, int atk = 15, int def = 4, int mercyGoal = 100);
 
-   int getNbActions() override;
+   int getNbActions();
 };

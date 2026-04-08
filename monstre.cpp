@@ -5,7 +5,6 @@ using namespace std;
 
 Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal)
 {
-   //commentaire
    this->nom = nom;
    this->hp = hpMax;
    this->hpMax = hpMax;
@@ -43,3 +42,4 @@ void Monstre::setActionsDisponibles(string *actions, int nb)
    for (int i = 0; i < nb; i++)
       this->actionsDisponibles[i] = actions[i];
 }
+void Monstre::setMercy(int Mercy){this->mercy = Mercy;}

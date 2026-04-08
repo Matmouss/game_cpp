@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "item.h"
 
 using namespace std;
 class Personnage
@@ -12,11 +13,16 @@ private:
    int NbEpargne;
    int nbVictoire;
    bool EstVivant;
+   Item** ItemPossible;
+   int TailleItemPossible;
+   Item** InventaireItems;
+   int TailleInventaire;
 
 public:
-   Personnage(string nom    = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0);
-   Personnage(string nom = "Hero", int HpMax = 10);
+   Personnage(string nom,int HpMax);
+   Personnage();
 
+   pair<Item **, int> initInventaires();
    int attaquer();
    void utiliserActe();
    bool epargner();

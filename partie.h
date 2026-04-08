@@ -6,21 +6,20 @@ using namespace std;
 
 class Partie
 {
-   //commentaire
-
-   //comm2
-private:
+public:
    Personnage personnage;
    Monstre** bestiaire;        // monstres déjà vaincus
    int tailleBestiaire;
    Monstre** monstresPossibles; // chargés depuis monsters.csv
    int tailleMonstresPossibles;
-   ACT* catalogueACT;
+   ACT** catalogueACT;    
+   int tailleCatalogueACT; // nombre d’éléments dans le tableau
 
 public:
    Partie();
    ~Partie();
 
+   //int getTailleBestiaire();
    void demarrer();
    void afficherMenuPrincipal();
    void demarrerCombat();

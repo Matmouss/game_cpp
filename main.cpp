@@ -10,13 +10,11 @@
 
 using namespace std;
 
-string Menu(
-    GameWindow& gw,
-    const map<int, string>& keymap,
-    map<string, string>& infos,
-    const vector<string>& options,
-    const string& title
-) {
+map<int, string> keymap;
+map<string, string> infos;
+
+string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, vector<string> &options, string &title)
+{
     bool choisi = false;
     int choix = 0;
 
@@ -58,9 +56,8 @@ string Menu(
     return options[choix];
 }
 
-
-void initGame(){
-       map<int, string> keymap = {
+void initBinds(){
+       keymap = {
         {KEY_UP, "up"},
         {KEY_DOWN, "down"},
         {KEY_LEFT, "left"},
@@ -70,7 +67,7 @@ void initGame(){
         {KEY_ENTER, "enter"}
     };
 
-   map<string, string> infos = {
+        infos = {
         {"Titre", "Into the RAM"},
         {"Score", "0"},
         {"Vie", "3"},
@@ -78,19 +75,24 @@ void initGame(){
     };
 }
 
-
 void game() {
 
     string state = "menu";
 
     GameWindow gw = init_ncurses();
 
+    initBinds();
+
+    Partie partie_en_cours = Partie();
+
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, {"menu"}, infos);
 
     bool running = true;
 
     while (running) {
-        string choix = Menu(gw, keymap, infos, {"Fight", "Bestiaire", "Quit"}, "menu");
+        vector<string> option1 = {"Fight", "Bestiaire", "Quit"};
+        string titre1 = "menu";
+         string choix = Menu(gw, keymap, infos, option1,titre1);
 
         if (choix == "quit" || choix == "Quit") {
             running = false;
@@ -98,14 +100,22 @@ void game() {
         else if (choix == "Bestiaire") {
             vector<string> options;
 
-            options.push_back("Nom\t\tAtk\tDef\tHp\tMercy Goal");
-            for (int i = 0; i < nbMonstres; i++) {
-                    options.push_back(bestiaire[i]->getNom() + "\t"+ to_string(bestiaire[i]->getAtk()) + "\t"+ to_string(bestiaire[i]->getDef()) + "\t" + to_string(bestiaire[i]->getHpMax()) + "\t" + to_string(bestiaire[i]->getMercyGoal()));                   
+            if (partie_en_cours.tailleBestiaire == 0)
+            {
+                options.push_back("Tu n'a rien Tué?");
+            }
+            else
+            {
+                options.push_back("Nom\t\tAtk\tDef\tHp\tMercy Goal");
+                for (int i = 0; i < partie_en_cours.tailleBestiaire; i++)
+                {
+                    options.push_back(partie_en_cours.bestiaire[i]->getNom() + "\t" + to_string(partie_en_cours.bestiaire[i]->getAtk()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getDef()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getHpMax()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getMercyGoal()));
+                }
             }
 
             options.push_back("Retour");
-
-            string choix_bestiaire = Menu(gw, keymap, infos, options, "bestiaire");
+            string titre2 = "bestiaire";
+            string choix_bestiaire = Menu(gw, keymap, infos, options, titre2);
 
             if (choix_bestiaire == "quit" || choix_bestiaire == "Quit") {
                 running = false;
@@ -113,6 +123,10 @@ void game() {
         }
         else if (choix == "Fight") {
             state = "menu";
+        }
+        else if (choix == "Inventaire")
+        {
+            state = "Inventaire";
         }
     }
 
