@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <map>
@@ -5,7 +6,7 @@
 #include <ncurses.h>
 #include "affichage.h"
 
-using namespace std;
+
 
 WINDOW* creer_boite_jeu(int hauteur, int largeur) {
     int starty = (LINES - hauteur) / 2;

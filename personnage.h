@@ -1,5 +1,6 @@
 
-class Joueur
+using namespace std;
+class Personnage
 {
 
 private:
@@ -12,7 +13,7 @@ private:
    bool EstVivant = false;
 
 public:
-   Joueur(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
+   Personnage(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
    {
       this->nom = nom;
       this->Hp = Hp;
@@ -21,7 +22,7 @@ public:
       this->NbEpargne = NbEpargne;
       this->nbVictoire = nbVictoire;
    };
-   Joueur(string nom = "Hero", int HpMax = 10)
+   Personnage(string nom = "Hero", int HpMax = 10)
    {
       this->nom = nom;
       this->HpMax = HpMax;
