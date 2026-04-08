@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 #include <ncurses.h>
 #include "affichage.h"
 
@@ -17,19 +18,19 @@ WINDOW* creer_boite_jeu(int hauteur, int largeur) {
 
 void dessiner_boite_jeu(
     WINDOW* win,
-    const std::string state,
-    const std::map<std::string, std::string>& data
+    const vector<string>& state,
+    const map<string, string>& data
 ) {
     werase(win);
     box(win, 0, 0);
 
     int ligne = 1;
-    const std::string champs[5] = {"Titre", "Score", "Vie", "Niveau", "last_touche"};
+    const string champs[5] = {"Titre", "Score", "Vie", "Niveau", "last_touche"};
 
     for (int i = 0; i < 5; ++i) {
         auto it = data.find(champs[i]);
-        std::string valeur = (it != data.end()) ? it->second : "";
-        std::string texte = champs[i] + " : " + valeur;
+        string valeur = (it != data.end()) ? it->second : "";
+        string texte = champs[i] + " : " + valeur;
         mvwprintw(win, ligne, 2, "%s", texte.c_str());
         ligne++;
     }
@@ -38,12 +39,23 @@ void dessiner_boite_jeu(
         int max_y, max_x;
         getmaxyx(win, max_y, max_x);
 
-        int y = max_y / 2;
-        int x = (max_x - state.size()) / 2;
+        int nb_lignes = static_cast<int>(state.size());
+        int y_depart = (max_y - nb_lignes) / 2;
 
-        if (x < 1) x = 1;
+        if (y_depart < ligne + 1) {
+            y_depart = ligne + 1;
+        }
 
-        mvwprintw(win, y, x, "%s", state.c_str());
+        for (int i = 0; i < nb_lignes; ++i) {
+            int x = (max_x - static_cast<int>(state[i].size())) / 2;
+            if (x < 1) x = 1;
+
+            int y = y_depart + i;
+
+            if (y < max_y - 1) {
+                mvwprintw(win, y, x, "%s", state[i].c_str());
+            }
+        }
     }
 
     wrefresh(win);
@@ -63,7 +75,10 @@ GameWindow init_ncurses() {
     if (largeur < 20) largeur = 20;
 
     WINDOW* jeu = creer_boite_jeu(hauteur, largeur);
-    dessiner_boite_jeu(jeu);
+
+    vector<string> state_vide;
+    map<string, string> infos_vides;
+    dessiner_boite_jeu(jeu, state_vide, infos_vides);
 
     return {jeu, hauteur, largeur};
 }
@@ -79,9 +94,9 @@ WINDOW* displayState(
     WINDOW* jeu,
     int hauteur,
     int largeur,
-    const std::string& state,
-    const std::map<std::string, std::string>& infos) {
-
+    const vector<string>& state,
+    const map<string, string>& infos
+) {
     if (jeu != nullptr) {
         delwin(jeu);
     }
@@ -92,7 +107,11 @@ WINDOW* displayState(
     return jeu;
 }
 
-GameWindow resize_window(WINDOW* jeu) {
+GameWindow resize_window(
+    WINDOW* jeu,
+    const vector<string>& state,
+    const map<string, string>& infos
+) {
     if (jeu != nullptr) {
         delwin(jeu);
     }
@@ -107,12 +126,12 @@ GameWindow resize_window(WINDOW* jeu) {
     if (largeur < 20) largeur = 20;
 
     jeu = creer_boite_jeu(hauteur, largeur);
-    dessiner_boite_jeu(jeu);
+    dessiner_boite_jeu(jeu, state, infos);
 
     return {jeu, hauteur, largeur};
 }
 
-string getInput(const std::map<int, std::string>& keymap) {
+string getInput(const map<int, string>& keymap) {
     int ch = getch();
 
     if (ch == KEY_RESIZE) {
@@ -125,47 +144,4 @@ string getInput(const std::map<int, std::string>& keymap) {
     }
 
     return to_string(ch);
-}
-
-int jeu_test() {
-    GameWindow gw = init_ncurses();
-
-    int hauteur = gw.hauteur;
-    int largeur = gw.largeur;
-
-    map<string, string> infos = {
-    {"Titre", "Into the RAM"},
-    {"Score", "150"},
-    {"Vie", "3"},
-    {"Niveau", "1"},
-    {"last_touche", ""}
-    };
-
-    WINDOW* jeu = creer_boite_jeu(hauteur, largeur);
-    dessiner_boite_jeu(jeu, "", infos);
-
-    int ch;
-    while ((ch = getch()) != 'q') {
-        if (ch == KEY_RESIZE) {
-            delwin(jeu);
-            clear();
-            refresh();
-
-            hauteur = LINES - 4;
-            largeur = COLS - 8;
-
-            if (hauteur < 10) hauteur = 10;
-            if (largeur < 20) largeur = 20;
-
-            jeu = creer_boite_jeu(hauteur, largeur);
-        } else {
-            infos["last_touche"] = to_string(ch);
-        }
-
-        dessiner_boite_jeu(jeu, "",infos);
-    }
-
-    delwin(jeu);
-    endwin();
-    return 0;
 }
