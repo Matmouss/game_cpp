@@ -10,15 +10,15 @@ class Partie
 
    //comm2
 private:
-   Personnage joueur;
+   Personnage personnage;
    Monstre** bestiaire;        // monstres déjà vaincus
-   int TailleBestiaire;
-   Monstre* ennemisPossibles; // chargés depuis monsters.csv
-   int TailleEnnemisPossibles;
+   int tailleBestiaire;
+   Monstre** monstresPossibles; // chargés depuis monsters.csv
+   int tailleMonstresPossibles;
    ACT* catalogueACT;
 
 public:
-   Partie(Personnage joueur);
+   Partie();
    ~Partie();
 
    void demarrer();

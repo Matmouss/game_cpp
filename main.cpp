@@ -1,6 +1,7 @@
 #include <iostream>
 #include "affichage.h"
 #include "monstre.h"
+#include "partie.h"
 #include "csv.h"
 #include <string>
 #include <map>
@@ -22,8 +23,8 @@ string Menu(
     while (!choisi) {
         vector<string> display;
         display.push_back(title);
+        display.push_back("- - -");
         display.push_back("");
-        display.push_back("------------------------------------------");
 
         for (int i = 0; i < static_cast<int>(options.size()); i++) {
             if (i == choix) {
@@ -57,34 +58,9 @@ string Menu(
     return options[choix];
 }
 
-pair<Monstre**, int> initBestiaire() {
-    auto monstres = readCSV("data/monstres.csv");
 
-    int nbMonstres = static_cast<int>(monstres.size()) - 1;
-    Monstre** bestiaire = new Monstre*[nbMonstres];
-
-    for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
-        bestiaire[i - 1] = new Monstre(
-            string(monstres[i][1]),
-            stoi(monstres[i][2]),
-            stoi(monstres[i][3]),
-            stoi(monstres[i][4]),
-            stoi(monstres[i][5])
-        );
-    }
-
-    return {bestiaire, nbMonstres};
-}
-
-
-void game() {
-    pair<Monstre**, int> result = initBestiaire();
-    Monstre** bestiaire = result.first;
-    int nbMonstres = result.second;
-
-    GameWindow gw = init_ncurses();
-
-    map<int, string> keymap = {
+void initGame(){
+       map<int, string> keymap = {
         {KEY_UP, "up"},
         {KEY_DOWN, "down"},
         {KEY_LEFT, "left"},
@@ -94,14 +70,20 @@ void game() {
         {KEY_ENTER, "enter"}
     };
 
-    map<string, string> infos = {
+   map<string, string> infos = {
         {"Titre", "Into the RAM"},
         {"Score", "0"},
         {"Vie", "3"},
         {"Niveau", "1"}
     };
+}
+
+
+void game() {
 
     string state = "menu";
+
+    GameWindow gw = init_ncurses();
 
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, {"menu"}, infos);
 

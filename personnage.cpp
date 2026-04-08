@@ -2,7 +2,7 @@
 #include "personnage.h"
 #include <iostream>
 
-Personnage::Personnage(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
+Personnage::Personnage(string nom = "Taieb", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
 {
    this->nom = nom;
    this->Hp = Hp;

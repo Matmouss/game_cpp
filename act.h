@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include "personnage.h"
+#include "monstre.h"
 using namespace std;
 
 class Monstre;
@@ -9,13 +11,18 @@ class ACT
 private:
    string identifiant;
    string texte;
-   int impact;
 
 public:
-   ACT(string identifiant, string texte, int impact);
-
-   void executer(Monstre &m);
-   string afficherTexte();
+   ACT(string identifiant, string texte);
+   ~ACT();
+   string getTexte();
    string getIdentifiant();
-   int getImpact();
+   virtual void Impact(Personnage &p, Monstre &m);
+};
+
+class SerrerMain : public ACT {
+public:
+    SerrerMain();
+
+    void Impact(Personnage& p, Monstre& m) override;
 };
