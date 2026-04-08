@@ -1,7 +1,7 @@
 #include "partie.h"
 #include "MonstreLambda.h"
-#include "MiniBoss.h"
-#include "Boss.h"
+#include "miniBoss.h"
+#include "boss.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>

@@ -1,6 +1,8 @@
-#include "Personnage.h"
+#pragma once
+#include "personnage.h"
+#include <iostream>
 
-Personnage(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
+Personnage::Personnage(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
 {
    this->nom = nom;
    this->Hp = Hp;
@@ -11,4 +13,4 @@ Personnage(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int 
 };
 bool Personnage::estVivant() {
    cout << "il est vivant!!" << endl;
-   return false; }
+   return true;}

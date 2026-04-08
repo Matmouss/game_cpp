@@ -1,8 +1,9 @@
+#pragma once
+#include <iostream>
 
 using namespace std;
 class Personnage
 {
-
 private:
    string nom;
    int Hp;
@@ -10,35 +11,19 @@ private:
    int NbTue;
    int NbEpargne;
    int nbVictoire;
-   bool EstVivant = false;
+   bool EstVivant;
 
 public:
-   Personnage(string nom = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0)
-   {
-      this->nom = nom;
-      this->Hp = Hp;
-      this->HpMax = HpMax;
-      this->NbTue = NbTue;
-      this->NbEpargne = NbEpargne;
-      this->nbVictoire = nbVictoire;
-   };
-   Personnage(string nom = "Hero", int HpMax = 10)
-   {
-      this->nom = nom;
-      this->HpMax = HpMax;
-      Hp = HpMax;
-      NbTue = 0;
-      NbEpargne = 0;
-      nbVictoire = 0;
-   };
+   Personnage(string nom    = "Hero", int Hp = 10, int HpMax = 10, int NbTue = 0, int NbEpargne = 0, int nbVictoire = 0);
+   Personnage(string nom = "Hero", int HpMax = 10);
 
-   void attaquer() {}
-   void utiliserActe() {}
-   bool epargner() { return false; }
-   void prendreDegats(int degats) {}
-   bool estVivant() { return false; }
-   void gagnerCombat() {}
-   void incrementerTue() {}
-   void incrementerEpargne() {}
-   void afficherStats() {}
+   int attaquer();
+   void utiliserActe();
+   bool epargner();
+   void prendreDegats(int degats);
+   bool estVivant();
+   void gagnerCombat();
+   void incrementerTue();
+   void incrementerEpargne();
+   void afficherStats();
 };
