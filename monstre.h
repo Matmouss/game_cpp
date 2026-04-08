@@ -43,5 +43,5 @@ public:
     bool estVivant();
     void afficherInfos();
  
-    virtual int getNbActions() = 0;
+    int getNbActions();
 };

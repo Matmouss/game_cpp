@@ -1,9 +1,11 @@
 #include <iostream>
 #include "affichage.h"
+#include "monstre.h"
 #include "csv.h"
 #include <string>
 #include <map>
 #include <vector>
+#include <utility>
 
 using namespace std;
 
@@ -51,8 +53,30 @@ string Menu(
     return options[choix];
 }
 
-void game() {
+pair<Monstre**, int> initBestiaire() {
     auto monstres = readCSV("data/monstres.csv");
+
+    int nbMonstres = static_cast<int>(monstres.size()) - 1;
+    Monstre** bestiaire = new Monstre*[nbMonstres];
+
+    for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
+        bestiaire[i - 1] = new Monstre(
+            string(monstres[i][1]),
+            stoi(monstres[i][2]),
+            stoi(monstres[i][3]),
+            stoi(monstres[i][4]),
+            stoi(monstres[i][5])
+        );
+    }
+
+    return {bestiaire, nbMonstres};
+}
+
+
+void game() {
+    pair<Monstre**, int> result = initBestiaire();
+    Monstre** bestiaire = result.first;
+    int nbMonstres = result.second;
 
     GameWindow gw = init_ncurses();
 
@@ -89,15 +113,8 @@ void game() {
         else if (choix == "Bestiaire") {
             vector<string> options;
 
-            for (const auto& row : monstres) {
-                if (!row.empty()) {
-                    if (row[0] == "id"){
-                        options.push_back(row[1] + ":\t\t"+ row[2] + "\t"+ row[3]);
-                    } else {
-                        options.push_back(row[1] + ":\t"+ row[2] + "\t"+ row[3]);
-                    }
-                    
-                }
+            for (int i = 0; i < nbMonstres; i++) {
+                    options.push_back(bestiaire[i]->getNom() + ":\t"+ to_string(bestiaire[i]->getAtk()) + "\t"+ to_string(bestiaire[i]->getDef()) + "\t" + to_string(bestiaire[i]->getHpMax()) + "\t" + to_string(bestiaire[i]->getMercyGoal()));                   
             }
 
             options.push_back("Retour");
