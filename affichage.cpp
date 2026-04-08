@@ -25,9 +25,9 @@ void dessiner_boite_jeu(
     box(win, 0, 0);
 
     int ligne = 1;
-    const string champs[5] = {"Titre", "Score", "Vie", "Niveau", "last_touche"};
+    const string champs[4] = {"Titre", "Score", "Vie", "Niveau"};
 
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 4; ++i) {
         auto it = data.find(champs[i]);
         string valeur = (it != data.end()) ? it->second : "";
         string texte = champs[i] + " : " + valeur;
@@ -46,14 +46,24 @@ void dessiner_boite_jeu(
             y_depart = ligne + 1;
         }
 
-        for (int i = 0; i < nb_lignes; ++i) {
-            int x = (max_x - static_cast<int>(state[i].size())) / 2;
-            if (x < 1) x = 1;
+        int largeur_bloc = 0;
+        for (const auto& texte : state) {
+            int longueur = static_cast<int>(texte.size());
+            if (longueur > largeur_bloc) {
+                largeur_bloc = longueur;
+            }
+        }
 
+        int x_depart = (max_x - largeur_bloc) / 2;
+        if (x_depart < 1) {
+            x_depart = 1;
+        }
+
+        for (int i = 0; i < nb_lignes; ++i) {
             int y = y_depart + i;
 
             if (y < max_y - 1) {
-                mvwprintw(win, y, x, "%s", state[i].c_str());
+                mvwprintw(win, y, x_depart, "%s", state[i].c_str());
             }
         }
     }

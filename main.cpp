@@ -13,17 +13,21 @@ string Menu(
     GameWindow& gw,
     const map<int, string>& keymap,
     map<string, string>& infos,
-    const vector<string>& options = {"Figth", "Bestiaire", "Quit"}
+    const vector<string>& options,
+    const string& title
 ) {
     bool choisi = false;
     int choix = 0;
 
     while (!choisi) {
         vector<string> display;
+        display.push_back(title);
+        display.push_back("");
+        display.push_back("------------------------------------------");
 
         for (int i = 0; i < static_cast<int>(options.size()); i++) {
             if (i == choix) {
-                display.push_back("> " + options[i]);
+                display.push_back("> " + options[i] + "<");
             } else {
                 display.push_back(options[i]);
             }
@@ -94,8 +98,7 @@ void game() {
         {"Titre", "Into the RAM"},
         {"Score", "0"},
         {"Vie", "3"},
-        {"Niveau", "1"},
-        {"last_touche", ""}
+        {"Niveau", "1"}
     };
 
     string state = "menu";
@@ -105,7 +108,7 @@ void game() {
     bool running = true;
 
     while (running) {
-        string choix = Menu(gw, keymap, infos, {"Fight", "Bestiaire", "Quit"});
+        string choix = Menu(gw, keymap, infos, {"Fight", "Bestiaire", "Quit"}, "menu");
 
         if (choix == "quit" || choix == "Quit") {
             running = false;
@@ -113,13 +116,14 @@ void game() {
         else if (choix == "Bestiaire") {
             vector<string> options;
 
+            options.push_back("Nom\t\tAtk\tDef\tHp\tMercy Goal");
             for (int i = 0; i < nbMonstres; i++) {
-                    options.push_back(bestiaire[i]->getNom() + ":\t"+ to_string(bestiaire[i]->getAtk()) + "\t"+ to_string(bestiaire[i]->getDef()) + "\t" + to_string(bestiaire[i]->getHpMax()) + "\t" + to_string(bestiaire[i]->getMercyGoal()));                   
+                    options.push_back(bestiaire[i]->getNom() + "\t"+ to_string(bestiaire[i]->getAtk()) + "\t"+ to_string(bestiaire[i]->getDef()) + "\t" + to_string(bestiaire[i]->getHpMax()) + "\t" + to_string(bestiaire[i]->getMercyGoal()));                   
             }
 
             options.push_back("Retour");
 
-            string choix_bestiaire = Menu(gw, keymap, infos, options);
+            string choix_bestiaire = Menu(gw, keymap, infos, options, "bestiaire");
 
             if (choix_bestiaire == "quit" || choix_bestiaire == "Quit") {
                 running = false;
@@ -134,17 +138,6 @@ void game() {
 }
 
 int main() {
-    //test();
 
     game();
-    // auto data = readCSV("data/monstres.csv");
-    
-    // for (const auto& row : data) {
-    //     for (const auto& cell : row) {
-    //         std::cout << cell << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    // return 0;
 }
