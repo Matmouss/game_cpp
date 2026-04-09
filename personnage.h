@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "item.h"
+#include "monstre.h"
 
 using namespace std;
 class Personnage
@@ -21,7 +22,7 @@ public:
 public:
    Personnage(string nom,int HpMax);
    Personnage();
-   int attaquer();
+   void attaquer(Monstre &Monstre);
    void utiliserActe();
    bool epargner();
    void prendreDegats(int degats);

@@ -56,6 +56,65 @@ string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos
     return options[choix];
 }
 
+
+
+bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, Monstre &monstre, Personnage &personnage) {
+    bool combat = true;
+    bool victoire = false;
+
+    vector<string> display = {monstre.getNom(), "\tHP: " + to_string(monstre.getHp())};
+    vector<string> menu = {"Attaquer", "Act", "Item", "Mercy"};
+
+    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+
+    while (combat) {
+        display = {monstre.getNom(), "\tHP: " + to_string(monstre.getHp())};
+        string choix = "";
+        int index = 0;
+
+        while (choix != "quit" && choix != "enter") {
+            string menuAffiche = "";
+
+            for (int i = 0; i < static_cast<int>(menu.size()); i++) {
+                if (i == index) {
+                    menuAffiche += ">" + menu[i] + "< ";
+                } else {
+                    menuAffiche += menu[i] + " ";
+                }
+            }
+
+            vector<string> displayTemp = display;
+            displayTemp.push_back(menuAffiche);
+
+            gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, displayTemp, infos);
+            choix = getInput(keymap);
+
+            if (choix == "left") {
+                index = (index - 1 + static_cast<int>(menu.size())) % static_cast<int>(menu.size());
+            } else if (choix == "right") {
+                index = (index + 1) % static_cast<int>(menu.size());
+            }
+        }
+
+        if (choix == "quit") {
+            combat = false;
+        } else if (choix == "enter") {
+            if (menu[index] == "Attaquer") {
+                personnage.attaquer(monstre);
+            }
+        }
+
+        if (monstre.getHp() <= 0) {
+            combat = false;
+            victoire = true;
+        }
+
+        gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+    }
+
+    return victoire;
+}
+
 void initBinds(){
        keymap = {
         {KEY_UP, "up"},
@@ -122,6 +181,8 @@ void game() {
         }
         else if (choix == "Fight") {
             state = "Fight";
+
+            Fight(gw, keymap, infos, *partie_en_cours.monstresPossibles[1], partie_en_cours.personnage);
         }
         else if (choix == "Inventaire")
         {

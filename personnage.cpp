@@ -1,6 +1,7 @@
 #include "personnage.h"
 #include <iostream>
 #include "item.h"
+#include "monstre.h"
 #include "csv.h"
 
 pair<Item **, int> initInventaires()
@@ -55,6 +56,17 @@ Personnage::Personnage()
    this->InventaireItems[0] = this->ItemPossible[0];
    this->InventaireItems[1] = this->ItemPossible[1];
 };
+
 bool Personnage::estVivant() {
-   cout << "il est vivant!!" << endl;
+   if (this->Hp <= 0) {
+      return false;
+   }
    return true;}
+
+void Personnage::prendreDegats(int degats) {
+   this->Hp -= degats;
+}
+
+void Personnage::attaquer(Monstre &Monstre){
+   Monstre.prendreDegats(5);
+}

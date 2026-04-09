@@ -45,3 +45,7 @@ void Monstre::setActionsDisponibles(string *actions, int nb)
       this->actionsDisponibles[i] = actions[i];
 }
 void Monstre::setMercy(int Mercy){this->mercy = Mercy;}
+
+void Monstre::prendreDegats(int degats){
+   this->hp -= degats;
+}
