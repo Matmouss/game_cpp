@@ -13,12 +13,13 @@ private:
     int def;
     int mercy;
     int mercyGoal;
+    string description;
     string resultatCombat;
     string* actionsDisponibles;
     int nbActionsDisponibles;
  
 public:
-    Monstre(string nom = "Monstre", int hpMax = 10, int atk = 5, int def = 1, int mercyGoal = 100);
+    Monstre(string nom = "Monstre", int hpMax = 10, int atk = 5, int def = 1, int mercyGoal = 100, string description = "ahh le monstre");
     virtual ~Monstre();
  
     string getNom();
@@ -28,6 +29,7 @@ public:
     int getDef();
     int getMercy();
     int getMercyGoal();
+    string getDescription();
     string getResultatCombat();
     string* getActionsDisponibles();
     int getNbActionsDisponibles();

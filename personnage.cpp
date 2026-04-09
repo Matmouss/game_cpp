@@ -1,4 +1,3 @@
-#pragma once
 #include "personnage.h"
 #include <iostream>
 #include "item.h"
@@ -6,7 +5,7 @@
 
 pair<Item **, int> initInventaires()
 {
-   auto inventaire = readCSV("data/monstres.csv");
+   auto inventaire = readCSV("data/items.csv");
 
    int nbItem = static_cast<int>(inventaire.size()) - 1;
    Item **Inventaire = new Item *[nbItem];
@@ -14,10 +13,10 @@ pair<Item **, int> initInventaires()
    for (int i = 1; i < static_cast<int>(inventaire.size()); i++)
    {
       Inventaire[i - 1] = new Item(
+          string(inventaire[i][0]),
           string(inventaire[i][1]),
-          string(inventaire[i][2]),
-          stoi(inventaire[i][3]),
-          stoi(inventaire[i][4]));
+          stoi(inventaire[i][2])
+         );
    }
 
    return {Inventaire, nbItem};
@@ -26,7 +25,7 @@ pair<Item **, int> initInventaires()
 Personnage::Personnage(string nom = "Taieb", int HpMax = 10)
 {
    this->nom = nom;
-   this->HpMax = 10;
+   this->HpMax = HpMax;
    this->Hp = this->HpMax;
    this->NbTue = NbTue;
    this->NbEpargne = NbEpargne;
@@ -52,6 +51,9 @@ Personnage::Personnage()
    this->TailleInventaire = 2;
    this->InventaireItems = new Item*[TailleInventaire];
 
+   //par défaut commencer avec ces deux objects
+   this->InventaireItems[0] = this->ItemPossible[0];
+   this->InventaireItems[1] = this->ItemPossible[1];
 };
 bool Personnage::estVivant() {
    cout << "il est vivant!!" << endl;

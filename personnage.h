@@ -5,7 +5,7 @@
 using namespace std;
 class Personnage
 {
-private:
+public:
    string nom;
    int Hp;
    int HpMax;
@@ -21,8 +21,6 @@ private:
 public:
    Personnage(string nom,int HpMax);
    Personnage();
-
-   pair<Item **, int> initInventaires();
    int attaquer();
    void utiliserActe();
    bool epargner();

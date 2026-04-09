@@ -24,7 +24,8 @@ pair<Monstre**, int> initMonstresPossibles() {
             stoi(monstres[i][2]),
             stoi(monstres[i][3]),
             stoi(monstres[i][4]),
-            stoi(monstres[i][5])
+            stoi(monstres[i][5]),
+            string(monstres[i][6])
         );
     }
 
@@ -36,12 +37,14 @@ Partie::Partie()
    pair<Monstre**, int> result = initMonstresPossibles();
    this->monstresPossibles = result.first;
    this->tailleMonstresPossibles = result.second;
-   this->tailleBestiaire = 0;
+   this->tailleBestiaire = 1;
    this->bestiaire = new Monstre*[this->tailleBestiaire];
    this->personnage = Personnage();
    this->tailleCatalogueACT = 1;
    this->catalogueACT = new ACT*[tailleCatalogueACT];
    this->catalogueACT[0] = new SerrerMain();
+
+   this->bestiaire[0] = this->monstresPossibles[0];
 }
 
 Partie::~Partie()
@@ -50,8 +53,6 @@ Partie::~Partie()
         delete monstresPossibles[i];
     delete monstresPossibles;
 
-    for (int i = 0; i < tailleBestiaire; i++)
-        delete bestiaire[i];
     delete bestiaire;
 
     for (int i = 0; i < tailleCatalogueACT; i++)

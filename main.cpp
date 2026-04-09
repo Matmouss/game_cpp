@@ -85,20 +85,20 @@ void game() {
 
     Partie partie_en_cours = Partie();
 
-    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, {"menu"}, infos);
-
     bool running = true;
 
+    vector<string> options;
     while (running) {
-        vector<string> option1 = {"Fight", "Bestiaire", "Quit"};
-        string titre1 = "menu";
-         string choix = Menu(gw, keymap, infos, option1,titre1);
+        state = "menu";
+        options = {"Fight", "Bestiaire", "Inventaire","Quit"};
+        string choix = Menu(gw, keymap, infos, options,state);
 
         if (choix == "quit" || choix == "Quit") {
             running = false;
         }
         else if (choix == "Bestiaire") {
-            vector<string> options;
+            state = "bestiaire";
+            options = {};
 
             if (partie_en_cours.tailleBestiaire == 0)
             {
@@ -106,27 +106,43 @@ void game() {
             }
             else
             {
-                options.push_back("Nom\t\tAtk\tDef\tHp\tMercy Goal");
+                options.push_back("Nom\tAtk\tDef\tHp\tMercy Goal\tDescription");
                 for (int i = 0; i < partie_en_cours.tailleBestiaire; i++)
                 {
-                    options.push_back(partie_en_cours.bestiaire[i]->getNom() + "\t" + to_string(partie_en_cours.bestiaire[i]->getAtk()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getDef()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getHpMax()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getMercyGoal()));
+                    options.push_back(partie_en_cours.bestiaire[i]->getNom() + "\t" + to_string(partie_en_cours.bestiaire[i]->getAtk()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getDef()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getHpMax()) + "\t" + to_string(partie_en_cours.bestiaire[i]->getMercyGoal()) + "\t\t" + partie_en_cours.bestiaire[i]->getDescription());
                 }
             }
 
             options.push_back("Retour");
-            string titre2 = "bestiaire";
-            string choix_bestiaire = Menu(gw, keymap, infos, options, titre2);
+            choix = Menu(gw, keymap, infos, options, state);
 
-            if (choix_bestiaire == "quit" || choix_bestiaire == "Quit") {
+            if (choix == "quit" || choix == "Quit") {
                 running = false;
             }
         }
         else if (choix == "Fight") {
-            state = "menu";
+            state = "Fight";
         }
         else if (choix == "Inventaire")
         {
             state = "Inventaire";
+
+            options = {};
+
+            if (partie_en_cours.personnage.TailleInventaire == 0)
+            {
+                options.push_back("Tu n'a rien dans tes poches sale étudiant!");
+            }
+            else{
+                options.push_back("Nom\t\tType\tValeur");
+                for (int i = 0; i < partie_en_cours.personnage.TailleInventaire; i++)
+                {
+                    options.push_back(partie_en_cours.personnage.InventaireItems[i]->getNom() + "\t" + partie_en_cours.personnage.InventaireItems[i]->getType() + "\t" + to_string(partie_en_cours.personnage.InventaireItems[i]->getValeur()));
+                }
+            }
+
+            options.push_back("Retour");
+            choix = Menu(gw, keymap, infos, options, state);
         }
     }
 
@@ -134,6 +150,5 @@ void game() {
 }
 
 int main() {
-
     game();
 }

@@ -3,15 +3,13 @@
 
 using namespace std;
 
-Item::Item(string nom, string type, int valeur, int quantite)
+Item::Item(string nom, string type, int valeur)
 {
    this->nom = nom;
    this->type = type;
    this->valeur = valeur;
-   this->quantite = quantite;
 }
 
 string Item::getNom() { return nom; }
 string Item::getType() { return type; }
 int Item::getValeur() { return valeur; }
-int Item::getQuantite() { return quantite; }

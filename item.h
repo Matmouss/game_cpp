@@ -11,15 +11,13 @@ private:
    string nom;
    string type;
    int valeur;
-   int quantite;
 
 public:
-   Item(string nom = "Item", string type = "HEAL", int valeur = 0, int quantite = 1);
+   Item(string nom = "Item", string type = "HEAL", int valeur = 0);
 
    string getNom();
    string getType();
    int getValeur();
-   int getQuantite();
 
    bool estDisponible();
    bool utiliser(Personnage &p);
