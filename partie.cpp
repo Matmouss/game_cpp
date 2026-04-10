@@ -59,3 +59,14 @@ Partie::~Partie()
         delete catalogueACT[i];
     delete[] catalogueACT;
 }
+
+void Partie::ajouterBestiaire(Monstre* monstre){
+   this->tailleBestiaire += 1;
+   Monstre** tmpBestiaire = new Monstre*[this->tailleBestiaire];
+   for(int i = 0; i < this->tailleBestiaire - 1; i++){
+      tmpBestiaire[i] = this->bestiaire[i];
+   }
+   tmpBestiaire[this->tailleBestiaire - 1] = monstre;
+   delete[] this->bestiaire;
+   this->bestiaire = tmpBestiaire;
+}

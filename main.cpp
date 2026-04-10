@@ -101,6 +101,7 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
         } else if (choix == "enter") {
             if (menu[index] == "Attaquer") {
                 display.push_back(personnage.attaquer(monstre));
+                display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp());
                 display.push_back("Appuyer sur enter pour continuer");
 
                 gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
@@ -190,7 +191,13 @@ void game() {
         else if (choix == "Fight") {
             state = "Fight";
 
-            Fight(gw, keymap, infos, *partie_en_cours.monstresPossibles[1], partie_en_cours.personnage);
+            Monstre* monstre = partie_en_cours.monstresPossibles[1];
+
+            if (Fight(gw, keymap, infos, *monstre, partie_en_cours.personnage)){
+                partie_en_cours.ajouterBestiaire(monstre);
+            } else {
+                //logique de gameover
+            }
         }
         else if (choix == "Inventaire")
         {

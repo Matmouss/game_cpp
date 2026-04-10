@@ -28,9 +28,8 @@ public:
    void afficherBestiaire();
    void afficherStatsPersonnage();
    void afficherItems();
-   void chargerMonstres(string fichier);
-   void chargerItems(string fichier);
    void initialiserCatalogueACT();
    bool verifierFinPartie();
    void afficherFin();
+   void ajouterBestiaire(Monstre* monstre);
 };

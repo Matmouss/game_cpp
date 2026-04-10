@@ -13,3 +13,4 @@ Item::Item(string nom, string type, int valeur)
 string Item::getNom() { return nom; }
 string Item::getType() { return type; }
 int Item::getValeur() { return valeur; }
+
