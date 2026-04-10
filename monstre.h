@@ -39,7 +39,7 @@ public:
     void setMercy(int Mercy);
  
     int attaquer();
-    void prendreDegats(int degats);
+    string prendreDegats(int degats);
     void modifierMercy(int valeur);
     bool peutEtreEpargne();
     bool estVivant();

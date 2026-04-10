@@ -22,7 +22,7 @@ public:
 public:
    Personnage(string nom,int HpMax);
    Personnage();
-   void attaquer(Monstre &Monstre);
+   string attaquer(Monstre &Monstre);
    void utiliserActe();
    bool epargner();
    void prendreDegats(int degats);

@@ -62,13 +62,13 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
     bool combat = true;
     bool victoire = false;
 
-    vector<string> display = {monstre.getNom(), "\tHP: " + to_string(monstre.getHp())};
+    vector<string> display = {monstre.getNom()+ "\tHP: " + to_string(monstre.getHp())};
     vector<string> menu = {"Attaquer", "Act", "Item", "Mercy"};
 
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
     while (combat) {
-        display = {monstre.getNom(), "\tHP: " + to_string(monstre.getHp())};
+        display = {monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()),""};
         string choix = "";
         int index = 0;
 
@@ -79,7 +79,7 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
                 if (i == index) {
                     menuAffiche += ">" + menu[i] + "< ";
                 } else {
-                    menuAffiche += menu[i] + " ";
+                    menuAffiche += menu[i] + "\t";
                 }
             }
 
@@ -100,7 +100,15 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
             combat = false;
         } else if (choix == "enter") {
             if (menu[index] == "Attaquer") {
-                personnage.attaquer(monstre);
+                display.push_back(personnage.attaquer(monstre));
+                display.push_back("Appuyer sur enter pour continuer");
+
+                gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+
+                string input = getInput(keymap);
+                while (input != "enter" and input != "quit") {
+                    input = getInput(keymap);
+                }
             }
         }
 

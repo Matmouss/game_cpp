@@ -67,6 +67,6 @@ void Personnage::prendreDegats(int degats) {
    this->Hp -= degats;
 }
 
-void Personnage::attaquer(Monstre &Monstre){
-   Monstre.prendreDegats(5);
+string Personnage::attaquer(Monstre &Monstre){
+   return Monstre.prendreDegats(5);
 }

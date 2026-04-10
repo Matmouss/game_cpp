@@ -46,6 +46,7 @@ void Monstre::setActionsDisponibles(string *actions, int nb)
 }
 void Monstre::setMercy(int Mercy){this->mercy = Mercy;}
 
-void Monstre::prendreDegats(int degats){
+string Monstre::prendreDegats(int degats){
    this->hp -= degats;
+   return "Le monstre prend " + to_string(degats) + " points de degats";
 }
