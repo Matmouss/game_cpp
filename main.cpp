@@ -58,7 +58,7 @@ string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos
 
 
 
-bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, Monstre &monstre, Personnage &personnage) {
+bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, Monstre monstre, Personnage &personnage) {
     bool combat = true;
     bool victoire = false;
 
