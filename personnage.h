@@ -1,11 +1,12 @@
 #pragma once
 #include <iostream>
 #include "item.h"
-#include "monstre.h"
 
 using namespace std;
 
 class ACT;
+
+class Monstre;
 
 class Personnage
 {
@@ -25,7 +26,8 @@ public:
 public:
    Personnage(string nom,int HpMax);
    Personnage();
-   string attaquer(Monstre &Monstre);
+   int getHp();
+   string attaquer(Monstre &monstre);
    void utiliserActe();
    bool epargner();
    void prendreDegats(int degats);

@@ -2,6 +2,7 @@
 #include "affichage.h"
 #include "monstre.h"
 #include "partie.h"
+#include "personnage.h"
 #include "csv.h"
 #include <string>
 #include <map>
@@ -57,94 +58,134 @@ string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos
     return options[choix];
 }
 
-
-
-bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, Monstre monstre, Personnage &personnage) {
-    bool combat = true;
-    bool victoire = false;
-
-    vector<string> display = {monstre.getNom()+ "\tHP: " + to_string(monstre.getHp())};
+bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
+    bool pass = false;
+    vector<string> display;
 
     int menuSize = 4;
     string* menu = new string[menuSize]{"Attaquer", "Act", "Item", "Pass"};
 
-    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+    display = { monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci"};
+    string choix = "";
+    int index = 0;
 
-    while (combat) {
-        display = {monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()),""};
-        string choix = "";
-        int index = 0;
+    while (choix != "quit" && choix != "enter") {
+        string menuAffiche = "";
 
-        while (choix != "quit" && choix != "enter") {
-            string menuAffiche = "";
-
-            for (int i = 0; i < menuSize; i++) {
-                if (i == index) {
-                    menuAffiche += ">" + menu[i] + "< ";
-                } else {
-                    menuAffiche += menu[i] + "\t";
-                }
-            }
-
-            vector<string> displayTemp = display;
-            displayTemp.push_back(menuAffiche);
-
-            gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, displayTemp, infos);
-            choix = getInput(keymap);
-
-            if (choix == "left") {
-                index = (index - 1 + menuSize) % menuSize;
-            } else if (choix == "right") {
-                index = (index + 1) % menuSize;
+        for (int i = 0; i < menuSize; i++) {
+            if (i == index) {
+                menuAffiche += ">" + menu[i] + "< ";
+            } else {
+                menuAffiche += menu[i] + "\t";
             }
         }
 
-        if (choix == "quit") {
-            combat = false;
-        } else if (choix == "enter") {
-            if (menu[index] == "Attaquer") {
-                display.push_back(personnage.attaquer(monstre));
-                display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp());
-                display.push_back("Appuyer sur enter pour continuer");
+        vector<string> displayTemp = display;
+        displayTemp.push_back(menuAffiche);
 
-                gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+        gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, displayTemp, infos);
+        choix = getInput(keymap);
 
-                string input = getInput(keymap);
-                while (input != "enter" and input != "quit") {
-                    input = getInput(keymap);
-                }
-            } else if (menu[index] == "Act"){
-                vector<string> options;
-                for (int i = 0; i < personnage.tailleInventaireACT; i++){
-                    options.push_back((*personnage.inventaireACT[i]).identifiant + " : " + (*personnage.inventaireACT[i]).texte);
-                }
-                options.push_back("Retour");
+        if (choix == "left") {
+            index = (index - 1 + menuSize) % menuSize;
+        } else if (choix == "right") {
+            index = (index + 1) % menuSize;
+        }
+    }
 
-                choix = Menu(gw, keymap, infos, options, menu[index]);
-                if (choix == "quit" || choix == "Retour") {
-                    break;
-                }
-                for (int i = 0; i < personnage.tailleInventaireACT; i++){
-                    if (options[i] == choix){
-                        display.push_back((*personnage.inventaireACT[i]).Impact(personnage, monstre));
-                        display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp());
-                        display.push_back("Appuyer sur enter pour continuer");
-                    }
-                }
+    if (choix == "enter") {
+        if (menu[index] == "Attaquer") {
+            display.push_back(personnage.attaquer(monstre));
 
-            } else if (menu[index] == "Item") {}
+            display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
+            display.push_back("Appuyer sur enter pour continuer");
+
+        } else if (menu[index] == "Act"){
+            vector<string> options;
+            for (int i = 0; i < personnage.tailleInventaireACT; i++){
+                options.push_back((*personnage.inventaireACT[i]).identifiant + " : " + (*personnage.inventaireACT[i]).texte);
+            }
+            options.push_back("Retour");
+
+            choix = Menu(gw, keymap, infos, options, menu[index]);
+            if (choix == "quit" || choix == "Retour") {
+            }
+            for (int i = 0; i < personnage.tailleInventaireACT; i++){
+                if (options[i] == choix){
+                    display.push_back((*personnage.inventaireACT[i]).Impact(personnage, monstre));
+
+                    display[0] =  monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
+                    display.push_back("Appuyer sur enter pour continuer");
+                }
+            }
+
+        } else if (menu[index] == "Item") {
+            display.push_back("Vous utilisez un item");
+            display.push_back("Appuyer sur enter pour continuer");
+        }
+        else if (menu[index] == "Pass") {
+            display.push_back("Vous passez votre tour");
+            display.push_back("Appuyer sur enter pour continuer");
+            pass = true;
         }
 
-        if (monstre.getHp() <= 0) {
-            combat = false;
-            victoire = true;
-        }
+         gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
-        gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+        string input = getInput(keymap);
+        while (input != "enter" and input != "quit") {
+            input = getInput(keymap);
+        }
     }
 
     delete[] menu;
+    return pass;
+}
 
+void FightMonstre(Monstre &monstre,Personnage &personnage,GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
+    vector<string> display = {""};
+
+    display.push_back(monstre.attaquer(personnage));
+    display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
+    display.push_back("Appuyer sur enter pour continuer");
+
+    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+
+    string input = getInput(keymap);
+    while (input != "enter" and input != "quit") {
+        input = getInput(keymap);
+    }
+}
+
+bool VictoireCondition(Personnage &personnage){
+    if (personnage.getHp() <= 0){
+        return false;
+    }
+    return true; 
+       
+}
+bool combatEnCours(Monstre &monstre, Personnage &personnage) {
+    if (monstre.getHp() <= 0 || personnage.getHp() <= 0) {
+        return false;
+    }
+    return true;
+}
+
+
+bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
+    bool combatEnCours_b = true;
+    bool victoire = false;
+    
+    while (combatEnCours_b) {
+        //pour le moment le seul moyen de terminer le tour est de passer
+        while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage)) {} 
+        combatEnCours_b = combatEnCours(monstre, personnage);
+        
+        if (combatEnCours_b){FightMonstre(monstre, personnage, gw, keymap, infos);} 
+        combatEnCours_b = combatEnCours(monstre, personnage);
+    }
+
+    victoire = VictoireCondition(personnage);
+    //gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
     return victoire;
 }
 
@@ -217,7 +258,7 @@ void game() {
 
             Monstre* monstre = partie_en_cours.monstresPossibles[1];
 
-            if (Fight(gw, keymap, infos, *monstre, partie_en_cours.personnage)){
+            if (Fight( *monstre, partie_en_cours.personnage, gw, keymap, infos)){
                 partie_en_cours.ajouterBestiaire(monstre);
             } else {
                 //logique de gameover

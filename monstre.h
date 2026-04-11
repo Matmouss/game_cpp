@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "personnage.h"
  
 using namespace std;
  
@@ -38,7 +39,7 @@ public:
     void setActionsDisponibles(string* actions, int nb);
     void setMercy(int Mercy);
  
-    int attaquer();
+    string attaquer(Personnage &personnage);
     string prendreDegats(int degats);
     void modifierMercy(int valeur);
     bool peutEtreEpargne();

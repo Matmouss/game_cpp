@@ -14,7 +14,9 @@ string ACT::getIdentifiant() {return identifiant;}
 
 ACT::~ACT(){}
 
-string ACT::Impact(Personnage &p, Monstre &m){}
+string ACT::Impact(Personnage &p, Monstre &m){
+    return this->texte;
+}
 
 #pragma endregion
 

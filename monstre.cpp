@@ -1,4 +1,5 @@
 #include "monstre.h"
+#include "personnage.h"
 #include <iostream>
 
 using namespace std;
@@ -46,6 +47,10 @@ void Monstre::setActionsDisponibles(string *actions, int nb)
 }
 void Monstre::setMercy(int Mercy){this->mercy = Mercy;}
 
+string Monstre::attaquer(Personnage &personnage){
+   personnage.prendreDegats(this->atk);
+   return "Le monstre attaque et inflige "+ to_string(this->atk) + " points de degats";
+}
 string Monstre::prendreDegats(int degats){
    this->hp -= degats;
    return "Le monstre prend " + to_string(degats) + " points de degats";

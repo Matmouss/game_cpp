@@ -11,9 +11,9 @@
 
 Personnage::Personnage()
 {
-   this->nom = "Taieb_Default";
-   this->Hp = 0;
+   this->nom = "Taieb";
    this->HpMax = 10;
+   this->Hp = HpMax;
    this->NbTue = 0;
    this->NbEpargne = 0;
    this->nbVictoire = 0;
@@ -35,4 +35,8 @@ void Personnage::prendreDegats(int degats) {
 
 string Personnage::attaquer(Monstre &Monstre){
    return Monstre.prendreDegats(5);
+}
+
+int Personnage::getHp() {
+   return this->Hp;
 }
