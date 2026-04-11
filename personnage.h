@@ -4,6 +4,9 @@
 #include "monstre.h"
 
 using namespace std;
+
+class ACT;
+
 class Personnage
 {
 public:
@@ -14,10 +17,10 @@ public:
    int NbEpargne;
    int nbVictoire;
    bool EstVivant;
-   Item** ItemPossible;
-   int TailleItemPossible;
-   Item** InventaireItems;
-   int TailleInventaire;
+   Item** inventaireItems;
+   int tailleInventaire;
+   ACT** inventaireACT;
+   int tailleInventaireACT;
 
 public:
    Personnage(string nom,int HpMax);

@@ -1,4 +1,3 @@
-#pragma once
 #include "act.h"
 #include "monstre.h"
 #include "personnage.h"
@@ -15,7 +14,7 @@ string ACT::getIdentifiant() {return identifiant;}
 
 ACT::~ACT(){}
 
-void ACT::Impact(Personnage &p, Monstre &m){}
+string ACT::Impact(Personnage &p, Monstre &m){}
 
 #pragma endregion
 
@@ -23,7 +22,18 @@ void ACT::Impact(Personnage &p, Monstre &m){}
 
 SerrerMain::SerrerMain() : ACT("serrer_main", "Vous serrez la main du monstre.") {}; 
 
-void SerrerMain::Impact(Personnage &p, Monstre &m) {
+string SerrerMain::Impact(Personnage &p, Monstre &m) {
     m.setMercy((m.getMercy() + 1)*100);
+    return this->texte;
+}
+#pragma endregion
+
+#pragma region Dodo
+
+Dodo::Dodo() : ACT("dodo", "Dodo tah le cours de philo") {}; 
+
+string Dodo::Impact(Personnage &p, Monstre &m) {
+    p.Hp = p.Hp + 1;
+    return this->texte;
 }
 #pragma endregion

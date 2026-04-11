@@ -14,6 +14,9 @@ public:
    int tailleMonstresPossibles;
    ACT** catalogueACT;    
    int tailleCatalogueACT; // nombre d’éléments dans le tableau
+   Item** itemPossible;
+   int tailleItemPossible;
+
 
 public:
    Partie();

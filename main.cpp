@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <utility>
+#include "act.h"
 
 using namespace std;
 
@@ -63,7 +64,9 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
     bool victoire = false;
 
     vector<string> display = {monstre.getNom()+ "\tHP: " + to_string(monstre.getHp())};
-    vector<string> menu = {"Attaquer", "Act", "Item", "Mercy"};
+
+    int menuSize = 4;
+    string* menu = new string[menuSize]{"Attaquer", "Act", "Item", "Pass"};
 
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
@@ -75,7 +78,7 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
         while (choix != "quit" && choix != "enter") {
             string menuAffiche = "";
 
-            for (int i = 0; i < static_cast<int>(menu.size()); i++) {
+            for (int i = 0; i < menuSize; i++) {
                 if (i == index) {
                     menuAffiche += ">" + menu[i] + "< ";
                 } else {
@@ -90,9 +93,9 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
             choix = getInput(keymap);
 
             if (choix == "left") {
-                index = (index - 1 + static_cast<int>(menu.size())) % static_cast<int>(menu.size());
+                index = (index - 1 + menuSize) % menuSize;
             } else if (choix == "right") {
-                index = (index + 1) % static_cast<int>(menu.size());
+                index = (index + 1) % menuSize;
             }
         }
 
@@ -110,7 +113,26 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
                 while (input != "enter" and input != "quit") {
                     input = getInput(keymap);
                 }
-            }
+            } else if (menu[index] == "Act"){
+                vector<string> options;
+                for (int i = 0; i < personnage.tailleInventaireACT; i++){
+                    options.push_back((*personnage.inventaireACT[i]).identifiant + " : " + (*personnage.inventaireACT[i]).texte);
+                }
+                options.push_back("Retour");
+
+                choix = Menu(gw, keymap, infos, options, menu[index]);
+                if (choix == "quit" || choix == "Retour") {
+                    break;
+                }
+                for (int i = 0; i < personnage.tailleInventaireACT; i++){
+                    if (options[i] == choix){
+                        display.push_back((*personnage.inventaireACT[i]).Impact(personnage, monstre));
+                        display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp());
+                        display.push_back("Appuyer sur enter pour continuer");
+                    }
+                }
+
+            } else if (menu[index] == "Item") {}
         }
 
         if (monstre.getHp() <= 0) {
@@ -120,6 +142,8 @@ bool Fight(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos,
 
         gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
     }
+
+    delete[] menu;
 
     return victoire;
 }
@@ -205,15 +229,15 @@ void game() {
 
             options = {};
 
-            if (partie_en_cours.personnage.TailleInventaire == 0)
+            if (partie_en_cours.personnage.tailleInventaire == 0)
             {
                 options.push_back("Tu n'a rien dans tes poches sale étudiant!");
             }
             else{
                 options.push_back("Nom\t\tType\tValeur");
-                for (int i = 0; i < partie_en_cours.personnage.TailleInventaire; i++)
+                for (int i = 0; i < partie_en_cours.personnage.tailleInventaire; i++)
                 {
-                    options.push_back(partie_en_cours.personnage.InventaireItems[i]->getNom() + "\t" + partie_en_cours.personnage.InventaireItems[i]->getType() + "\t" + to_string(partie_en_cours.personnage.InventaireItems[i]->getValeur()));
+                    options.push_back(partie_en_cours.personnage.inventaireItems[i]->getNom() + "\t" + partie_en_cours.personnage.inventaireItems[i]->getType() + "\t" + to_string(partie_en_cours.personnage.inventaireItems[i]->getValeur()));
                 }
             }
 

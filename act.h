@@ -4,11 +4,9 @@
 #include "monstre.h"
 using namespace std;
 
-class Monstre;
-
 class ACT
 {
-protected:
+public:
    string identifiant;
    string texte;
 
@@ -17,12 +15,19 @@ public:
    virtual ~ACT();
    string getTexte();
    string getIdentifiant();
-   virtual void Impact(Personnage &p, Monstre &m);
+   virtual string Impact(Personnage &p, Monstre &m);
 };
 
 class SerrerMain : public ACT {
 public:
     SerrerMain();
 
-    void Impact(Personnage& p, Monstre& m) override;
+    string Impact(Personnage& p, Monstre& m) override;
+};
+
+class Dodo : public ACT {
+public:
+    Dodo();
+
+   string Impact(Personnage& p, Monstre& m) override;
 };

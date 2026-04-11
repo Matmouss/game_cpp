@@ -32,6 +32,27 @@ pair<Monstre**, int> initMonstresPossibles() {
     return {bestiaire, nbMonstres};
 }
 
+
+pair<Item **, int> initInventaires()
+{
+   auto inventaire = readCSV("data/items.csv");
+
+   int nbItem = static_cast<int>(inventaire.size()) - 1;
+   Item **Inventaire = new Item *[nbItem];
+
+   for (int i = 1; i < static_cast<int>(inventaire.size()); i++)
+   {
+      Inventaire[i - 1] = new Item(
+          string(inventaire[i][0]),
+          string(inventaire[i][1]),
+          stoi(inventaire[i][2])
+         );
+   }
+
+   return {Inventaire, nbItem};
+}
+
+
 Partie::Partie()
 {
    pair<Monstre**, int> result = initMonstresPossibles();
@@ -42,9 +63,23 @@ Partie::Partie()
    this->personnage = Personnage();
    this->tailleCatalogueACT = 1;
    this->catalogueACT = new ACT*[tailleCatalogueACT];
-   this->catalogueACT[0] = new SerrerMain();
+   this->catalogueACT[0] = new Dodo();
+   this->catalogueACT[1] = new SerrerMain();
 
    this->bestiaire[0] = this->monstresPossibles[0];
+
+   pair<Item **, int> result2 = initInventaires();
+   this->itemPossible = result2.first;
+   this->tailleItemPossible = result2.second;
+
+   //par défaut commencer avec ces deux objects
+   this->personnage.inventaireItems[0] = this->itemPossible[0];
+   this->personnage.inventaireItems[1] = this->itemPossible[1];
+
+   this->personnage.inventaireACT[1] = this->catalogueACT[0];
+   this->personnage.inventaireACT[2] = this->catalogueACT[0];
+   this->personnage.inventaireACT[3] = this->catalogueACT[0];
+   this->personnage.inventaireACT[0] = this->catalogueACT[1];
 }
 
 Partie::~Partie()
