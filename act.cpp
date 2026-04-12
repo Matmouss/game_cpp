@@ -6,7 +6,11 @@ using std::string;
 
 #pragma region Act
 
-Act** Act::actionsPossibles = new Act*[Act::nbActionsPossibles]{new SerrerMain(), new Dodo()};
+Act **Act::getActionsPossibles()
+{
+    static Act* actions[2] = {new SerrerMain(), new Dodo()};
+    return actions;
+}
 
 Act::Act(string identifiant, string texte) {
     this->identifiant = identifiant;

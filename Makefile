@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 LDFLAGS = -lncurses
 
 TARGET = test
-SRC = main.cpp entite.cpp affichage.cpp csv.cpp monstre.cpp personnage.cpp partie.cpp act.cpp item.cpp
+SRC = main.cpp entite.cpp affichage.cpp act.cpp csv.cpp monstre.cpp personnage.cpp partie.cpp item.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(TARGET)

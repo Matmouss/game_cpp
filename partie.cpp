@@ -35,7 +35,7 @@ pair<Act**,int> initInventaireACT(string actions_str) {
     Act** actions = new Act*[taille];
     
     for (int i = 0; i < taille; i++) {
-        actions[i] = Act::actionsPossibles[actions_int[i]];
+        actions[i] = Act::getActionsPossibles()[actions_int[i]];
     }
 
     return {actions, taille};
@@ -96,7 +96,7 @@ Partie::Partie()
    this->bestiaire[0] = this->monstresPossibles[0];
    
    this->tailleCatalogueACT = Act::nbActionsPossibles;
-   this->catalogueACT = Act::actionsPossibles;
+   this->catalogueACT = Act::getActionsPossibles();
    
    pair<Item **, int> result2 = initInventaires();
    this->itemPossible = result2.first;
