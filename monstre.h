@@ -1,50 +1,28 @@
 #pragma once
 #include <iostream>
 #include "personnage.h"
+#include "entite.h"
  
 using namespace std;
  
-class Monstre
+class Monstre: public Entite
 {
 private:
-    string nom;
-    int hp;
-    int hpMax;
-    int atk;
-    int def;
-    int mercy;
-    int mercyGoal;
-    string description;
     string resultatCombat;
-    string* actionsDisponibles;
-    int nbActionsDisponibles;
  
 public:
-    Monstre(string nom = "Monstre", int hpMax = 10, int atk = 5, int def = 1, int mercyGoal = 100, string description = "ahh le monstre");
-    virtual ~Monstre();
- 
-    string getNom();
-    int getHp();
-    int getHpMax();
-    int getAtk();
-    int getDef();
-    int getMercy();
-    int getMercyGoal();
-    string getDescription();
+    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, ACT** inventaireACT, int tailleInventaireACT)
+        : Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT)
+    {
+        resultatCombat = "";
+    }
+    
     string getResultatCombat();
-    string* getActionsDisponibles();
-    int getNbActionsDisponibles();
- 
+
     void setResultatCombat(string resultat);
-    void setActionsDisponibles(string* actions, int nb);
-    void setMercy(int Mercy);
  
     string attaquer(Personnage &personnage);
     string prendreDegats(int degats);
+    
     void modifierMercy(int valeur);
-    bool peutEtreEpargne();
-    bool estVivant();
-    void afficherInfos();
- 
-    int getNbActions();
 };

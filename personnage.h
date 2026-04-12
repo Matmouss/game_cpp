@@ -1,39 +1,37 @@
 #pragma once
-#include <iostream>
-#include "item.h"
+#include <string>
 
-using namespace std;
 
+class Item;
 class ACT;
+class Entite;
 
-class Monstre;
-
-class Personnage
+class Personnage : public Entite
 {
-public:
-   string nom;
-   int Hp;
-   int HpMax;
-   int NbTue;
-   int NbEpargne;
-   int nbVictoire;
-   bool EstVivant;
-   Item** inventaireItems;
-   int tailleInventaire;
-   ACT** inventaireACT;
-   int tailleInventaireACT;
+private:
+    int nbTue;
+    int nbEpargne;
+    int nbVictoire;
+
+    Item** inventaireItems;
+    int tailleInventaire;
 
 public:
-   Personnage(string nom,int HpMax);
-   Personnage();
-   int getHp();
-   string attaquer(Monstre &monstre);
-   void utiliserActe();
-   bool epargner();
-   void prendreDegats(int degats);
-   bool estVivant();
-   void gagnerCombat();
-   void incrementerTue();
-   void incrementerEpargne();
-   void afficherStats();
+   Personnage() = default;
+   
+    Personnage(std::string nom, int hpMax, int atk, int def, int mercyGoal, std::string description, ACT** inventaireACT, int tailleInventaireACT, Item** inventaireItems, int tailleInventaire);
+
+    int getNbTue() { return nbTue; }
+    int getNbEpargne() { return nbEpargne; }
+    int getNbVictoire() { return nbVictoire; }
+    Item* getInventaireItems(int i) { return inventaireItems[i]; }
+    int getTailleInventaire() { return tailleInventaire; }
+
+    void setNbTue(int valeur) { nbTue = valeur; }
+    void setNbEpargne(int valeur) { nbEpargne = valeur; }
+    void setNbVictoire(int valeur) { nbVictoire = valeur; }
+    bool setInventaireItems(Item* item, int i);
+
+
+    void gagnerCombat() { nbVictoire++; }
 };

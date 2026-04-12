@@ -6,11 +6,33 @@
 #include "act.h"
 #include "personnage.h"
 #include "item.h"
+#include "entite.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <random>
 using namespace std;
+
+pair<ACT**,int> initInventaireACT(string actions_str) {
+    size_t pos = 0;
+    size_t start = 0;
+    vector<int> actions_int;
+
+    while ((pos = actions_str.find(";", start)) != string::npos) {
+        actions_int.push_back(stoi(actions_str.substr(start, pos - start)));
+        start = pos + 1;
+    }
+
+    int taille = static_cast<int>(actions_int.size());
+
+    ACT** actions = new ACT*[taille];
+    
+    for (int i = 0; i < taille; i++) {
+        actions[i] = ACT::actionsPossibles[actions_int[i]];
+    }
+
+    return {actions, taille};
+}
 
 pair<Monstre**, int> initMonstresPossibles() {
     auto monstres = readCSV("data/monstres.csv");
@@ -19,13 +41,16 @@ pair<Monstre**, int> initMonstresPossibles() {
     Monstre** bestiaire = new Monstre*[nbMonstres];
 
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
+        pair<ACT**, int> actions = initInventaireACT(monstres[i][7]);
         bestiaire[i - 1] = new Monstre(
             string(monstres[i][1]),
             stoi(monstres[i][2]),
             stoi(monstres[i][3]),
             stoi(monstres[i][4]),
             stoi(monstres[i][5]),
-            string(monstres[i][6])
+            string(monstres[i][6]),
+            actions.first,
+            actions.second
         );
     }
 
@@ -60,7 +85,6 @@ Partie::Partie()
    this->tailleMonstresPossibles = result.second;
    this->tailleBestiaire = 1;
    this->bestiaire = new Monstre*[this->tailleBestiaire];
-   this->personnage = Personnage();
    this->tailleCatalogueACT = 1;
    this->catalogueACT = new ACT*[tailleCatalogueACT];
    this->catalogueACT[0] = new Dodo();
@@ -72,14 +96,16 @@ Partie::Partie()
    this->itemPossible = result2.first;
    this->tailleItemPossible = result2.second;
 
-   //par défaut commencer avec ces deux objects
-   this->personnage.inventaireItems[0] = this->itemPossible[0];
-   this->personnage.inventaireItems[1] = this->itemPossible[1];
+   this->personnage = Personnage("Personnage", 100, 10, 10, 10, "le héros", new ACT*[4](), 4, new Item*[2](), 2);
 
-   this->personnage.inventaireACT[1] = this->catalogueACT[0];
-   this->personnage.inventaireACT[2] = this->catalogueACT[0];
-   this->personnage.inventaireACT[3] = this->catalogueACT[0];
-   this->personnage.inventaireACT[0] = this->catalogueACT[1];
+   //par défaut commencer avec ces deux objects
+   this->personnage.setInventaireItems(this->itemPossible[0], 0);
+   this->personnage.setInventaireItems(this->itemPossible[1], 1);
+
+    this->personnage.setAction(this->catalogueACT[1],0);
+    this->personnage.setAction(this->catalogueACT[0],1);
+    this->personnage.setAction(this->catalogueACT[0],2);
+    this->personnage.setAction(this->catalogueACT[0],3);
 }
 
 Partie::~Partie()

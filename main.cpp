@@ -9,6 +9,8 @@
 #include <vector>
 #include <utility>
 #include "act.h"
+#include "entite.h"
+#include "item.h"
 
 using namespace std;
 
@@ -102,17 +104,17 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
 
         } else if (menu[index] == "Act"){
             vector<string> options;
-            for (int i = 0; i < personnage.tailleInventaireACT; i++){
-                options.push_back((*personnage.inventaireACT[i]).identifiant + " : " + (*personnage.inventaireACT[i]).texte);
+            for (int i = 0; i < personnage.getNbActions(); i++){
+                options.push_back(personnage.getActions(i)->identifiant + " : " + personnage.getActions(i)->texte);
             }
             options.push_back("Retour");
 
             choix = Menu(gw, keymap, infos, options, menu[index]);
             if (choix == "quit" || choix == "Retour") {
             }
-            for (int i = 0; i < personnage.tailleInventaireACT; i++){
+            for (int i = 0; i < personnage.getNbActions(); i++){
                 if (options[i] == choix){
-                    display.push_back((*personnage.inventaireACT[i]).Impact(personnage, monstre));
+                    display.push_back(personnage.utiliserAct(i, monstre));
 
                     display[0] =  monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
                     display.push_back("Appuyer sur enter pour continuer");
@@ -164,14 +166,14 @@ bool VictoireCondition(Personnage &personnage){
        
 }
 bool combatEnCours(Monstre &monstre, Personnage &personnage) {
-    if (monstre.getHp() <= 0 || personnage.getHp() <= 0) {
+    if (monstre.getHp() <= 0 ||  monstre.getMercy() >= monstre.getMercyGoal() || personnage.getHp() <= 0) {
         return false;
     }
     return true;
 }
 
 
-bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
+bool Fight(Monstre &monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
     bool combatEnCours_b = true;
     bool victoire = false;
     
@@ -185,7 +187,14 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
     }
 
     victoire = VictoireCondition(personnage);
-    //gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+    vector<string> display = {"Vous avez battu le monstre:",monstre.getNom() + "\t hp:" + to_string(monstre.getHp()) + "\t Mercy:" + to_string(monstre.getMercy()), "Appuyer sur enter pour continuer"};
+    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+
+    string input = getInput(keymap);
+    while (input != "enter" and input != "quit") {
+        input = getInput(keymap);
+    }
+
     return victoire;
 }
 
@@ -270,15 +279,16 @@ void game() {
 
             options = {};
 
-            if (partie_en_cours.personnage.tailleInventaire == 0)
+            if (partie_en_cours.personnage.getTailleInventaire() == 0)
             {
                 options.push_back("Tu n'a rien dans tes poches sale étudiant!");
             }
             else{
                 options.push_back("Nom\t\tType\tValeur");
-                for (int i = 0; i < partie_en_cours.personnage.tailleInventaire; i++)
+                for (int i = 0; i < partie_en_cours.personnage.getTailleInventaire(); i++)
                 {
-                    options.push_back(partie_en_cours.personnage.inventaireItems[i]->getNom() + "\t" + partie_en_cours.personnage.inventaireItems[i]->getType() + "\t" + to_string(partie_en_cours.personnage.inventaireItems[i]->getValeur()));
+                    Item* item = partie_en_cours.personnage.getInventaireItems(i);
+                    options.push_back(item->getNom() + "\t" + item->getType() + "\t" + to_string(item->getValeur()));
                 }
             }
 

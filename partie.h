@@ -7,7 +7,7 @@ using namespace std;
 class Partie
 {
 public:
-   Personnage personnage;
+   Personnage personnage = Personnage();
    Monstre** bestiaire;        // monstres déjà vaincus
    int tailleBestiaire;
    Monstre** monstresPossibles; // chargés depuis monsters.csv

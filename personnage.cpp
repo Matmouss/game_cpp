@@ -1,42 +1,25 @@
 #include "personnage.h"
 #include <iostream>
 #include "item.h"
-#include "monstre.h"
-#include "csv.h"
 #include "act.h"
 
-// Personnage::Personnage(string nom = "Taieb", int HpMax = 10)
-// {
-// };
 
-Personnage::Personnage()
+Personnage::Personnage(std::string nom, int hpMax, int atk, int def, int mercyGoal, std::string description, ACT** inventaireACT, int tailleInventaireACT, Item** inventaireItems, int tailleInventaire)
+: Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT)
 {
-   this->nom = "Taieb";
-   this->HpMax = 10;
-   this->Hp = HpMax;
-   this->NbTue = 0;
-   this->NbEpargne = 0;
-   this->nbVictoire = 0;
-   this->tailleInventaire = 2;
-   this->inventaireItems = new Item*[tailleInventaire];
-   this->tailleInventaireACT = 4;
-   this->inventaireACT = new ACT*[tailleInventaireACT];
-};
-
-bool Personnage::estVivant() {
-   if (this->Hp <= 0) {
-      return false;
-   }
-   return true;}
-
-void Personnage::prendreDegats(int degats) {
-   this->Hp -= degats;
+    this->nbTue = 0;
+    this->nbEpargne = 0;
+    this->nbVictoire = 0;
+    this->inventaireItems = inventaireItems;
+    this->tailleInventaire = tailleInventaire;
 }
 
-string Personnage::attaquer(Monstre &Monstre){
-   return Monstre.prendreDegats(5);
-}
 
-int Personnage::getHp() {
-   return this->Hp;
+
+bool Personnage::setInventaireItems(Item* item, int i) { 
+    if (i < tailleInventaire &&  inventaireItems[i] == nullptr) {
+        inventaireItems[i] = item;
+        return true;
+    }
+    return false;
 }

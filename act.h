@@ -2,11 +2,18 @@
 #include <string>
 #include "personnage.h"
 #include "monstre.h"
+#include "entite.h"
+
 using namespace std;
+
+class Entite;
 
 class ACT
 {
 public:
+   static const int nbActionsPossibles = 2;
+    static ACT** actionsPossibles;
+
    string identifiant;
    string texte;
 
@@ -15,19 +22,19 @@ public:
    virtual ~ACT();
    string getTexte();
    string getIdentifiant();
-   virtual string Impact(Personnage &p, Monstre &m);
+   virtual string Impact(Entite& entite, Entite& entiteCible);
 };
 
 class SerrerMain : public ACT {
 public:
     SerrerMain();
 
-    string Impact(Personnage& p, Monstre& m) override;
+    string Impact(Entite& entite, Entite& entiteCible) override;
 };
 
 class Dodo : public ACT {
 public:
     Dodo();
 
-   string Impact(Personnage& p, Monstre& m) override;
+   string Impact(Entite& entite, Entite& entiteCible) override;
 };
