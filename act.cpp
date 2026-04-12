@@ -5,7 +5,7 @@ using std::string;
 #include "Entite.h"
 
 #pragma region Act
-
+    
 Act **Act::getActionsPossibles()
 {
     static Act* actions[2] = {new SerrerMain(), new Dodo()};
