@@ -1,18 +1,21 @@
-#include <iostream>
+#include <string>
+#include <map>
+#include <vector>
+#include <utility>
+#include <ncurses.h>
 #include "affichage.h"
 #include "monstre.h"
 #include "partie.h"
 #include "personnage.h"
 #include "csv.h"
-#include <string>
-#include <map>
-#include <vector>
-#include <utility>
 #include "act.h"
 #include "entite.h"
 #include "item.h"
 
-using namespace std;
+using std::map;
+using std::string;
+using std::to_string;
+using std::vector;
 
 map<int, string> keymap;
 map<string, string> infos;
@@ -105,7 +108,14 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
         } else if (menu[index] == "Act"){
             vector<string> options;
             for (int i = 0; i < personnage.getNbActions(); i++){
-                options.push_back(personnage.getActions(i)->identifiant + " : " + personnage.getActions(i)->texte);
+                if (personnage.getActions(i) != nullptr)
+                {
+                    options.push_back(personnage.getActions(i)->identifiant + " : " + personnage.getActions(i)->texte);
+                }
+                else{
+                    options.push_back("nullAction");
+                }
+                    
             }
             options.push_back("Retour");
 
@@ -165,13 +175,13 @@ bool VictoireCondition(Personnage &personnage){
     return true; 
        
 }
+
 bool combatEnCours(Monstre &monstre, Personnage &personnage) {
     if (monstre.getHp() <= 0 ||  monstre.getMercy() >= monstre.getMercyGoal() || personnage.getHp() <= 0) {
         return false;
     }
     return true;
 }
-
 
 bool Fight(Monstre &monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
     bool combatEnCours_b = true;

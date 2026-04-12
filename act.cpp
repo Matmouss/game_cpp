@@ -1,25 +1,23 @@
-#include "act.h"
-#include "monstre.h"
-#include "personnage.h"
-#include "entite.h"
+#include <string>
+using std::string;
 
-#include <iostream>
-using namespace std;
- 
-#pragma region ACT
+#include "Act.h"
+#include "Entite.h"
 
-ACT** ACT::actionsPossibles = new ACT*[ACT::nbActionsPossibles]{new SerrerMain(), new Dodo()};
+#pragma region Act
 
-ACT::ACT(string identifiant, string texte) {
+Act** Act::actionsPossibles = new Act*[Act::nbActionsPossibles]{new SerrerMain(), new Dodo()};
+
+Act::Act(string identifiant, string texte) {
     this->identifiant = identifiant;
     this->texte = texte;
 }
 
-string ACT::getIdentifiant() {return identifiant;}
+string Act::getIdentifiant() {return identifiant;}
 
-ACT::~ACT(){}
+Act::~Act(){}
 
-string ACT::Impact(Entite& entite, Entite& entiteCible){
+string Act::Impact(Entite& entite, Entite& entiteCible){
     return this->texte;
 }
 
@@ -27,7 +25,7 @@ string ACT::Impact(Entite& entite, Entite& entiteCible){
 
 #pragma region SerrerMain 
 
-SerrerMain::SerrerMain() : ACT("serrer_main", "Vous serrez la main du monstre.") {}; 
+SerrerMain::SerrerMain() : Act("serrer_main", "Vous serrez la main du monstre.") {}; 
 
 string SerrerMain::Impact(Entite& entite, Entite& entiteCible) {
     entiteCible.setMercy(entiteCible.getMercyGoal());
@@ -37,7 +35,7 @@ string SerrerMain::Impact(Entite& entite, Entite& entiteCible) {
 
 #pragma region Dodo
 
-Dodo::Dodo() : ACT("dodo", "Dodo tah le cours de philo") {}; 
+Dodo::Dodo() : Act("dodo", "Dodo tah le cours de philo") {}; 
 
 string Dodo::Impact(Entite& entite, Entite& entiteCible) {
     entite.soigner(1);

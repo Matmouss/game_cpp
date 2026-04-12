@@ -1,11 +1,12 @@
-#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
 #include <ncurses.h>
 #include "affichage.h"
 
-using namespace std;
+using std::map;
+using std::string;
+using std::vector;
 
 WINDOW* creer_boite_jeu(int hauteur, int largeur) {
     int starty = (LINES - hauteur) / 2;
@@ -153,5 +154,5 @@ string getInput(const map<int, string>& keymap) {
         return it->second;
     }
 
-    return to_string(ch);
+    return std::to_string(ch);
 }

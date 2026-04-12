@@ -1,9 +1,7 @@
+#include <string>
+using std::string;
+
 #include "monstre.h"
-#include "personnage.h"
-#include <iostream>
-
-using namespace std;
-
 
 string Monstre::getResultatCombat() { return resultatCombat; }
 

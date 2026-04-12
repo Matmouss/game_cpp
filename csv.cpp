@@ -3,8 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
-
-using namespace std;
+using std::string;
 
 std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
     std::vector<std::vector<std::string>> data;

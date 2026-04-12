@@ -1,9 +1,9 @@
 #include "entite.h"
-
+#include "act.h"
 
 Entite::~Entite(){
-    for (int i = 0; i < tailleInventaireACT; i++)
-        delete inventaireACT[i];
+    // for (int i = 0; i < tailleInventaireACT; i++)
+    //     delete inventaireACT[i];
     delete[] inventaireACT;
 }
 

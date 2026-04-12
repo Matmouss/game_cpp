@@ -1,8 +1,9 @@
 #pragma once
 #include "personnage.h"
-#include "monstre.h"
-#include "act.h"
-using namespace std;
+
+class Item;
+class Act;
+class Monstre;
 
 class Partie
 {
@@ -12,7 +13,7 @@ public:
    int tailleBestiaire;
    Monstre** monstresPossibles; // chargés depuis monsters.csv
    int tailleMonstresPossibles;
-   ACT** catalogueACT;    
+   Act** catalogueACT;    
    int tailleCatalogueACT; // nombre d’éléments dans le tableau
    Item** itemPossible;
    int tailleItemPossible;
@@ -22,7 +23,6 @@ public:
    Partie();
    ~Partie();
 
-   //int getTailleBestiaire();
    void demarrer();
    void afficherMenuPrincipal();
    void demarrerCombat();

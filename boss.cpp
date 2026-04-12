@@ -1,10 +1,10 @@
+#include <string>
+using std::string;
+
 #include "boss.h"
-#include <iostream>
 
-using namespace std;
-
-Boss::Boss(string nom, int hpMax, int atk, int def, int mercyGoal)
-    : Monstre(nom, hpMax, atk, def, mercyGoal)
+Boss::Boss(string nom, int hpMax, int atk, int def, int mercyGoal, string description)
+    : Monstre(nom, hpMax, atk, def, mercyGoal, description)
 {
    this->nbActions = 4;
 }

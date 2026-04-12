@@ -1,11 +1,10 @@
 #pragma once
-#include <iostream>
-
-using namespace std;
+#include <string>
+using std::string;
 
 class Personnage;
 
-class    Item
+class Item
 {
 private:
    string nom;

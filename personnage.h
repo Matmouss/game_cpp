@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
+using std::string;
 
+#include "entite.h"
 
 class Item;
-class ACT;
-class Entite;
+class Act;
 
 class Personnage : public Entite
 {
@@ -19,7 +20,7 @@ private:
 public:
    Personnage() = default;
    
-    Personnage(std::string nom, int hpMax, int atk, int def, int mercyGoal, std::string description, ACT** inventaireACT, int tailleInventaireACT, Item** inventaireItems, int tailleInventaire);
+    Personnage(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT, Item** inventaireItems, int tailleInventaire);
 
     int getNbTue() { return nbTue; }
     int getNbEpargne() { return nbEpargne; }
@@ -32,6 +33,5 @@ public:
     void setNbVictoire(int valeur) { nbVictoire = valeur; }
     bool setInventaireItems(Item* item, int i);
 
-
-    void gagnerCombat() { nbVictoire++; }
+    void gagnerCombat() {nbVictoire++;}
 };

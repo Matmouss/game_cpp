@@ -1,38 +1,34 @@
 #pragma once
 #include <string>
-#include "personnage.h"
-#include "monstre.h"
-#include "entite.h"
-
-using namespace std;
+using std::string;
 
 class Entite;
 
-class ACT
+class Act
 {
 public:
    static const int nbActionsPossibles = 2;
-    static ACT** actionsPossibles;
+   static Act** actionsPossibles;
 
    string identifiant;
    string texte;
 
 public:
-   ACT(string identifiant, string texte);
-   virtual ~ACT();
+   Act(string identifiant, string texte);
+   virtual ~Act();
    string getTexte();
    string getIdentifiant();
    virtual string Impact(Entite& entite, Entite& entiteCible);
 };
 
-class SerrerMain : public ACT {
+class SerrerMain : public Act {
 public:
     SerrerMain();
 
     string Impact(Entite& entite, Entite& entiteCible) override;
 };
 
-class Dodo : public ACT {
+class Dodo : public Act {
 public:
     Dodo();
 

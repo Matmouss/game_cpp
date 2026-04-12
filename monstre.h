@@ -1,17 +1,19 @@
 #pragma once
-#include <iostream>
-#include "personnage.h"
+#include <string>
+using std::string;
+
 #include "entite.h"
- 
-using namespace std;
- 
+
+class Personnage;
+class Act;
+
 class Monstre: public Entite
 {
 private:
     string resultatCombat;
  
 public:
-    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, ACT** inventaireACT, int tailleInventaireACT)
+    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT =nullptr, int tailleInventaireACT = 0)
         : Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT)
     {
         resultatCombat = "";
@@ -20,9 +22,6 @@ public:
     string getResultatCombat();
 
     void setResultatCombat(string resultat);
- 
-    string attaquer(Personnage &personnage);
-    string prendreDegats(int degats);
     
-    void modifierMercy(int valeur);
+    // void modifierMercy(int valeur);
 };
