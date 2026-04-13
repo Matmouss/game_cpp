@@ -1,0 +1,43 @@
+Theme: Hacking
+
+Personnages: Un adolescent stagiaire dans une entreprise Tech
+
+Ennemis: Des Clichés personnes Entreprises (Collègues,Boss,RH,Marketing,...)
+
+Début de l'histoire:
+on lit une ADvertisement  qui nous explique "comment devenir riche/Free BTC", ca explique que tu peux hacker ton entreprise pour du free BTC.
+Dark Mentor:"ehh tu peux me Donne le ""Task"" pour 3Btc, c ez non? Tkt je t'aiderais, j'ai des contacts si t'arrive a avoir un peu de Street Cred". Tasks peuvent etre nimp quel info interne (code coffre fort du chef, numero femme du boss, prochaine actions de l'entreprise pour du internal trading,etc...)
+Ces Tasks seront toutes associées a 2 ou 3 ending: celui Genocide où tu as hacké tout le monde et celui Pacifiste où tu a gaslight tout le monde. (ET ptt mais pas sur de celle la, celui où tu a un peu fais les 2).
+
+Quand tu arrive a Hacker qq tu gagne de la street scred (ou XP) et ton Mentor te donne des contacts de ses amis pour gagner des competences en Hacking (hack ACT)
+Si tu Gaslight des gens ton Mentor est pas content mais essaye de te convaincre de l'inverse (et l'ennemi t'apprends un BULLSHIT skill pour l'entreprise car tu est un stagiaire (MERCY ACT)
+
+Quand tu bats un ennemi il te donne 2 accès (Ex: tu bas ton collègue et il te donne le contact de la RH et l'accès a l'imprimante).
+Dcp tu a 2 ennemis possibles (et puis après avoir battu un autre tu aura 1 pas selectionné + 2 nouveaux).
+
+Les ennemis ont une stat Firewall (HEALTH) (scale down) et GaslightMeter ou Confusion (MERCY) (scales up)
+Le personnage a une stat Discretion? (HEALTH) (scale down) et GaslightMeter ou Confusion ou BRAINWASH (MERCY) (scale up)
+
+Après 5 Combats un MiniBoss arrive car il doute que tu essaye de hacker l'entreprise (TASK).
+miniboss ayant la mm logique que tout le monde mais plus dur! (+ 1ACTS et + STATS(HEALTH,ATK,DEF))
+
+A la fin Boss en rapport a la Task (ie: Start:Coffre fort du chef -> ENDING : comptable de l'entreprise)
+pareil Boss logique comme tt le monde (+2ACT + STATS)
+
+
+
+pour battre un ennemi:
+
+soit force hack (Firewall to 0) pour avoir les infos dont t'a besoin. (Attack)
+soit gaslight/social engineering (Mercy to 100) pour qu'il t'aide sans conaissance de tes envies. (Mercy)
+
+ENDING:
+GENOCIDE : Bad consequences for every employee but you and dark mentor are happy (HR gets fired, Collegue is flagged as fraud, etc...)
+PACIFIST : Personne remarque dans l'entreprise et le dark mentor et toi Etes contents.
+MIX: Some ppl are flagged, the company notices something but doesnt flag you, you live in fear of being discovered. Was there a better way to do this?
+
+WHEN YOU LOSE:
+SI TU TE FAIS Brainwash (MERCY): Brainwash par l'entreprise pour 20 ans, un pion dans l'engrenage àavec promotion de 5% par ans...Really shitty life aint it? 
+SI JE ME FAIS HACK : L'entreprise découvre tes faits et tu regrette toute ta vie ton erreure, après 5 ans de prison tu deviens caissier et ta vie n'a plus de sens...
+
+
