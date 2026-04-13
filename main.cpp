@@ -65,6 +65,7 @@ string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos
 
 bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
     bool pass = false;
+    bool bypass = false;
     vector<string> display;
 
     int menuSize = 4;
@@ -133,6 +134,8 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
                         break;
                     }
                 }
+            } else {
+                bypass = true;
             }
             
 
@@ -148,9 +151,11 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
 
          gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
-        string input = getInput(keymap);
-        while (input != "enter" and input != "quit") {
-            input = getInput(keymap);
+        if (!bypass){
+            string input = getInput(keymap);
+            while (input != "enter" and input != "quit") {
+                input = getInput(keymap);
+            }
         }
     }
 
