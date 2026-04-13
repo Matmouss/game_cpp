@@ -45,9 +45,18 @@ Gaslight donne une progression différente et frustre le mentor.
 Les conséquences principales sont les compétences obtenues, le flavor narratif et l’ending final.
 
 Ending:
-GENOCIDE : Tous les employés sont détruits (RH virée, collègues accusés, entreprise instable). Le joueur gagne en pouvoir et en argent, mais découvre que le Dark Mentor l’a manipulé. Un combat contre lui peut avoir lieu.
-PACIFIST : Personne ne remarque rien dans l’entreprise, mais le joueur devient invisible socialement, perd son identité et devient une sorte d’outil. Le mentor le trahit et le fait chanter, le joueur devient son larbin.
-MIX : Certains employés sont détruits, d’autres manipulés. L’entreprise commence à douter mais n’a aucune preuve. Le joueur et le mentor s’utilisent mutuellement dans une relation instable.
+GENOCIDE : Tous les employés sont détruits (RH virée, collègues accusés, entreprise instable). Le joueur gagne en pouvoir et en argent, mais découvre que le Dark Mentor l’a manipulé. Un combat contre lui peut avoir lieu et arriver au TRUE ENDING.
+
+PACIFIST : Personne ne remarque rien dans l’entreprise, mais le joueur devient invisible socialement, perd son identité et devient une sorte d’outil. Le mentor le trahit et le fait chanter car il ne peut fight back, le joueur devient son larbin et ne peut que Fake son comportement toute sa vie.
+
+MIX : Certains employés sont détruits, d’autres manipulés. 
+L’entreprise commence à remarquer des anomalies, mais aucune preuve ne remonte jusqu’à toi.
+Tu as réussi.
+Mais le Dark Mentor a de quoi te faire tomber à tout moment. Et toi aussi, tu as de quoi le détruire. Vous êtes liés.
+Tu ne peux pas arrêter sans tout perdre. Alors tu continues.
+Tu travailles, tu hack, tu manipules. Tu sais exactement ce que tu fais.
+Tu gagnes de l’argent, mais tu vis dans la peur constante d’être découvert.
+Tu n’es pas libre.
 
 When you lose:
 Si la Conformité atteint 100, le joueur est brainwash par l’entreprise, devient un employé modèle pendant 20 ans avec une vie médiocre.
