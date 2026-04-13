@@ -92,7 +92,7 @@ Partie::Partie()
    this->tailleMonstresPossibles = result.second;
 
    this->tailleBestiaire = 1;
-   this->bestiaire = new Monstre*[this->tailleBestiaire];
+   this->bestiaire = new Monstre*[this->tailleBestiaire]();
    this->bestiaire[0] = this->monstresPossibles[0];
    
    this->tailleCatalogueACT = Act::nbActionsPossibles;
@@ -102,16 +102,22 @@ Partie::Partie()
    this->itemPossible = result2.first;
    this->tailleItemPossible = result2.second;
 
-   this->personnage = Personnage("Personnage", 100, 10, 10, 10, "le héros", new Act*[4](), 4, new Item*[2](), 2);
+   int tailleInventaireACT = 4;
+   Act** inventaireACT = new Act*[tailleInventaireACT]();
+   int tailleInventaireItems = 2;
+   Item** inventaireItems = new Item*[tailleInventaireItems]();
+
+
+   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems);
 
    //par défaut commencer avec ces deux objects
-   this->personnage.setInventaireItems(this->itemPossible[0], 0);
-   this->personnage.setInventaireItems(this->itemPossible[1], 1);
+   this->personnage->setInventaireItems(this->itemPossible[0], 0);
+   this->personnage->setInventaireItems(this->itemPossible[1], 1);
 
-    this->personnage.setAction(this->catalogueACT[1],0);
-    this->personnage.setAction(this->catalogueACT[0],1);
-    this->personnage.setAction(this->catalogueACT[0],2);
-    this->personnage.setAction(this->catalogueACT[0],3);
+    this->personnage->setAction(this->catalogueACT[1],0);
+    this->personnage->setAction(this->catalogueACT[0],1);
+    this->personnage->setAction(this->catalogueACT[0],2);
+    this->personnage->setAction(this->catalogueACT[0],3);
 }
 
 Partie::~Partie()
@@ -122,18 +128,21 @@ Partie::~Partie()
 
     delete [] bestiaire;
 
-    // for (int i = 0; i < tailleCatalogueACT; i++)
-    //     delete catalogueACT[i];
-    // delete[] catalogueACT;
+    delete [] itemPossible;
+
+    delete personnage;
+
+    delete[] catalogueACT;
 }
 
-void Partie::ajouterBestiaire(Monstre* monstre){
+void Partie::ajouterBestiaire(Monstre* &monstre){
    this->tailleBestiaire += 1;
-   Monstre** tmpBestiaire = new Monstre*[this->tailleBestiaire];
+   Monstre** tmpBestiaire = new Monstre*[this->tailleBestiaire]();
    for(int i = 0; i < this->tailleBestiaire - 1; i++){
       tmpBestiaire[i] = this->bestiaire[i];
    }
    tmpBestiaire[this->tailleBestiaire - 1] = monstre;
+
    delete[] this->bestiaire;
    this->bestiaire = tmpBestiaire;
 }

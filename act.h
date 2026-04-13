@@ -14,6 +14,7 @@ public:
    string texte;
 
 public:
+   Act();
    Act(string identifiant, string texte);
    ~Act();
    string getTexte();

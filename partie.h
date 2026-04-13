@@ -1,14 +1,14 @@
 #pragma once
-#include "personnage.h"
 
 class Item;
 class Act;
 class Monstre;
+class Personnage;
 
 class Partie
 {
 public:
-   Personnage personnage = Personnage();
+   Personnage* personnage;
    Monstre** bestiaire;        // monstres déjà vaincus
    int tailleBestiaire;
    Monstre** monstresPossibles; // chargés depuis monsters.csv
@@ -34,5 +34,5 @@ public:
    void initialiserCatalogueACT();
    bool verifierFinPartie();
    void afficherFin();
-   void ajouterBestiaire(Monstre* monstre);
+   void ajouterBestiaire(Monstre* &monstre);
 };

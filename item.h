@@ -12,6 +12,7 @@ private:
    int valeur;
 
 public:
+   Item();
    Item(string nom = "Item", string type = "HEAL", int valeur = 0);
 
    string getNom();

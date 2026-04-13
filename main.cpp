@@ -110,7 +110,7 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
             for (int i = 0; i < personnage.getNbActions(); i++){
                 if (personnage.getActions(i) != nullptr)
                 {
-                    // options.push_back(personnage.getActions(i)->identifiant + " : " + personnage.getActions(i)->texte);
+                    options.push_back(personnage.getActions(i)->identifiant + " : " + personnage.getActions(i)->texte);
 
                     // THIS PART HAS SEG FAULT but also the next one (so its not a nullptr)
                 }
@@ -121,9 +121,8 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
             options.push_back("Retour");
 
             choix = Menu(gw, keymap, infos, options, menu[index]);
-            if (choix != "quit" || choix != "Retour") {
+            if (choix != "quit" && choix != "Retour") {
 
-                // choix retour jamais detecté??
                 //index seg fault.
 
                 //if Retour is Option[0] and I skip it (with i = 1 to +1)No error below just no string for UtiliserAction??? which is strange but no seg fault???
@@ -194,7 +193,7 @@ bool combatEnCours(Monstre &monstre, Personnage &personnage) {
     return true;
 }
 
-bool Fight(Monstre &monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
+bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
     bool combatEnCours_b = true;
     bool victoire = false;
     
@@ -288,7 +287,7 @@ void game() {
 
             Monstre* monstre = partie_en_cours.monstresPossibles[1];
 
-            if (Fight( *monstre, partie_en_cours.personnage, gw, keymap, infos)){
+            if (Fight( *monstre, *partie_en_cours.personnage, gw, keymap, infos)){
                 partie_en_cours.ajouterBestiaire(monstre);
             } else {
                 //logique de gameover
@@ -300,15 +299,15 @@ void game() {
 
             options = {};
 
-            if (partie_en_cours.personnage.getTailleInventaire() == 0)
+            if (partie_en_cours.personnage->getTailleInventaire() == 0)
             {
                 options.push_back("Tu n'a rien dans tes poches sale étudiant!");
             }
             else{
                 options.push_back("Nom\t\tType\tValeur");
-                for (int i = 0; i < partie_en_cours.personnage.getTailleInventaire(); i++)
+                for (int i = 0; i < partie_en_cours.personnage->getTailleInventaire(); i++)
                 {
-                    Item* item = partie_en_cours.personnage.getInventaireItems(i);
+                    Item* item = partie_en_cours.personnage->getInventaireItems(i);
                     options.push_back(item->getNom() + "\t" + item->getType() + "\t" + to_string(item->getValeur()));
                 }
             }

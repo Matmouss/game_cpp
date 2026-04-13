@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 using std::string;
-#include <algorithm>
+#include <cmath>
 
 class Act;
 
@@ -30,19 +30,10 @@ protected:
 
 
 public: 
-    Entite()
-    {
-        nom = "";
-        description = "";
-        hp = 0;
-        hpMax = 0;
-        atk = 0;
-        def = 0;
-        mercy = 0;
-        mercyGoal = 0;
-        inventaireACT = nullptr;
-        tailleInventaireACT = 0;
-    }
+
+    Entite();
+
+    Entite(const Entite &entite);
 
     Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT) {
         this->nom = nom;
@@ -83,7 +74,7 @@ public:
         return infos;
     }
 
-    virtual string attaquer(Entite &entiteCible){
+    string attaquer(Entite &entiteCible){
         int degats = std::max(this->atk - entiteCible.getDef(),0);
         return entiteCible.prendreDegats(degats);
     }
