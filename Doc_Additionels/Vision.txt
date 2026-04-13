@@ -2,42 +2,56 @@ Theme: Hacking
 
 Personnages: Un adolescent stagiaire dans une entreprise Tech
 
-Ennemis: Des Clichés personnes Entreprises (Collègues,Boss,RH,Marketing,...)
+Ennemis: Des clichés de l’entreprise (collègues, boss, RH, marketing, dev parano, manager toxique, etc.)
 
 Début de l'histoire:
-on lit une ADvertisement  qui nous explique "comment devenir riche/Free BTC", ca explique que tu peux hacker ton entreprise pour du free BTC.
-Dark Mentor:"ehh tu peux me Donne le ""Task"" pour 3Btc, c ez non? Tkt je t'aiderais, j'ai des contacts si t'arrive a avoir un peu de Street Cred". Tasks peuvent etre nimp quel info interne (code coffre fort du chef, numero femme du boss, prochaine actions de l'entreprise pour du internal trading,etc...)
-Ces Tasks seront toutes associées a 2 ou 3 ending: celui Genocide où tu as hacké tout le monde et celui Pacifiste où tu a gaslight tout le monde. (ET ptt mais pas sur de celle la, celui où tu a un peu fais les 2).
+On lit une advertisement douteuse qui promet de devenir riche avec du "Free BTC". Elle explique que le moyen le plus simple est de hacker son entreprise de l’intérieur.
+Dark Mentor : "ehh tu peux me donner le Task pour 3 BTC, c easy non ? tkt je t’aiderai, j’ai des contacts si t’arrives à avoir un peu de street cred."
+Les Tasks peuvent être n’importe quelle info interne : code du coffre du chef, numéro perso du boss, décisions financières internes, insider trading, etc.
+Chaque Task est associée à plusieurs endings selon la manière de jouer (Hack, Gaslight ou Mix).
 
-Quand tu arrive a Hacker qq tu gagne de la street scred (ou XP) et ton Mentor te donne des contacts de ses amis pour gagner des competences en Hacking (hack ACT)
-Si tu Gaslight des gens ton Mentor est pas content mais essaye de te convaincre de l'inverse (et l'ennemi t'apprends un BULLSHIT skill pour l'entreprise car tu est un stagiaire (MERCY ACT)
+Progression:
+Quand tu hack quelqu’un, tu gagnes de la street cred (XP), le Dark Mentor te donne accès à ses contacts et tu débloques des compétences de hacking (Hack ACT).
+Quand tu gaslight quelqu’un (social engineering), le Mentor n’est pas content et essaye de te convaincre de hacker à la place, et l’ennemi t’apprend une compétence bullshit d’entreprise (Mercy ACT).
 
-Quand tu bats un ennemi il te donne 2 accès (Ex: tu bas ton collègue et il te donne le contact de la RH et l'accès a l'imprimante).
-Dcp tu a 2 ennemis possibles (et puis après avoir battu un autre tu aura 1 pas selectionné + 2 nouveaux).
+Structure des rencontres:
+Quand tu bats un ennemi, tu obtiens 2 accès (par exemple RH et imprimante, IT et serveur, etc.).
+Tu choisis ensuite ton prochain ennemi parmi plusieurs options. Après chaque combat, un choix non pris reste et deux nouveaux apparaissent, ce qui crée une progression semi-ouverte.
 
-Les ennemis ont une stat Firewall (HEALTH) (scale down) et GaslightMeter ou Confusion (MERCY) (scales up)
-Le personnage a une stat Discretion? (HEALTH) (scale down) et GaslightMeter ou Confusion ou BRAINWASH (MERCY) (scale up)
+Stats:
+Le joueur a deux stats : Discrétion (HP) qui diminue quand il se fait repérer ou attaquer, et Conformité (Mercy) qui augmente quand il se fait manipuler. Si la Conformité atteint 100, le joueur devient un employé modèle et perd.
+Les ennemis ont Firewall (HP) qui diminue quand on les hack, et Manipulation (Mercy) qui augmente quand on les gaslight. Si la Manipulation atteint 100, l’ennemi coopère sans comprendre le vrai but du joueur.
 
-Après 5 Combats un MiniBoss arrive car il doute que tu essaye de hacker l'entreprise (TASK).
-miniboss ayant la mm logique que tout le monde mais plus dur! (+ 1ACTS et + STATS(HEALTH,ATK,DEF))
+Combat:
+Pour battre un ennemi, il y a deux approches.
+Le Hack consiste à réduire le Firewall à 0 pour obtenir les informations directement, avec des conséquences négatives pour l’ennemi (licenciement, suspicion, etc.).
+Le Gaslight consiste à monter la Manipulation à 100 pour que l’ennemi coopère sans se rendre compte de ce qu’il fait.
+Les ennemis ne deviennent pas réellement des alliés, ils sont simplement manipulés ou trompés.
 
-A la fin Boss en rapport a la Task (ie: Start:Coffre fort du chef -> ENDING : comptable de l'entreprise)
-pareil Boss logique comme tt le monde (+2ACT + STATS)
+MiniBoss:
+Après 5 combats, un MiniBoss apparaît car quelqu’un commence à douter du joueur. Il a plus de stats et un ACT supplémentaire.
 
+Boss final:
+Le boss dépend de la Task choisie (par exemple, pour un coffre, ce sera le comptable ou un responsable financier). Il a des stats plus élevées et plusieurs ACT supplémentaires.
 
+Skills:
+Les compétences de hacking incluent des actions comme Brute Force (gros dégâts mais risqué), Phishing (dégâts et manipulation), ou Exploit Zero-Day (très puissant mais limité).
+Les compétences sociales incluent Small Talk (lent), Fake Authority (puissant mais risqué), ou Corporate Buzzwords (effet aléatoire).
+Certaines compétences spéciales sont limitées à une utilisation par combat ou par run, et certaines sont basées sur la chance.
 
-pour battre un ennemi:
+Conséquences gameplay:
+Hacker permet une progression rapide et satisfait le mentor.
+Gaslight donne une progression différente et frustre le mentor.
+Les conséquences principales sont les compétences obtenues, le flavor narratif et l’ending final.
 
-soit force hack (Firewall to 0) pour avoir les infos dont t'a besoin. (Attack)
-soit gaslight/social engineering (Mercy to 100) pour qu'il t'aide sans conaissance de tes envies. (Mercy)
+Ending:
+GENOCIDE : Tous les employés sont détruits (RH virée, collègues accusés, entreprise instable). Le joueur gagne en pouvoir et en argent, mais découvre que le Dark Mentor l’a manipulé. Un combat contre lui peut avoir lieu.
+PACIFIST : Personne ne remarque rien dans l’entreprise, mais le joueur devient invisible socialement, perd son identité et devient une sorte d’outil. Le mentor le trahit et le fait chanter, le joueur devient son larbin.
+MIX : Certains employés sont détruits, d’autres manipulés. L’entreprise commence à douter mais n’a aucune preuve. Le joueur et le mentor s’utilisent mutuellement dans une relation instable.
 
-ENDING:
-GENOCIDE : Bad consequences for every employee but you and dark mentor are happy (HR gets fired, Collegue is flagged as fraud, etc...)
-PACIFIST : Personne remarque dans l'entreprise et le dark mentor et toi Etes contents.
-MIX: Some ppl are flagged, the company notices something but doesnt flag you, you live in fear of being discovered. Was there a better way to do this?
+When you lose:
+Si la Conformité atteint 100, le joueur est brainwash par l’entreprise, devient un employé modèle pendant 20 ans avec une vie médiocre.
+Si la Discrétion atteint 0, l’entreprise découvre tout, le joueur va en prison et finit avec une vie sans sens.
 
-WHEN YOU LOSE:
-SI TU TE FAIS Brainwash (MERCY): Brainwash par l'entreprise pour 20 ans, un pion dans l'engrenage àavec promotion de 5% par ans...Really shitty life aint it? 
-SI JE ME FAIS HACK : L'entreprise découvre tes faits et tu regrette toute ta vie ton erreure, après 5 ans de prison tu deviens caissier et ta vie n'a plus de sens...
-
-
+Note globale:
+Le hack représente le contrôle technique, le gaslight le contrôle psychologique. Aucun des deux n’est vraiment bon, et chaque chemin transforme le joueur différemment.
