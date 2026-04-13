@@ -111,8 +111,6 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
                 if (personnage.getActions(i) != nullptr)
                 {
                     options.push_back(personnage.getActions(i)->identifiant + " : " + personnage.getActions(i)->texte);
-
-                    // THIS PART HAS SEG FAULT but also the next one (so its not a nullptr)
                 }
                 else{
                     options.push_back("nullAction");
@@ -123,19 +121,16 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
             choix = Menu(gw, keymap, infos, options, menu[index]);
             if (choix != "quit" && choix != "Retour") {
 
-                //index seg fault.
-
-                //if Retour is Option[0] and I skip it (with i = 1 to +1)No error below just no string for UtiliserAction??? which is strange but no seg fault???
-
-                for (int i = 1; i < personnage.getNbActions()+1; i++)
+                for (int i = 0; i < personnage.getNbActions(); i++)
                 {
                     if (options[i] == choix && choix != "")
                     {
                         display.push_back(personnage.utiliserAct(i, monstre));
-                        //this does nothing??
 
                         display[0] = monstre.getNom() + "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
                         display.push_back("Appuyer sur enter pour continuer");
+
+                        break;
                     }
                 }
             }
