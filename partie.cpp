@@ -132,7 +132,7 @@ Partie::~Partie()
 
     delete personnage;
 
-    delete[] catalogueACT;
+    Act::DestructActionPossibles();
 }
 
 void Partie::ajouterBestiaire(Monstre* &monstre){

@@ -24,6 +24,12 @@ Act::Act(string identifiant, string texte) {
 
 string Act::getIdentifiant() {return identifiant;}
 
+void Act::DestructActionPossibles()
+{
+    for (int i = 0; i < nbActionsPossibles; i++)
+        delete getActionsPossibles()[i];
+}
+
 Act::~Act(){}
 
 string Act::Impact(Entite& entite, Entite& entiteCible){

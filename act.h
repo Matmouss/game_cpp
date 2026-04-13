@@ -9,7 +9,7 @@ class Act
 public:
    static const int nbActionsPossibles = 2;
    static Act **getActionsPossibles();
-
+   static void DestructActionPossibles();
    string identifiant;
    string texte;
 
