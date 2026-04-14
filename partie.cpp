@@ -57,7 +57,9 @@ pair<Monstre**, int> initMonstresPossibles() {
             stoi(monstres[i][5]),
             string(monstres[i][6]),
             actions.first,
-            actions.second
+            actions.second,
+            nullptr,
+            0
         );
     }
 
@@ -108,7 +110,7 @@ Partie::Partie()
    Item** inventaireItems = new Item*[tailleInventaireItems]();
 
 
-   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems);
+   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,nullptr,0);
 
    //par défaut commencer avec ces deux objects
    this->personnage->setInventaireItems(this->itemPossible[0], 0);

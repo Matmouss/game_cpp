@@ -1,5 +1,36 @@
 #include "entite.h"
 #include "act.h"
+#include "stat.h"
+
+// Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT)
+// {
+//     this->nom = nom;
+//     this->hp = hpMax;
+//     this->hpMax = hpMax;
+//     this->atk = atk;
+//     this->def = def;
+//     this->mercy = 0;
+//     this->mercyGoal = mercyGoal;
+//     this->description = description;
+//     this->inventaireACT = inventaireACT;
+//     this->tailleInventaireACT = tailleInventaireACT;
+// }
+
+Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT,Stat** stats, int tailleStats)
+{
+    this->nom = nom;
+    this->hp = hpMax;
+    this->hpMax = hpMax;
+    this->atk = atk;
+    this->def = def;
+    this->mercy = 0;
+    this->mercyGoal = mercyGoal;
+    this->description = description;
+    this->inventaireACT = inventaireACT;
+    this->tailleInventaireACT = tailleInventaireACT;
+    this->stats = stats;
+    this->tailleStats = tailleStats;
+}
 
 Entite::Entite()
 {

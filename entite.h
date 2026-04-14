@@ -2,6 +2,7 @@
 #include <string>
 using std::string;
 #include <cmath>
+#include "stat.h"
 
 class Act;
 
@@ -27,6 +28,8 @@ protected:
     int mercyGoal;
     Act** inventaireACT;
     int tailleInventaireACT;
+    Stat** stats;
+    int tailleStats;
 
 
 public: 
@@ -35,19 +38,10 @@ public:
 
     Entite(const Entite &entite);
 
-    Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT) {
-        this->nom = nom;
-        this->hp = hpMax;
-        this->hpMax = hpMax;
-        this->atk = atk;
-        this->def = def;
-        this->mercy = 0;
-        this->mercyGoal = mercyGoal;
-        this->description = description;
-        this->inventaireACT = inventaireACT;
-        this->tailleInventaireACT = tailleInventaireACT;
-    }
-    
+    //Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT);
+
+    Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats);
+
     ~Entite();
 
     string getNom() { return nom; }
@@ -60,6 +54,18 @@ public:
     string getDescription() { return description; }
     int getNbActions() { return tailleInventaireACT; }
     Act* getActions(int i) { return inventaireACT[i]; }
+
+    int getStatValue(string nom){
+        if (!stats){
+            return 0;
+        }
+        for(int i = 0; i<this->tailleStats;i++){
+            if (this->stats[i]->getnom() == nom){
+                return this->stats[i]->getvalue();
+            }
+        }
+        return 0;
+    };
 
     void setMercy(int valeur) { mercy = valeur; }
     void setAction(Act* action, int i) { inventaireACT[i] = action; }

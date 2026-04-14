@@ -6,6 +6,7 @@ using std::string;
 
 class Personnage;
 class Act;
+class Stat;
 
 class Monstre: public Entite
 {
@@ -19,8 +20,8 @@ public:
 
     ~Monstre();
 
-    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT =nullptr, int tailleInventaireACT = 0);
-    
+    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT, Stat** stats, int tailleStats);
+
     string getResultatCombat();
 
     void setResultatCombat(string resultat);
