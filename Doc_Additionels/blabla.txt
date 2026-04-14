@@ -1,0 +1,6 @@
+liste des taches:
+
+- mettre l'option figth comme une act (le bouton fight devient une act)
+- rajouter la mécanique de action points (sur entite et le cout sur les act)
+- faire la logique de fight des montres (notamment act) (faire ça dans figth monstre dans main.cpp)
+- faire logique des items héritages et tout

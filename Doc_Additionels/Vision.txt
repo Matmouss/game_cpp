@@ -1,4 +1,4 @@
-Theme: Hacking
+Theme: Hacking de tes morts
 
 Personnages: Un adolescent stagiaire dans une entreprise Tech
 
@@ -12,7 +12,7 @@ Chaque Task est associée à plusieurs endings selon la manière de jouer (Hack,
 
 Progression:
 Quand tu hack quelqu’un, tu gagnes de la street cred (XP), le Dark Mentor te donne accès à ses contacts et tu débloques des compétences de hacking (Hack ACT).
-Quand tu gaslight quelqu’un (social engineering), le Mentor n’est pas content et essaye de te convaincre de hacker à la place, et l’ennemi t’apprend une compétence bullshit d’entreprise (Mercy ACT).
+Quand tu gaslight quelqu’un (social engineering), tu gagnes de la corporate cred, le Mentor n’est pas content et essaye de te convaincre de hacker à la place, et l’ennemi t’apprend une compétence bullshit d’entreprise (Mercy ACT).
 
 Structure des rencontres:
 Quand tu bats un ennemi, tu obtiens 2 accès (par exemple RH et imprimante, IT et serveur, etc.).
@@ -24,9 +24,17 @@ Les ennemis ont Firewall (HP) qui diminue quand on les hack, et Manipulation (Me
 
 Combat:
 Pour battre un ennemi, il y a deux approches.
-Le Hack consiste à réduire le //Firewall à 0 pour obtenir les informations directement, avec des conséquences négatives pour l’ennemi (licenciement, suspicion, etc.).
+Le Hack consiste à réduire les HP (hacking points) à 0 pour obtenir les informations directement, avec des conséquences négatives pour l’ennemi (licenciement, suspicion, etc.).
 Le Gaslight consiste à monter la Manipulation à 100 pour que l’ennemi coopère sans se rendre compte de ce qu’il fait.
 Les ennemis ne deviennent pas réellement des alliés, ils sont simplement manipulés ou trompés.
+
+A la fin du combat deux options:
+    - gagner en hackant: il tgange de la street cred puis un de ses amis nous apprends un act
+    - gagner en mercy: gagner un act de l'ennemi puis gagner de la corporate cred.
+
+street cred: quand le joueuer atteinds certains niveau de street cred (SC) : le dark mentor upgrade toutes les permanentes (sauf la mercy)
+corporate cred: quand lke joueur atteinds certains niveaux de CC il reçois un corporate goodie (gagner action point, taille inventaire)
+
 
 MiniBoss:
 Après 5 combats, un MiniBoss apparaît car quelqu’un commence à douter du joueur. Il a plus de stats et un ACT supplémentaire.
