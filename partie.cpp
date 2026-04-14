@@ -111,6 +111,7 @@ Partie::Partie()
    int tailleStats = 1;
    Stat** stats = new Stat*[tailleStats]{new Vulnerabilite()};
 
+
    this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats);
 
    //par défaut commencer avec ces deux objects

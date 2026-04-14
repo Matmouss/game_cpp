@@ -20,6 +20,15 @@ using std::vector;
 map<int, string> keymap;
 map<string, string> infos;
 
+void updateInfos(Personnage &personnage, map<string, string> &infos) {
+    infos["Nom"] = personnage.getNom();
+    infos["Hp"] = to_string(personnage.getHp());
+    infos["Atk"] = to_string(personnage.getAtk());
+    infos["Def"] = to_string(personnage.getDef());
+    infos["Mercy"] = to_string(personnage.getMercy());
+    infos["Stats"] = "pas configuré";
+}
+
 string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, vector<string> &options, string &title)
 {
     bool choisi = false;
@@ -149,6 +158,7 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
             pass = true;
         }
 
+        updateInfos(personnage, infos);
          gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
         if (!bypass){
@@ -170,6 +180,7 @@ void FightMonstre(Monstre &monstre,Personnage &personnage,GameWindow &gw, map<in
     display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
     display.push_back("Appuyer sur enter pour continuer");
 
+    updateInfos(personnage, infos);
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
     string input = getInput(keymap);
@@ -207,7 +218,9 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
     }
 
     victoire = VictoireCondition(personnage);
+    
     vector<string> display = {"Vous avez battu le monstre:",monstre.getNom() + "\t hp:" + to_string(monstre.getHp()) + "\t Mercy:" + to_string(monstre.getMercy()), "Appuyer sur enter pour continuer"};
+    updateInfos(personnage, infos);
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
     string input = getInput(keymap);
@@ -230,10 +243,12 @@ void initBinds(){
     };
 
         infos = {
-        {"Titre", "Into the RAM"},
-        {"Score", "0"},
-        {"Vie", "3"},
-        {"Niveau", "1"}
+        {"Nom", "Personnage"},
+        {"Hp", "0"},
+        {"Atk", "0"},
+        {"Def", "0"},
+        {"Mercy", "0"},
+        {"Stats", "0"}
     };
 }
 
@@ -246,6 +261,8 @@ void game() {
     initBinds();
 
     Partie partie_en_cours = Partie();
+
+    updateInfos((*partie_en_cours.personnage), infos);
 
     bool running = true;
 
