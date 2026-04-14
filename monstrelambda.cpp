@@ -1,13 +1,13 @@
-#pragma once
-#include "monstrelambda.h"
-#include <iostream>
+// #pragma once
+// #include <string>
+// using std::string;
 
-using namespace std;
+// #include "monstrelambda.h"
 
-MonstreLambda::MonstreLambda(string nom, int hpMax, int atk, int def, int mercyGoal)
-    : Monstre(nom, hpMax, atk, def, mercyGoal)
-{
-   this->nbActions = 2;
-}
+// MonstreLambda::MonstreLambda(string nom, int hpMax, int atk, int def, int mercyGoal, string description)
+//     : Monstre(nom, hpMax, atk, def, mercyGoal,description)
+// {
+//    this->nbActions = 2;
+// }
 
-int MonstreLambda::getNbActions() { return nbActions; }
+// int MonstreLambda::getNbActions() { return nbActions; }

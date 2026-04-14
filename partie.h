@@ -1,28 +1,28 @@
 #pragma once
-#include "personnage.h"
-#include "monstre.h"
-#include "act.h"
-using namespace std;
+
+class Item;
+class Act;
+class Monstre;
+class Personnage;
+class Stat;
 
 class Partie
 {
 public:
-   Personnage personnage = Personnage();
+   Personnage* personnage;
    Monstre** bestiaire;        // monstres déjà vaincus
    int tailleBestiaire;
    Monstre** monstresPossibles; // chargés depuis monsters.csv
    int tailleMonstresPossibles;
-   ACT** catalogueACT;    
+   Act** catalogueACT;    
    int tailleCatalogueACT; // nombre d’éléments dans le tableau
    Item** itemPossible;
    int tailleItemPossible;
-
 
 public:
    Partie();
    ~Partie();
 
-   //int getTailleBestiaire();
    void demarrer();
    void afficherMenuPrincipal();
    void demarrerCombat();
@@ -34,5 +34,5 @@ public:
    void initialiserCatalogueACT();
    bool verifierFinPartie();
    void afficherFin();
-   void ajouterBestiaire(Monstre* monstre);
+   void ajouterBestiaire(Monstre* &monstre);
 };

@@ -1,19 +1,26 @@
+#include <string>
+#include <utility>
+#include <vector>
+using std::pair;
+using std::string;
+using std::vector;
+
+#include <fstream>
+#include <sstream>
+#include <random>
+
 #include "partie.h"
 #include "MonstreLambda.h"
 #include "miniBoss.h"
 #include "boss.h"
+#include "monstre.h"
 #include "csv.h"
 #include "act.h"
 #include "personnage.h"
 #include "item.h"
 #include "entite.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <random>
-using namespace std;
 
-pair<ACT**,int> initInventaireACT(string actions_str) {
+pair<Act**,int> initInventaireACT(string actions_str) {
     size_t pos = 0;
     size_t start = 0;
     vector<int> actions_int;
@@ -25,10 +32,10 @@ pair<ACT**,int> initInventaireACT(string actions_str) {
 
     int taille = static_cast<int>(actions_int.size());
 
-    ACT** actions = new ACT*[taille];
+    Act** actions = new Act*[taille];
     
     for (int i = 0; i < taille; i++) {
-        actions[i] = ACT::actionsPossibles[actions_int[i]];
+        actions[i] = Act::getActionsPossibles()[actions_int[i]];
     }
 
     return {actions, taille};
@@ -41,7 +48,7 @@ pair<Monstre**, int> initMonstresPossibles() {
     Monstre** bestiaire = new Monstre*[nbMonstres];
 
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
-        pair<ACT**, int> actions = initInventaireACT(monstres[i][7]);
+        pair<Act**, int> actions = initInventaireACT(monstres[i][7]);
         bestiaire[i - 1] = new Monstre(
             string(monstres[i][1]),
             stoi(monstres[i][2]),
@@ -50,8 +57,9 @@ pair<Monstre**, int> initMonstresPossibles() {
             stoi(monstres[i][5]),
             string(monstres[i][6]),
             actions.first,
-            actions.second
-        );
+            actions.second,
+            nullptr,
+            0);
     }
 
     return {bestiaire, nbMonstres};
@@ -83,51 +91,62 @@ Partie::Partie()
    pair<Monstre**, int> result = initMonstresPossibles();
    this->monstresPossibles = result.first;
    this->tailleMonstresPossibles = result.second;
+
    this->tailleBestiaire = 1;
-   this->bestiaire = new Monstre*[this->tailleBestiaire];
-   this->tailleCatalogueACT = 1;
-   this->catalogueACT = new ACT*[tailleCatalogueACT];
-   this->catalogueACT[0] = new Dodo();
-   this->catalogueACT[1] = new SerrerMain();
-
+   this->bestiaire = new Monstre*[this->tailleBestiaire]();
    this->bestiaire[0] = this->monstresPossibles[0];
-
+   
+   this->tailleCatalogueACT = Act::nbActionsPossibles;
+   this->catalogueACT = Act::getActionsPossibles();
+   
    pair<Item **, int> result2 = initInventaires();
    this->itemPossible = result2.first;
    this->tailleItemPossible = result2.second;
 
-   this->personnage = Personnage("Personnage", 100, 10, 10, 10, "le héros", new ACT*[4](), 4, new Item*[2](), 2);
+   int tailleInventaireACT = 4;
+   Act** inventaireACT = new Act*[tailleInventaireACT]();
+   int tailleInventaireItems = 2;
+   Item** inventaireItems = new Item*[tailleInventaireItems]();
+
+   int tailleStats = 1;
+   Stat** stats = new Stat*[tailleStats]{new Vulnerabilite()};
+
+
+   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats);
 
    //par défaut commencer avec ces deux objects
-   this->personnage.setInventaireItems(this->itemPossible[0], 0);
-   this->personnage.setInventaireItems(this->itemPossible[1], 1);
+   this->personnage->setInventaireItems(this->itemPossible[0], 0);
+   this->personnage->setInventaireItems(this->itemPossible[1], 1);
 
-    this->personnage.setAction(this->catalogueACT[1],0);
-    this->personnage.setAction(this->catalogueACT[0],1);
-    this->personnage.setAction(this->catalogueACT[0],2);
-    this->personnage.setAction(this->catalogueACT[0],3);
+    this->personnage->setAction(this->catalogueACT[1],0);
+    this->personnage->setAction(this->catalogueACT[0],1);
+    this->personnage->setAction(this->catalogueACT[0],2);
+    this->personnage->setAction(this->catalogueACT[0],3);
 }
 
 Partie::~Partie()
 {
     for (int i = 0; i < tailleMonstresPossibles ; i++)
         delete monstresPossibles[i];
-    delete monstresPossibles;
+    delete [] monstresPossibles;
 
-    delete bestiaire;
+    delete [] bestiaire;
 
-    for (int i = 0; i < tailleCatalogueACT; i++)
-        delete catalogueACT[i];
-    delete[] catalogueACT;
+    delete [] itemPossible;
+
+    delete personnage;
+
+    Act::DestructActionPossibles();
 }
 
-void Partie::ajouterBestiaire(Monstre* monstre){
+void Partie::ajouterBestiaire(Monstre* &monstre){
    this->tailleBestiaire += 1;
-   Monstre** tmpBestiaire = new Monstre*[this->tailleBestiaire];
+   Monstre** tmpBestiaire = new Monstre*[this->tailleBestiaire]();
    for(int i = 0; i < this->tailleBestiaire - 1; i++){
       tmpBestiaire[i] = this->bestiaire[i];
    }
    tmpBestiaire[this->tailleBestiaire - 1] = monstre;
+
    delete[] this->bestiaire;
    this->bestiaire = tmpBestiaire;
 }

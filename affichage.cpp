@@ -1,11 +1,12 @@
-#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
 #include <ncurses.h>
 #include "affichage.h"
 
-using namespace std;
+using std::map;
+using std::string;
+using std::vector;
 
 WINDOW* creer_boite_jeu(int hauteur, int largeur) {
     int starty = (LINES - hauteur) / 2;
@@ -25,9 +26,9 @@ void dessiner_boite_jeu(
     box(win, 0, 0);
 
     int ligne = 1;
-    const string champs[4] = {"Titre", "Score", "Vie", "Niveau"};
+    const string champs[6] = {"Nom", "Hp", "Atk", "Def", "Mercy", "Stats"};
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 6; ++i) {
         auto it = data.find(champs[i]);
         string valeur = (it != data.end()) ? it->second : "";
         string texte = champs[i] + " : " + valeur;
@@ -153,5 +154,5 @@ string getInput(const map<int, string>& keymap) {
         return it->second;
     }
 
-    return to_string(ch);
+    return std::to_string(ch);
 }

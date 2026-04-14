@@ -1,11 +1,10 @@
 #pragma once
-#include <iostream>
-
-using namespace std;
+#include <string>
+using std::string;
 
 class Personnage;
 
-class    Item
+class Item
 {
 private:
    string nom;
@@ -13,6 +12,7 @@ private:
    int valeur;
 
 public:
+   Item();
    Item(string nom = "Item", string type = "HEAL", int valeur = 0);
 
    string getNom();

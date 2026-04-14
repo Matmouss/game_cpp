@@ -1,7 +1,14 @@
-#include "item.h"
-#include "personnage.h"
+#include <string>
+using std::string;
 
-using namespace std;
+#include "item.h"
+
+Item::Item()
+{
+   this->nom = "Item";
+   this->type = "HEAL";
+   this->valeur = 0;
+}
 
 Item::Item(string nom, string type, int valeur)
 {
