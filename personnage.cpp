@@ -33,9 +33,24 @@ bool Personnage::setInventaireItems(Item* &item, int i) {
     return false;
 }
 
+void Personnage::retirerItem(int i){
+    if (i < tailleInventaire && inventaireItems[i] != nullptr) {
+        inventaireItems[i] = nullptr;
+    }
+
+    int index = i;
+    while (index < tailleInventaire - 1 && inventaireItems[index + 1] != nullptr) {
+        inventaireItems[index] = inventaireItems[index + 1];
+        inventaireItems[index + 1] = nullptr;
+        index++;
+    }
+}
+
 string Personnage::utiliserItem(int i) {
     if (i < tailleInventaire && inventaireItems[i] != nullptr) {
-        return inventaireItems[i]->utiliser(*this);
+        string texte = inventaireItems[i]->utiliser(*this);
+        retirerItem(i);
+        return texte;
     }
     return "Item inconnu";
 }

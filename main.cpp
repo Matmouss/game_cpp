@@ -156,12 +156,16 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
         } else if (menu[index] == "Item") {
             vector<string> options;
             for (int i = 0; i < personnage.getTailleInventaire(); i++){
-                options.push_back(personnage.getInventaireItems(i)->getNom() + " : " + personnage.getInventaireItems(i)->getTexte());
+                if (personnage.getInventaireItems(i) == nullptr){
+                    options.push_back("emplacment vide");
+                } else {
+                    options.push_back(personnage.getInventaireItems(i)->getNom() + " : " + personnage.getInventaireItems(i)->getTexte());
+                }
             }
             options.push_back("Retour");
 
             choix = Menu(gw, keymap, infos, options, menu[index]);
-            if (choix != "quit" && choix != "Retour") {
+            if (choix != "quit" && choix != "Retour" && choix != "emplacment vide") {
 
                 for (int i = 0; i < personnage.getTailleInventaire(); i++)
                 {
@@ -172,6 +176,8 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
                         break;
                     }
                 }
+            } else {
+                bypass = true;
             }
 
         }
@@ -348,7 +354,11 @@ void game() {
                 for (int i = 0; i < partie_en_cours.personnage->getTailleInventaire(); i++)
                 {
                     Item* item = partie_en_cours.personnage->getInventaireItems(i);
-                    options.push_back(item->getNom() + "\t\t" + item->getTexte());
+                    if (item == nullptr) {
+                        options.push_back("emplacement vide");
+                    } else {
+                        options.push_back(item->getNom() + "\t\t" + item->getTexte());
+                    }
                 }
             }
 
