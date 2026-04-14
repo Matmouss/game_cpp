@@ -1,5 +1,5 @@
-nom,type,valeur
-Potion,HEAL,15
-Snack,HEAL,8
-SuperPotion,HEAL,30
-MegaPotion,HEAL,50
+nom,type,valeur,description
+Potion,HEAL,15,Heal de 15
+Snack,HEAL,8,Heal de 8
+SuperPotion,HEAL,30,Heal de 30
+PopoVuln,Vulnerabilite,20,Augmente la vulnérabilité de 20

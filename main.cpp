@@ -326,11 +326,11 @@ void game() {
                 options.push_back("Tu n'a rien dans tes poches sale étudiant!");
             }
             else{
-                options.push_back("Nom\t\tType\tValeur");
+                options.push_back("Nom\t\tDescription");
                 for (int i = 0; i < partie_en_cours.personnage->getTailleInventaire(); i++)
                 {
                     Item* item = partie_en_cours.personnage->getInventaireItems(i);
-                    options.push_back(item->getNom() + "\t" + item->getType() + "\t" + to_string(item->getValeur()));
+                    options.push_back(item->getNom() + "\t\t" + item->getTexte());
                 }
             }
 

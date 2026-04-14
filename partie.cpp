@@ -78,6 +78,7 @@ pair<Item **, int> initInventaires()
       Inventaire[i - 1] = new Item(
           string(inventaire[i][0]),
           string(inventaire[i][1]),
+          inventaire[i][3],
           stoi(inventaire[i][2])
          );
    }
@@ -116,7 +117,7 @@ Partie::Partie()
 
    //par défaut commencer avec ces deux objects
    this->personnage->setInventaireItems(this->itemPossible[0], 0);
-   this->personnage->setInventaireItems(this->itemPossible[1], 1);
+   this->personnage->setInventaireItems(this->itemPossible[3], 1);
 
     this->personnage->setAction(this->catalogueACT[1],0);
     this->personnage->setAction(this->catalogueACT[0],1);

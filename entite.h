@@ -58,6 +58,7 @@ public:
     Stat* getStats(int i) { return stats[i]; }
 
     int getStatValue(string nom);
+    void setStatValue(string nom, int valeur);
 
     void AddStat(Stat* stat);
     void destructionStats();

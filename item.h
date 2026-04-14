@@ -9,17 +9,17 @@ class Item
 private:
    string nom;
    string type;
+   string texte;
    int valeur;
 
 public:
    Item();
-   Item(string nom = "Item", string type = "HEAL", int valeur = 0);
+   Item(string nom = "Item", string type = "None", string texte = "None" , int valeur = 0);
 
    string getNom();
    string getType();
+   string getTexte();
    int getValeur();
 
-   bool estDisponible();
-   bool utiliser(Personnage &p);
-   void afficherInfos();
+   string utiliser(Personnage &p);
 };

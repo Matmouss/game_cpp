@@ -132,4 +132,13 @@ int Entite::getStatValue(string nom)
     return temp->getValue();
 };
 
+void Entite::setStatValue(string nom, int valeur){
+    for (int i = 0; i < this->tailleStats; i++)
+    {
+        if (this->stats[i]->getNom() == nom)
+        {
+            this->stats[i]->setValue(valeur);
+        }
+    }
+};
 
