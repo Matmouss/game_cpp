@@ -4,6 +4,7 @@ class Item;
 class Act;
 class Monstre;
 class Personnage;
+class Stat;
 
 class Partie
 {
@@ -17,7 +18,6 @@ public:
    int tailleCatalogueACT; // nombre d’éléments dans le tableau
    Item** itemPossible;
    int tailleItemPossible;
-
 
 public:
    Partie();
