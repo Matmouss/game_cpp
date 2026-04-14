@@ -28,6 +28,7 @@ void Act::DestructActionPossibles()
 {
     for (int i = 0; i < nbActionsPossibles; i++)
         delete getActionsPossibles()[i];
+        //ne pas détruire tout le tableau prcq static
 }
 
 Act::~Act(){}

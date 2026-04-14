@@ -55,18 +55,10 @@ public:
     int getNbActions() { return tailleInventaireACT; }
     Act* getActions(int i) { return inventaireACT[i]; }
 
-    int getStatValue(string nom){
-        if (!stats){
-            return 0;
-        }
-        for(int i = 0; i<this->tailleStats;i++){
-            if (this->stats[i]->getnom() == nom){
-                return this->stats[i]->getvalue();
-            }
-        }
-        return 0;
-    };
+    int getStatValue(string nom);
 
+    void AddStat(Stat* stat);
+    void destructionStats();
     void setMercy(int valeur) { mercy = valeur; }
     void setAction(Act* action, int i) { inventaireACT[i] = action; }
 

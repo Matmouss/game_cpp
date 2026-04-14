@@ -1,28 +1,34 @@
 #pragma once
 #include <string>
 using std::string;
+using std::to_string;
 
 class Stat{
    public:
    string nom;
-   int value;
+   int valeur;
+   int initvaleur;
 
    public:
-   Stat(string nom, int value);
+   Stat(string nom);
+   Stat();
+   Stat(Stat &statcopie);
 
-   string getnom();
-   int getvalue();
+      string getnom();
+      int getvalue();
 
-   void setnom(string nom);
-   void setvalue(int value);
+      void setnom(string nom);
+      void setvalue(int valeur);
 
-   virtual void EndTurnEffectStat();
-};
+      static Stat *InstancierStat(string nom);
+
+      virtual void EndTurnEffectStat();
+   };
 
 class Vulnerabilite : public Stat
 {
    public:
-   Vulnerabilite(string nom, int value);
+   Vulnerabilite();
    
    void EndTurnEffectStat() override;
 };
