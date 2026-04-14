@@ -122,14 +122,14 @@ int Entite::getStatValue(string nom)
 {
     for (int i = 0; i < this->tailleStats; i++)
     {
-        if (this->stats[i]->getnom() == nom)
+        if (this->stats[i]->getNom() == nom)
         {
-            return this->stats[i]->getvalue();
+            return this->stats[i]->getValue();
         }
     }
-    Stat* temp = Stat::InstancierStat(nom);
+    Stat* temp = Stat::instancierStat(nom);
     this->AddStat(temp);
-    return temp->getvalue();
+    return temp->getValue();
 };
 
 

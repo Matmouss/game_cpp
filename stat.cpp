@@ -9,38 +9,38 @@ this->nom = nom;
 Stat::Stat(){
    this->nom = "Default";
    this->valeur = 0;
-   this->initvaleur = 0;
+   this->initValeur = 0;
 }
 
 Stat::Stat(Stat &statcopie){
    this->nom = statcopie.nom;
    this->valeur = statcopie.valeur;
-   this->initvaleur = statcopie.initvaleur;
+   this->initValeur = statcopie.initValeur;
 
 }
-string Stat::getnom(){return this->nom;}
+string Stat::getNom(){return this->nom;}
 
-int Stat::getvalue(){return this->valeur;}
+int Stat::getValue(){return this->valeur;}
 
-void Stat::setnom(string nom) { this->nom = nom;}
-void Stat::setvalue(int valeur){this->valeur = valeur;}
+void Stat::setNom(string nom) { this->nom = nom;}
+void Stat::setValue(int valeur){this->valeur = valeur;}
 
-Stat* Stat::InstancierStat(string nom){
+Stat* Stat::instancierStat(string nom){
    if (nom == "Vulnerabilite")
       return new Vulnerabilite();
    return nullptr;
 }
 
-void Stat::EndTurnEffectStat(){
-   setvalue(getvalue()-1);
+void Stat::endTurnEffectStat(){
+   setValue(getValue()-1);
 }
 
 Vulnerabilite::Vulnerabilite() : Stat("Vulnerabilite"){ 
    this->valeur = 0;
-   this->initvaleur = this->valeur;
+   this->initValeur = this->valeur;
 }
 
-void Vulnerabilite::EndTurnEffectStat()
+void Vulnerabilite::endTurnEffectStat()
 {
-   setvalue(getvalue() - 1);
+   setValue(getValue() - 1);
 }

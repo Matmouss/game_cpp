@@ -7,22 +7,22 @@ class Stat{
    public:
    string nom;
    int valeur;
-   int initvaleur;
+   int initValeur;
 
    public:
    Stat(string nom);
    Stat();
    Stat(Stat &statcopie);
 
-      string getnom();
-      int getvalue();
+      string getNom();
+      int getValue();
 
-      void setnom(string nom);
-      void setvalue(int valeur);
+      void setNom(string nom);
+      void setValue(int valeur);
 
-      static Stat *InstancierStat(string nom);
+      static Stat *instancierStat(string nom);
 
-      virtual void EndTurnEffectStat();
+      virtual void endTurnEffectStat();
    };
 
 class Vulnerabilite : public Stat
@@ -30,5 +30,5 @@ class Vulnerabilite : public Stat
    public:
    Vulnerabilite();
    
-   void EndTurnEffectStat() override;
+   void endTurnEffectStat() override;
 };

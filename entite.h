@@ -54,6 +54,8 @@ public:
     string getDescription() { return description; }
     int getNbActions() { return tailleInventaireACT; }
     Act* getActions(int i) { return inventaireACT[i]; }
+    int getNbStats() { return tailleStats; }
+    Stat* getStats(int i) { return stats[i]; }
 
     int getStatValue(string nom);
 

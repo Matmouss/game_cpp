@@ -26,7 +26,12 @@ void updateInfos(Personnage &personnage, map<string, string> &infos) {
     infos["Atk"] = to_string(personnage.getAtk());
     infos["Def"] = to_string(personnage.getDef());
     infos["Mercy"] = to_string(personnage.getMercy());
-    infos["Stats"] = "pas configuré";
+    string stats = "";
+    for (int i = 0; i < personnage.getNbStats(); i++) {
+        string nom = personnage.getStats(i)->getNom();
+        stats += "| " + nom + ": " + to_string(personnage.getStatValue(nom)) + " | ";
+    }
+    infos["Stats"] = stats;
 }
 
 string Menu(GameWindow &gw, map<int, string> &keymap, map<string, string> &infos, vector<string> &options, string &title)
