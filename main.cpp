@@ -154,8 +154,26 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
             
 
         } else if (menu[index] == "Item") {
-            display.push_back("Vous utilisez un item");
-            display.push_back("Appuyer sur enter pour continuer");
+            vector<string> options;
+            for (int i = 0; i < personnage.getTailleInventaire(); i++){
+                options.push_back(personnage.getInventaireItems(i)->getNom() + " : " + personnage.getInventaireItems(i)->getTexte());
+            }
+            options.push_back("Retour");
+
+            choix = Menu(gw, keymap, infos, options, menu[index]);
+            if (choix != "quit" && choix != "Retour") {
+
+                for (int i = 0; i < personnage.getTailleInventaire(); i++)
+                {
+                    if (options[i] == choix)
+                    {
+                        display.push_back(personnage.utiliserItem(i));
+                        display.push_back("Appuyer sur enter pour continuer");
+                        break;
+                    }
+                }
+            }
+
         }
         else if (menu[index] == "Pass") {
             display.push_back("Vous passez votre tour");

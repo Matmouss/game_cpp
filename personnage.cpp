@@ -1,4 +1,5 @@
 #include "personnage.h"
+#include "item.h"
 
 class Stat;
 
@@ -30,4 +31,11 @@ bool Personnage::setInventaireItems(Item* &item, int i) {
         return true;
     }
     return false;
+}
+
+string Personnage::utiliserItem(int i) {
+    if (i < tailleInventaire && inventaireItems[i] != nullptr) {
+        return inventaireItems[i]->utiliser(*this);
+    }
+    return "Item inconnu";
 }
