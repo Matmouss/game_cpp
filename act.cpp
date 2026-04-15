@@ -34,7 +34,7 @@ void Act::DestructActionPossibles()
 
 Act::~Act() = default;
 
-string Act::Impact(Entite&){
+string Act::Impact(Entite& entite, Entite& entiteCible){
     return this->texte;
 }
 
@@ -44,7 +44,7 @@ string Act::Impact(Entite&){
 
 SerrerMain::SerrerMain() : Act("serrer_main", "Vous serrez la main du monstre.",2) {}; 
 
-string SerrerMain::Impact(Entite& entiteCible) {
+string SerrerMain::Impact(Entite& entite, Entite& entiteCible) {
     entiteCible.setMercy(entiteCible.getMercyGoal());
     return this->texte;
 }
@@ -54,8 +54,8 @@ string SerrerMain::Impact(Entite& entiteCible) {
 
 Dodo::Dodo() : Act("dodo", "Dodo tah le cours de philo",1) {}; 
 
-string Dodo::Impact(Entite& entiteCible) {
-    entiteCible.soigner(1);
+string Dodo::Impact(Entite& entite, Entite& entiteCible) {
+    entite.soigner(1);
     return this->texte;
 }
 #pragma endregion

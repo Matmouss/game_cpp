@@ -96,9 +96,10 @@ void Entite::destructionStats(){
 string Entite::utiliserAct(int i, Entite &entiteCible){
     if (this->setAct(1)){
 
-        return this->inventaireACT[i]->Impact(entiteCible);
+        return this->inventaireACT[i]->Impact((*this), entiteCible);
     }
     return "Nope";
+
 };
 
 bool Entite::setAct(int actCout){
