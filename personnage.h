@@ -20,7 +20,7 @@ private:
 public:
    Personnage();
 
-   Personnage(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Item **inventaireItems, int tailleInventaire, Stat **stats, int tailleStats);
+   Personnage(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Item **inventaireItems, int tailleInventaire, Stat **stats, int tailleStats, int actPoints, int maxActPoints);
 
    ~Personnage();
 

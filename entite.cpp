@@ -2,21 +2,7 @@
 #include "act.h"
 #include "stat.h"
 
-// Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT)
-// {
-//     this->nom = nom;
-//     this->hp = hpMax;
-//     this->hpMax = hpMax;
-//     this->atk = atk;
-//     this->def = def;
-//     this->mercy = 0;
-//     this->mercyGoal = mercyGoal;
-//     this->description = description;
-//     this->inventaireACT = inventaireACT;
-//     this->tailleInventaireACT = tailleInventaireACT;
-// }
-
-Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT,Stat** stats, int tailleStats)
+Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints)
 {
     this->nom = nom;
     this->hp = hpMax;
@@ -30,6 +16,8 @@ Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string de
     this->tailleInventaireACT = tailleInventaireACT;
     this->stats = stats;
     this->tailleStats = tailleStats;
+    this->actPoints = actPoints;
+    this->maxActPoints = maxActPoints;
 }
 
 Entite::Entite()
@@ -46,6 +34,8 @@ Entite::Entite()
     tailleInventaireACT = 0;
     stats = nullptr;
     tailleStats = 0;
+    actPoints = 0;
+    maxActPoints = 0;
 }
 
 Entite::Entite(const Entite &entite) {
@@ -57,7 +47,9 @@ Entite::Entite(const Entite &entite) {
     this->mercy = entite.mercy;
     this->mercyGoal = entite.mercyGoal;
     this->description = entite.description;
-    
+    this->actPoints = actPoints;
+    this->maxActPoints = maxActPoints;
+
     this->tailleStats = entite.tailleStats;
     this->tailleInventaireACT = entite.tailleInventaireACT;
 

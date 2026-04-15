@@ -20,7 +20,7 @@ public:
 
     ~Monstre();
 
-    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT, Stat** stats, int tailleStats);
+    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints);
 
     string getResultatCombat();
 

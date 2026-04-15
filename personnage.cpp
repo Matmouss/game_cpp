@@ -11,8 +11,8 @@ Personnage::Personnage(): Entite() {
     this->tailleInventaire = 0;
 }
 
-Personnage::Personnage(std::string nom, int hpMax, int atk, int def, int mercyGoal, std::string description, Act** inventaireACT, int tailleInventaireACT, Item** inventaireItems, int tailleInventaire, Stat** stats, int tailleStats)
-: Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT,stats,tailleStats)
+Personnage::Personnage(std::string nom, int hpMax, int atk, int def, int mercyGoal, std::string description, Act **inventaireACT, int tailleInventaireACT, Item **inventaireItems, int tailleInventaire, Stat **stats, int tailleStats, int actPoints, int maxActPoints)
+    : Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT, stats, tailleStats, actPoints, maxActPoints)
 {
     this->nbTue = 0;
     this->nbEpargne = 0;
