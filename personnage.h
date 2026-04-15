@@ -36,6 +36,7 @@ public:
    bool setInventaireItems(Item *&item, int i);
 
    void gagnerCombat() { nbVictoire++; }
+   void ajouterItem(Item* &item);
    void retirerItem(int i);
    string utiliserItem(int i);
 };

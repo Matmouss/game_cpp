@@ -25,12 +25,21 @@ Personnage::~Personnage() {
     delete[] inventaireItems;
 }
 
-bool Personnage::setInventaireItems(Item* &item, int i) { 
-    if (i < tailleInventaire &&  inventaireItems[i] == nullptr) {
-        inventaireItems[i] = item;
-        return true;
-    }
-    return false;
+// bool Personnage::setInventaireItems(Item* &item, int i) { 
+//     if (i < tailleInventaire &&  inventaireItems[i] == nullptr) {
+//         inventaireItems[i] = item;
+//         return true;
+//     }
+//     return false;
+// }
+
+void Personnage::ajouterItem(Item* &item) {
+    for (int i = 0; i < tailleInventaire; i++) {
+        if (inventaireItems[i] == nullptr) {
+            inventaireItems[i] = item;
+            return;
+        }
+    }   
 }
 
 void Personnage::retirerItem(int i){

@@ -106,7 +106,7 @@ Partie::Partie()
 
    int tailleInventaireACT = 4;
    Act** inventaireACT = new Act*[tailleInventaireACT]();
-   int tailleInventaireItems = 2;
+   int tailleInventaireItems = 5;
    Item** inventaireItems = new Item*[tailleInventaireItems]();
 
    int tailleStats = 1;
@@ -116,8 +116,10 @@ Partie::Partie()
    this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats);
 
    //par défaut commencer avec ces deux objects
-   this->personnage->setInventaireItems(this->itemPossible[0], 0);
-   this->personnage->setInventaireItems(this->itemPossible[3], 1);
+//  this->personnage->setInventaireItems(this->itemPossible[0], 0);
+//  this->personnage->setInventaireItems(this->itemPossible[3], 1);
+    this->personnage->ajouterItem(this->itemPossible[0]);
+    this->personnage->ajouterItem(this->itemPossible[3]);
 
     this->personnage->setAction(this->catalogueACT[1],0);
     this->personnage->setAction(this->catalogueACT[0],1);
