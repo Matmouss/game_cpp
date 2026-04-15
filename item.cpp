@@ -29,7 +29,10 @@ int Item::getValeur() { return valeur; }
 string Item::utiliser(Personnage &p) {
    //mapping de toutes les stats avec tout les types
    string erreur = "";
-   if (type == "Vulnerabilite"){
+   if (type == "HP"){
+      p.soigner(valeur);
+   } 
+   else if (type == "Vulnerabilite"){
       int somme = p.getStatValue("Vulnerabilite") + valeur;
       p.setStatValue("Vulnerabilite", somme);
    } else {
