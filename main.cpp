@@ -11,7 +11,10 @@
 #include "act.h"
 #include "entite.h"
 #include "item.h"
+#include <iostream>
 
+using std::endl;
+using std::cout;
 using std::map;
 using std::string;
 using std::to_string;
@@ -242,13 +245,27 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
         while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage)) {} 
         combatEnCours_b = combatEnCours(monstre, personnage);
         
+
+        for (int i = 0; i <personnage.getNbStats();i++){
+            personnage.getStats(i)->endTurnEffectStat();
+        }
+
         if (combatEnCours_b){FightMonstre(monstre, personnage, gw, keymap, infos);} 
         combatEnCours_b = combatEnCours(monstre, personnage);
+
+        for (int i = 0; i < monstre.getNbStats(); i++)
+        {
+            monstre.getStats(i)->endTurnEffectStat();
+        }
     }
+
+    
 
     victoire = VictoireCondition(personnage);
     
     vector<string> display = {"Vous avez battu le monstre:",monstre.getNom() + "\t hp:" + to_string(monstre.getHp()) + "\t Mercy:" + to_string(monstre.getMercy()), "Appuyer sur enter pour continuer"};
+
+
     updateInfos(personnage, infos);
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
@@ -256,6 +273,8 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
     while (input != "enter" and input != "quit") {
         input = getInput(keymap);
     }
+
+    
 
     return victoire;
 }
@@ -335,6 +354,8 @@ void game() {
 
             if (Fight( *monstre, *partie_en_cours.personnage, gw, keymap, infos)){
                 partie_en_cours.ajouterBestiaire(monstre);
+                partie_en_cours.personnage->destructionStats();
+                updateInfos(*partie_en_cours.personnage, infos);
             } else {
                 //logique de gameover
             }
@@ -372,4 +393,5 @@ void game() {
 
 int main() {
     game();
+    cout<<"c'était bien non ?" <<endl;
 }

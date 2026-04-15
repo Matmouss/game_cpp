@@ -99,6 +99,7 @@ void Entite::destructionStats(){
     this->stats = nullptr;
     this->tailleStats = 0;
 }
+
 string Entite::utiliserAct(int i, Entite &entiteCible){
     return this->inventaireACT[i]->Impact((*this), entiteCible);
 };
