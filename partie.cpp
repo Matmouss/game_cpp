@@ -109,8 +109,9 @@ Partie::Partie()
    int tailleInventaireItems = 5;
    Item** inventaireItems = new Item*[tailleInventaireItems]();
 
-   int tailleStats = 1;
-   Stat** stats = new Stat*[tailleStats]{new Vulnerabilite()};
+   int tailleStats = 0;
+   //Stat** stats = new Stat*[tailleStats]{new Vulnerabilite()};
+   Stat** stats = nullptr;
 
 
    this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats);
