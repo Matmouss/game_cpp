@@ -33,7 +33,7 @@ void Act::DestructActionPossibles()
 
 Act::~Act(){}
 
-string Act::Impact(Entite& entiteCible){
+string Act::Impact(Entite&){
     return this->texte;
 }
 

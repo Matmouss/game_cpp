@@ -18,6 +18,9 @@ Stat::Stat(Stat &statcopie){
    this->initValeur = statcopie.initValeur;
 
 }
+
+Stat::~Stat() = default;
+
 string Stat::getNom(){return this->nom;}
 
 int Stat::getValue(){return this->valeur;}

@@ -14,19 +14,22 @@ class Stat{
    Stat();
    Stat(Stat &statcopie);
 
-      string getNom();
-      int getValue();
+   virtual ~Stat();
 
-      void setNom(string nom);
-      void setValue(int valeur);
+   string getNom();
+   int getValue();
 
-      static Stat *instancierStat(string nom);
+   void setNom(string nom);
+   void setValue(int valeur);
 
-      virtual void endTurnEffectStat();
+   static Stat *instancierStat(string nom);
+
+   virtual void endTurnEffectStat();
    };
 
-class Vulnerabilite : public Stat
-{
+
+   class Vulnerabilite : public Stat
+   {
    public:
    Vulnerabilite();
    
