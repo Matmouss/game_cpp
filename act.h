@@ -19,19 +19,19 @@ public:
    ~Act();
    string getTexte();
    string getIdentifiant();
-   virtual string Impact(Entite& entite, Entite& entiteCible);
+   virtual string Impact(Entite& entiteCible);
 };
 
 class SerrerMain : public Act {
 public:
     SerrerMain();
 
-    string Impact(Entite& entite, Entite& entiteCible) override;
+    string Impact(Entite& entiteCible) override;
 };
 
 class Dodo : public Act {
 public:
     Dodo();
 
-   string Impact(Entite& entite, Entite& entiteCible) override;
+   string Impact(Entite& entiteCible) override;
 };
