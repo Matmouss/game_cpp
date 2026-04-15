@@ -13,7 +13,7 @@ Act::Act() {
 
 Act **Act::getActionsPossibles()
 {
-    static Act* actions[2] = {new SerrerMain(), new Dodo()};
+    static Act *actions[] = {new Dodo() ,new SerrerMain(), new Attaquer()};
     return actions;
 }
 
@@ -59,3 +59,13 @@ string Dodo::Impact(Entite& entite, Entite& entiteCible) {
     return this->texte;
 }
 #pragma endregion
+
+#pragma region Attaquer
+
+Attaquer::Attaquer() : Act("Attaquer Simple", "ptit attaque tranquilloubilou", 1) {};
+
+string Attaquer::Impact(Entite &entite, Entite &entiteCible)
+{
+    entite.attaquer(entiteCible);
+    return this->texte;
+}

@@ -7,7 +7,7 @@ class Entite;
 class Act
 {
 public:
-   static const int nbActionsPossibles = 2;
+   static const int nbActionsPossibles = 3;
    static Act **getActionsPossibles();
    static void DestructActionPossibles();
    string identifiant;
@@ -35,4 +35,11 @@ public:
     Dodo();
 
    string Impact(Entite& entite, Entite& entiteCible) override;
+};
+
+class Attaquer : public Act {
+   public:
+   Attaquer();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
 };

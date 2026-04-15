@@ -127,7 +127,7 @@ Partie::Partie()
     this->personnage->ajouterItem(this->itemPossible[3]);
 
     this->personnage->setAction(this->catalogueACT[1],0);
-    this->personnage->setAction(this->catalogueACT[0],1);
+    this->personnage->setAction(this->catalogueACT[2],1);
     this->personnage->setAction(this->catalogueACT[0],2);
     this->personnage->setAction(this->catalogueACT[0],3);
 }
