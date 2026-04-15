@@ -13,8 +13,8 @@ Monstre::Monstre(const Monstre &monstre): Entite(monstre){
     resultatCombat = "";
 }
 
-Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act** inventaireACT, int tailleInventaireACT,Stat** stats,int tailleStats)
-    : Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT,stats,tailleStats)
+Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints, int maxActPoints)
+    : Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT, stats, tailleStats, actPoints, maxActPoints)
 {
     resultatCombat = "";
 }

@@ -59,7 +59,9 @@ pair<Monstre**, int> initMonstresPossibles() {
             actions.first,
             actions.second,
             nullptr,
-            0);
+            0,
+            1,
+            1);
     }
 
     return {bestiaire, nbMonstres};
@@ -110,11 +112,12 @@ Partie::Partie()
    Item** inventaireItems = new Item*[tailleInventaireItems]();
 
    int tailleStats = 0;
-   //Stat** stats = new Stat*[tailleStats]{new Vulnerabilite()};
    Stat** stats = nullptr;
+   int maxActPoints = 3;
+   int actPoints = maxActPoints;
 
 
-   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats);
+   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats,actPoints,maxActPoints);
 
    //par défaut commencer avec ces deux objects
 //  this->personnage->setInventaireItems(this->itemPossible[0], 0);
