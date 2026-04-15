@@ -1,6 +1,7 @@
 #include "entite.h"
 #include "act.h"
 #include "stat.h"
+#include <cmath>
 
 Entite::Entite(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints)
 {
@@ -47,8 +48,8 @@ Entite::Entite(const Entite &entite) {
     this->mercy = entite.mercy;
     this->mercyGoal = entite.mercyGoal;
     this->description = entite.description;
-    this->actPoints = actPoints;
-    this->maxActPoints = maxActPoints;
+    this->actPoints = entite.actPoints;
+    this->maxActPoints = entite.maxActPoints;
 
     this->tailleStats = entite.tailleStats;
     this->tailleInventaireACT = entite.tailleInventaireACT;
@@ -93,8 +94,21 @@ void Entite::destructionStats(){
 }
 
 string Entite::utiliserAct(int i, Entite &entiteCible){
-    return this->inventaireACT[i]->Impact(entiteCible);
+    if (this->setAct(1)){
+
+        return this->inventaireACT[i]->Impact(entiteCible);
+    }
+    return "Nope";
 };
+
+bool Entite::setAct(int actCout){
+    if (this->actPoints-actCout >= 0)
+    {
+        this->actPoints -= actCout;
+        return true;
+    }
+    return false;
+}
 
 void Entite::AddStat(Stat* stat){
 
@@ -135,3 +149,12 @@ void Entite::setStatValue(string nom, int valeur){
     }
 };
 
+void Entite::EndTurn()
+{
+    for (int i = 0; i < this->getNbStats(); i++)
+    {
+        this->getStats(i)->endTurnEffectStat();
+    }
+
+    this->actPoints = this->maxActPoints;
+}

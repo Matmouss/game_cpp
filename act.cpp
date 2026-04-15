@@ -17,9 +17,10 @@ Act **Act::getActionsPossibles()
     return actions;
 }
 
-Act::Act(string identifiant, string texte) {
+Act::Act(string identifiant, string texte, int actPointsCost) {
     this->identifiant = identifiant;
     this->texte = texte;
+    this->actPointsCost = actPointsCost;
 }
 
 string Act::getIdentifiant() {return identifiant;}
@@ -41,7 +42,7 @@ string Act::Impact(Entite&){
 
 #pragma region SerrerMain 
 
-SerrerMain::SerrerMain() : Act("serrer_main", "Vous serrez la main du monstre.") {}; 
+SerrerMain::SerrerMain() : Act("serrer_main", "Vous serrez la main du monstre.",2) {}; 
 
 string SerrerMain::Impact(Entite& entiteCible) {
     entiteCible.setMercy(entiteCible.getMercyGoal());
@@ -51,7 +52,7 @@ string SerrerMain::Impact(Entite& entiteCible) {
 
 #pragma region Dodo
 
-Dodo::Dodo() : Act("dodo", "Dodo tah le cours de philo") {}; 
+Dodo::Dodo() : Act("dodo", "Dodo tah le cours de philo",1) {}; 
 
 string Dodo::Impact(Entite& entiteCible) {
     entiteCible.soigner(1);

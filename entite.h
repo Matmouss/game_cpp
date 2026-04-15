@@ -58,9 +58,12 @@ public:
     Act* getActions(int i) { return inventaireACT[i]; }
     int getNbStats() { return tailleStats; }
     Stat* getStats(int i) { return stats[i]; }
+    int getAct() { return actPoints; }
+    int getMaxAct() { return maxActPoints; }
 
     int getStatValue(string nom);
     void setStatValue(string nom, int valeur);
+    bool setAct(int cout);
 
     void AddStat(Stat* stat);
     void destructionStats();
@@ -95,4 +98,6 @@ public:
     }
 
     string utiliserAct(int i, Entite &entiteCible);
+
+    void EndTurn();
 };

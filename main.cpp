@@ -209,7 +209,13 @@ void FightMonstre(Monstre &monstre,Personnage &personnage,GameWindow &gw, map<in
     vector<string> display = {""};
 
     display.push_back(monstre.attaquer(personnage));
-    display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
+
+    //TEMP
+    int attackCost = 1;
+    monstre.setAct(attackCost);
+
+    //TEMP
+    display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% mercy" + "\t" + "actPts: "+ to_string(monstre.getAct());
     display.push_back("Appuyer sur enter pour continuer");
 
     updateInfos(personnage, infos);
@@ -242,24 +248,22 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
     
     while (combatEnCours_b) {
         //pour le moment le seul moyen de terminer le tour est de passer
-        while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage)) {} 
-        combatEnCours_b = combatEnCours(monstre, personnage);
-        
-
-        for (int i = 0; i <personnage.getNbStats();i++){
-            personnage.getStats(i)->endTurnEffectStat();
-        }
-
-        if (combatEnCours_b){FightMonstre(monstre, personnage, gw, keymap, infos);} 
+        while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage) && personnage.getAct() > 0) {} 
         combatEnCours_b = combatEnCours(monstre, personnage);
 
-        for (int i = 0; i < monstre.getNbStats(); i++)
-        {
-            monstre.getStats(i)->endTurnEffectStat();
-        }
+        personnage.EndTurn();
+
+        //TEMP
+
+        //attack costs 1 Act for testing while monster doesnt do actions;
+
+        //TEMP
+        while (combatEnCours_b && monstre.getAct() > 0){FightMonstre(monstre, personnage, gw, keymap, infos);} 
+        combatEnCours_b = combatEnCours(monstre, personnage);
+
+        monstre.EndTurn();
     }
 
-    
 
     victoire = VictoireCondition(personnage);
     

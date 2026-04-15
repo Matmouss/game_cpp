@@ -12,10 +12,11 @@ public:
    static void DestructActionPossibles();
    string identifiant;
    string texte;
+   int actPointsCost;
 
 public:
    Act();
-   Act(string identifiant, string texte);
+   Act(string identifiant, string texte,int actPointCost);
    virtual ~Act();
    string getTexte();
    string getIdentifiant();

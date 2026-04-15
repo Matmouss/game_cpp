@@ -46,7 +46,8 @@ pair<Monstre**, int> initMonstresPossibles() {
 
     int nbMonstres = static_cast<int>(monstres.size()) - 1;
     Monstre** bestiaire = new Monstre*[nbMonstres];
-
+    int actPts = 1;
+    
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
         pair<Act**, int> actions = initInventaireACT(monstres[i][7]);
         bestiaire[i - 1] = new Monstre(
@@ -60,8 +61,8 @@ pair<Monstre**, int> initMonstresPossibles() {
             actions.second,
             nullptr,
             0,
-            1,
-            1);
+            actPts,
+            actPts);
     }
 
     return {bestiaire, nbMonstres};

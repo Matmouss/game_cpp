@@ -33,6 +33,7 @@ Personnage::~Personnage() {
 //     return false;
 // }
 
+
 void Personnage::ajouterItem(Item* &item) {
     for (int i = 0; i < tailleInventaire; i++) {
         if (inventaireItems[i] == nullptr) {
