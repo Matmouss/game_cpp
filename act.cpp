@@ -31,7 +31,7 @@ void Act::DestructActionPossibles()
         //ne pas détruire tout le tableau prcq static
 }
 
-Act::~Act(){}
+Act::~Act() = default;
 
 string Act::Impact(Entite&){
     return this->texte;

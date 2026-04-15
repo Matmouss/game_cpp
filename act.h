@@ -16,7 +16,7 @@ public:
 public:
    Act();
    Act(string identifiant, string texte);
-   ~Act();
+   virtual ~Act();
    string getTexte();
    string getIdentifiant();
    virtual string Impact(Entite& entiteCible);
