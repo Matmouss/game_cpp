@@ -49,20 +49,55 @@ pair<Monstre**, int> initMonstresPossibles() {
     int actPts = 1;
     
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
-        pair<Act**, int> actions = initInventaireACT(monstres[i][7]);
-        bestiaire[i - 1] = new Monstre(
+        pair<Act**, int> actions = initInventaireACT(monstres[i][8]);
+        string type = monstres[i][2];
+
+        if (type =="lambda") {
+            bestiaire[i - 1] = new MonstreLambda(
             string(monstres[i][1]),
-            stoi(monstres[i][2]),
             stoi(monstres[i][3]),
             stoi(monstres[i][4]),
             stoi(monstres[i][5]),
-            string(monstres[i][6]),
+            stoi(monstres[i][6]),
+            string(monstres[i][7]),
             actions.first,
             actions.second,
             nullptr,
             0,
             actPts,
             actPts);
+        }
+        if (type == "mini") {
+            bestiaire[i - 1] = new MiniBoss(
+            string(monstres[i][1]),
+            stoi(monstres[i][3]),
+            stoi(monstres[i][4]),
+            stoi(monstres[i][5]),
+            stoi(monstres[i][6]),
+            string(monstres[i][7]),
+            actions.first,
+            actions.second,
+            nullptr,
+            0,
+            actPts,
+            actPts);
+        }
+        if (type == "boss") {
+            bestiaire[i - 1] = new Boss(
+            string(monstres[i][1]),
+            stoi(monstres[i][3]),
+            stoi(monstres[i][4]),
+            stoi(monstres[i][5]),
+            stoi(monstres[i][6]),
+            string(monstres[i][7]),
+            actions.first,
+            actions.second,
+            nullptr,
+            0,
+            actPts,
+            actPts);
+        }
+        
     }
 
     return {bestiaire, nbMonstres};

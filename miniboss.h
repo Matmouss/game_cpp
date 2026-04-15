@@ -4,14 +4,8 @@ using std::string;
 
 #include "monstre.h"
 
-
 class MiniBoss : public Monstre
 {
-private:
-   int nbActions = 3;
-
 public:
-   MiniBoss(string nom = "MiniBoss", int hpMax = 45, int atk = 10, int def = 2, int mercyGoal = 100,string description = "MiniBoss");
-
-   int getNbActions();
+   MiniBoss(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints);
 };

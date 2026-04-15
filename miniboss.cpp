@@ -1,13 +1,8 @@
-#include "miniboss.h"
 #include <string>
 using std::string;
 
-using namespace std;
+#include "monstre.h"
 
-MiniBoss::MiniBoss(string nom, int hpMax, int atk, int def, int mercyGoal,string description)
-    : Monstre(nom, hpMax, atk, def, mercyGoal,description)
-{
-   this->nbActions = 3;
-}
+#include "miniboss.h"
 
-int MiniBoss::getNbActions() { return nbActions; }
+MiniBoss::MiniBoss(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints): Monstre(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT, stats, tailleStats, actPoints, maxActPoints) {}
