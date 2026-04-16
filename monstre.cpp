@@ -19,7 +19,7 @@ Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string 
     resultatCombat = "";
 }
 
-Monstre::~Monstre() {}
+Monstre::~Monstre() = default;
 
 string Monstre::getResultatCombat() { return resultatCombat; }
 

@@ -10,7 +10,7 @@ class Stat;
 
 class Monstre: public Entite
 {
-private:
+protected:
     string resultatCombat;
  
 public:
@@ -18,7 +18,7 @@ public:
 
     Monstre(const Monstre &monstre);
 
-    ~Monstre();
+    virtual ~Monstre();
 
     Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints);
 
