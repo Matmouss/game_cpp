@@ -46,7 +46,7 @@ pair<Monstre**, int> initMonstresPossibles() {
     auto monstres = readCSV("data/monstres.csv");
 
     int nbMonstres = static_cast<int>(monstres.size()) - 1;
-    Monstre** bestiaire = new Monstre*[nbMonstres];
+    Monstre** bestiaire = new Monstre*[nbMonstres]();
     int actPts = 1;
     
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
