@@ -13,6 +13,8 @@ class Monstre: public Entite
 protected:
     string resultatCombat;
     string type;
+    string* dialogues;
+    int tailleDialogues;
  
 public:
     Monstre();
@@ -21,7 +23,7 @@ public:
 
     virtual ~Monstre();
 
-    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints);
+    Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints, string* dialogues, int tailleDialogues);
 
     string getResultatCombat();
     string getType() { return type; }

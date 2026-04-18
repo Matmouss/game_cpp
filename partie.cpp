@@ -43,6 +43,27 @@ pair<Act**,int> initInventaireACT(string actions_str) {
     return {actions, taille};
 }
 
+pair<string*,int> initDialoguesMonstres(string dialogues_str) {
+    size_t pos = 0;
+    size_t start = 0;
+    vector<string> dialogues;
+
+    while ((pos = dialogues_str.find(";", start)) != string::npos) {
+        dialogues.push_back(dialogues_str.substr(start, pos - start));
+        start = pos + 1;
+    }
+
+    int taille = static_cast<int>(dialogues.size());
+
+    string* dialoguesMonstres = new string[taille];
+
+    for (int i = 0; i < taille; i++) {
+        dialoguesMonstres[i] = dialogues[i];
+    }
+
+    return {dialoguesMonstres, taille};
+}
+
 pair<Monstre**, int> initMonstresPossibles() {
     auto monstres = readCSV("data/monstres.csv");
 
@@ -52,6 +73,7 @@ pair<Monstre**, int> initMonstresPossibles() {
     
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
         pair<Act**, int> actions = initInventaireACT(monstres[i][8]);
+        pair<string*, int> dialogues = initDialoguesMonstres(monstres[i][10]);
         string type = monstres[i][2];
         actPts = stoi(monstres[i][9]);
 
@@ -68,7 +90,9 @@ pair<Monstre**, int> initMonstresPossibles() {
             nullptr,
             0,
             actPts,
-            actPts);
+            actPts,
+            dialogues.first,
+            dialogues.second);
         }
         if (type == "mini") {
             bestiaire[i - 1] = new MiniBoss(
@@ -83,7 +107,9 @@ pair<Monstre**, int> initMonstresPossibles() {
             nullptr,
             0,
             actPts,
-            actPts);
+            actPts,
+            dialogues.first,
+            dialogues.second);
         }
         if (type == "boss") {
             bestiaire[i - 1] = new Boss(
@@ -98,7 +124,9 @@ pair<Monstre**, int> initMonstresPossibles() {
             nullptr,
             0,
             actPts,
-            actPts);
+            actPts,
+            dialogues.first,
+            dialogues.second);
         }
         
     }

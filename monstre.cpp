@@ -13,9 +13,11 @@ Monstre::Monstre(const Monstre &monstre): Entite(monstre){
     resultatCombat = "";
 }
 
-Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints, int maxActPoints)
+Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints, int maxActPoints, string* dialogues, int tailleDialogues)
     : Entite(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT, stats, tailleStats, actPoints, maxActPoints)
 {
+    this->dialogues = dialogues;
+    this->tailleDialogues = tailleDialogues;
     resultatCombat = "";
 }
 
