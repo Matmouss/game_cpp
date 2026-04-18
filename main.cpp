@@ -27,6 +27,7 @@ map<string, string> infos;
 
 void updateInfos(Personnage &personnage, map<string, string> &infos) {
     infos["Nom"] = personnage.getNom();
+    infos["Monstres tués"] = to_string(personnage.getNbTue());
     infos["Hp"] = to_string(personnage.getHp());
     infos["Atk"] = to_string(personnage.getAtk());
     infos["Def"] = to_string(personnage.getDef());
@@ -285,6 +286,7 @@ void initBinds(){
 
         infos = {
         {"Nom", "Personnage"},
+        {"Monstres tués", "0"},
         {"Hp", "0"},
         {"Atk", "0"},
         {"Def", "0"},
@@ -344,11 +346,20 @@ void game() {
         else if (choix == "Fight") {
             state = "Fight";
 
-            Monstre* monstre = partie_en_cours.randomMonstre("lambda");
+
+            Monstre* monstre;
+            if (partie_en_cours.tailleBestiaire ==  5){
+                monstre = partie_en_cours.randomMonstre("mini");
+            } else if (partie_en_cours.tailleBestiaire ==  10){
+                monstre = partie_en_cours.randomMonstre("boss");
+            } else {
+                monstre =partie_en_cours.randomMonstre("lambda");
+            }
 
             if (Fight( *monstre, *partie_en_cours.personnage, gw, keymap, infos)){
                 partie_en_cours.ajouterBestiaire(monstre);
                 partie_en_cours.personnage->destructionStats();
+                partie_en_cours.personnage->setNbTue();
                 updateInfos(*partie_en_cours.personnage, infos);
             } else {
                 //logique de gameover

@@ -26,9 +26,9 @@ void dessiner_boite_jeu(
     box(win, 0, 0);
 
     int ligne = 1;
-    const string champs[7] = {"Nom", "Hp", "Atk", "Def", "Mercy", "ActPts", "Stats"};
+    const string champs[8] = {"Nom", "Monstres tués","Hp", "Atk", "Def", "Mercy", "ActPts", "Stats"};
 
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < 8; ++i) {
         auto it = data.find(champs[i]);
         string valeur = (it != data.end()) ? it->second : "";
         string texte = champs[i] + " : " + valeur;

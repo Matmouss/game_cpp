@@ -13,7 +13,7 @@ Act::Act() {
 
 Act **Act::getActionsPossibles()
 {
-    static Act *actions[] = {new Dodo() ,new SerrerMain(), new Attaquer()};
+    static Act *actions[] = {new Attaquer(), new Dodo() ,new SerrerMain()};
     return actions;
 }
 

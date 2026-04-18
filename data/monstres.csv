@@ -1,5 +1,5 @@
 id,name,type,hpMax,atk,def,mercyGoal,description,Actions,maxActionPoints,Texte
-0,Robin,lambda,0,0,0,0,de l'esivl,0;,2,bla;blabla;blablabla;blablablabla;
-1,Froggit,lambda,30,13,5,100,ribbit,0;2;,2,Je suis froggit;ribbit;ribbit ribbit;aaaaaaaah;
-2,MimicBox,mini,45,10,2,100,mimic,0;,2,bla;blabla;blablabla;blablablabla;
-3,QueenByte,boss,80,15,4,100,byte,0;,2,bla;blabla;blablabla;blablablabla;
+0,Robin,lambda,20,20,3,100,de l'esivl,0;1;1;,2,bla;blabla;blablabla;blablablabla;
+1,Froggit,lambda,50,45,5,100,ribbit,0;0;1;,2,Je suis froggit;ribbit;ribbit ribbit;aaaaaaaah;
+2,MimicBox,mini,45,20,10,150,mimic,0;,2,bla;blabla;blablabla;blablablabla;
+3,QueenByte,boss,100,33,5,100,byte,0;0;0;1;2;,3,bla;blabla;blablabla;blablablabla;

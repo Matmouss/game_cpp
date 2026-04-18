@@ -134,9 +134,8 @@ Partie::Partie()
    this->monstresPossibles = result.first;
    this->tailleMonstresPossibles = result.second;
 
-   this->tailleBestiaire = 1;
+   this->tailleBestiaire = 0;
    this->bestiaire = new Monstre*[this->tailleBestiaire]();
-   this->bestiaire[0] = this->monstresPossibles[0];
    
    this->tailleCatalogueACT = Act::nbActionsPossibles;
    this->catalogueACT = Act::getActionsPossibles();
@@ -159,15 +158,13 @@ Partie::Partie()
    this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats,actPoints,maxActPoints);
 
    //par défaut commencer avec ces deux objects
-//  this->personnage->setInventaireItems(this->itemPossible[0], 0);
-//  this->personnage->setInventaireItems(this->itemPossible[3], 1);
     this->personnage->ajouterItem(this->itemPossible[0]);
     this->personnage->ajouterItem(this->itemPossible[3]);
 
-    this->personnage->setAction(this->catalogueACT[1],0);
+    this->personnage->setAction(this->catalogueACT[0],0);
     this->personnage->setAction(this->catalogueACT[2],1);
-    this->personnage->setAction(this->catalogueACT[0],2);
-    this->personnage->setAction(this->catalogueACT[0],3);
+    this->personnage->setAction(this->catalogueACT[1],2);
+    this->personnage->setAction(this->catalogueACT[1],3);
 }
 
 Partie::~Partie()
