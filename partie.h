@@ -35,4 +35,5 @@ public:
    bool verifierFinPartie();
    void afficherFin();
    void ajouterBestiaire(Monstre* &monstre);
+   Monstre* randomMonstre(string type);
 };

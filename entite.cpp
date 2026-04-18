@@ -94,11 +94,13 @@ void Entite::destructionStats(){
 }
 
 string Entite::utiliserAct(int i, Entite &entiteCible){
-    if (this->setAct(1)){
+    Act* act = this->inventaireACT[i];
 
-        return this->inventaireACT[i]->Impact((*this), entiteCible);
+    if (this->setAct(act->actPointsCost)){
+
+        return act->Impact((*this), entiteCible);
     }
-    return "Nope";
+    return "Nope you don't have enough act points";
 
 };
 

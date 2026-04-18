@@ -13,6 +13,8 @@
 #include "item.h"
 #include <iostream>
 
+#include <cstdlib>
+
 using std::endl;
 using std::cout;
 using std::map;
@@ -29,6 +31,7 @@ void updateInfos(Personnage &personnage, map<string, string> &infos) {
     infos["Atk"] = to_string(personnage.getAtk());
     infos["Def"] = to_string(personnage.getDef());
     infos["Mercy"] = to_string(personnage.getMercy());
+    infos["ActPts"] = to_string(personnage.getAct());
     string stats = "";
     for (int i = 0; i < personnage.getNbStats(); i++) {
         string nom = personnage.getStats(i)->getNom();
@@ -86,7 +89,7 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
     vector<string> display;
 
     int menuSize = 4;
-    string* menu = new string[menuSize]{"Attaquer", "Act", "Item", "Pass"};
+    string* menu = new string[menuSize]{"Act", "Item", "Pass"};
 
     display = { monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci"};
     string choix = "";
@@ -117,13 +120,8 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
     }
 
     if (choix == "enter") {
-        if (menu[index] == "Attaquer") {
-            display.push_back(personnage.attaquer(monstre));
 
-            display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de merci";
-            display.push_back("Appuyer sur enter pour continuer");
-
-        } else if (menu[index] == "Act"){
+        if (menu[index] == "Act"){
             vector<string> options;
             for (int i = 0; i < personnage.getNbActions(); i++){
                 if (personnage.getActions(i) != nullptr)
@@ -208,13 +206,10 @@ bool FightJoueur(Monstre &monstre, Personnage &personnage,GameWindow &gw, map<in
 void FightMonstre(Monstre &monstre,Personnage &personnage,GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
     vector<string> display = {""};
 
-    display.push_back(monstre.attaquer(personnage));
+    int index_action = rand() % monstre.getNbActions();
 
-    //TEMP
-    int attackCost = 1;
-    monstre.setAct(attackCost);
+    display.push_back(monstre.utiliserAct(index_action, personnage));
 
-    //TEMP
     display[0] = monstre.getNom()+ "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% mercy" + "\t" + "actPts: "+ to_string(monstre.getAct());
     display.push_back("Appuyer sur enter pour continuer");
 
@@ -247,17 +242,11 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
     bool victoire = false;
     
     while (combatEnCours_b) {
-        //pour le moment le seul moyen de terminer le tour est de passer
         while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage) && personnage.getAct() > 0) {} 
         combatEnCours_b = combatEnCours(monstre, personnage);
 
         personnage.EndTurn();
 
-        //TEMP
-
-        //attack costs 1 Act for testing while monster doesnt do actions;
-
-        //TEMP
         while (combatEnCours_b && monstre.getAct() > 0){FightMonstre(monstre, personnage, gw, keymap, infos);} 
         combatEnCours_b = combatEnCours(monstre, personnage);
 
@@ -300,6 +289,7 @@ void initBinds(){
         {"Atk", "0"},
         {"Def", "0"},
         {"Mercy", "0"},
+        {"ActPts", "0"},
         {"Stats", "0"}
     };
 }
@@ -354,7 +344,7 @@ void game() {
         else if (choix == "Fight") {
             state = "Fight";
 
-            Monstre* monstre = partie_en_cours.monstresPossibles[1];
+            Monstre* monstre = partie_en_cours.randomMonstre("lambda");
 
             if (Fight( *monstre, *partie_en_cours.personnage, gw, keymap, infos)){
                 partie_en_cours.ajouterBestiaire(monstre);

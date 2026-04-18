@@ -21,6 +21,7 @@ using std::to_string;
 #include "item.h"
 #include "entite.h"
 
+
 pair<Act**,int> initInventaireACT(string actions_str) {
     size_t pos = 0;
     size_t start = 0;
@@ -47,11 +48,12 @@ pair<Monstre**, int> initMonstresPossibles() {
 
     int nbMonstres = static_cast<int>(monstres.size()) - 1;
     Monstre** bestiaire = new Monstre*[nbMonstres]();
-    int actPts = 1;
+    int actPts;
     
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
         pair<Act**, int> actions = initInventaireACT(monstres[i][8]);
         string type = monstres[i][2];
+        actPts = stoi(monstres[i][9]);
 
         if (type == "lambda") {
             bestiaire[i - 1] = new MonstreLambda(
@@ -193,4 +195,24 @@ void Partie::ajouterBestiaire(Monstre* &monstre){
 
    delete[] this->bestiaire;
    this->bestiaire = tmpBestiaire;
+}
+
+Monstre* Partie::randomMonstre(string type){
+    int index = rand() % this->tailleMonstresPossibles;
+    bool trouve = false;
+    Monstre* monstre;
+
+    while (!trouve){
+        monstre = this->monstresPossibles[index%this->tailleMonstresPossibles];
+        if (monstre->getType() == type){
+            trouve = true;
+        } else {
+            index += 1;
+        }
+    }
+
+    return monstre;
+
+
+
 }
