@@ -27,6 +27,8 @@ public:
 
     string getResultatCombat();
     string getType() { return type; }
+    string getDialogues(int i) { return dialogues[i]; }
+    int getTailleDialogues() { return tailleDialogues; }
 
     void setResultatCombat(string resultat);
 };

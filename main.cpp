@@ -241,12 +241,36 @@ bool combatEnCours(Monstre &monstre, Personnage &personnage) {
 bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, string> &keymap, map<string, string> &infos) {
     bool combatEnCours_b = true;
     bool victoire = false;
+
+    //afficher le premier dialogue du monstre
+    vector<string> display = {};
+    display.push_back(monstre.getNom() + "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de mercy");
+    display.push_back(monstre.getDialogues(0));
+    display.push_back("Appuyer sur enter pour continuer");
+
+    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+
+    string input = getInput(keymap);
+    while (input != "enter" and input != "quit") {
+        input = getInput(keymap);
+    }
     
     while (combatEnCours_b) {
         while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage) && personnage.getAct() > 0) {} 
         combatEnCours_b = combatEnCours(monstre, personnage);
 
         personnage.EndTurn();
+
+        if (combatEnCours_b) {
+            display[0] = (monstre.getNom() + "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de mercy");
+            display[1] = (monstre.getDialogues(rand() % (monstre.getTailleDialogues()-1)));
+
+            gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+            input = getInput(keymap);
+            while (input != "enter" and input != "quit") {
+                input = getInput(keymap);
+            }
+        }
 
         while (combatEnCours_b && monstre.getAct() > 0){FightMonstre(monstre, personnage, gw, keymap, infos);} 
         combatEnCours_b = combatEnCours(monstre, personnage);
@@ -256,14 +280,24 @@ bool Fight(Monstre monstre, Personnage &personnage, GameWindow &gw, map<int, str
 
 
     victoire = VictoireCondition(personnage);
+
+    display[0] = (monstre.getNom() + "\tHP: " + to_string(monstre.getHp()) + "\t" + to_string(monstre.getMercy()) + "% de mercy");
+    display[1] = (monstre.getDialogues(monstre.getTailleDialogues() - 1));
+
+    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+
+    input = getInput(keymap);
+    while (input != "enter" and input != "quit") {
+        input = getInput(keymap);
+    }
     
-    vector<string> display = {"Vous avez battu le monstre:",monstre.getNom() + "\t hp:" + to_string(monstre.getHp()) + "\t Mercy:" + to_string(monstre.getMercy()), "Appuyer sur enter pour continuer"};
+    display = {"Vous avez battu le monstre:",monstre.getNom() + "\t hp:" + to_string(monstre.getHp()) + "\t Mercy:" + to_string(monstre.getMercy()), "Appuyer sur enter pour continuer"};
 
 
     updateInfos(personnage, infos);
     gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
 
-    string input = getInput(keymap);
+    input = getInput(keymap);
     while (input != "enter" and input != "quit") {
         input = getInput(keymap);
     }

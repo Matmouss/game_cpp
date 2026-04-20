@@ -7,10 +7,14 @@ class Stat;
 
 Monstre::Monstre(): Entite(){
     resultatCombat = "";
+    dialogues = nullptr;
+    tailleDialogues = 0;
 }
 
 Monstre::Monstre(const Monstre &monstre): Entite(monstre){
     resultatCombat = "";
+    dialogues = monstre.dialogues;
+    tailleDialogues = monstre.tailleDialogues;
 }
 
 Monstre::Monstre(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints, int maxActPoints, string* dialogues, int tailleDialogues)
