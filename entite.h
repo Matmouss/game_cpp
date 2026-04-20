@@ -70,16 +70,6 @@ public:
     void setMercy(int valeur) { mercy = valeur; }
     void setAction(Act* action, int i) { inventaireACT[i] = action; }
 
-    string afficherInfos(){
-        string infos = "Nom: " + this->nom + "\n";
-        infos += "HP: " + std::to_string(this->hp) + "/" + std::to_string(this->hpMax) + "\n";
-        infos += "Atk: " + std::to_string(this->atk) + "\n";
-        infos += "Def: " + std::to_string(this->def) + "\n";
-        infos += "Mercy: " + std::to_string(this->mercy) + "/" + std::to_string(this->mercyGoal) + "\n";
-        infos += "Description: " + this->description + "\n";
-        return infos;
-    }
-
     string attaquer(Entite &entiteCible){
         int degats = std::max(this->atk - entiteCible.getDef(),0);
         return entiteCible.prendreDegats(degats);
