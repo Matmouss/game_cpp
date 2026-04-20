@@ -134,7 +134,6 @@ pair<Monstre**, int> initMonstresPossibles() {
     return {bestiaire, nbMonstres};
 }
 
-
 pair<Item **, int> initInventaires()
 {
    auto inventaire = readCSV("data/items.csv");
@@ -155,8 +154,7 @@ pair<Item **, int> initInventaires()
    return {Inventaire, nbItem};
 }
 
-
-Partie::Partie()
+Partie::Partie(int hpMax,int tailleInventaireACT, int tailleInventaireItems, int maxActPoints, int atk, int def, int mercyGoal,string nom, string description)
 {
    pair<Monstre**, int> result = initMonstresPossibles();
    this->monstresPossibles = result.first;
@@ -172,20 +170,16 @@ Partie::Partie()
    this->itemPossible = result2.first;
    this->tailleItemPossible = result2.second;
 
-   int tailleInventaireACT = 4;
    Act** inventaireACT = new Act*[tailleInventaireACT]();
-   int tailleInventaireItems = 5;
    Item** inventaireItems = new Item*[tailleInventaireItems]();
 
    int tailleStats = 0;
    Stat** stats = nullptr;
-   int maxActPoints = 3;
    int actPoints = maxActPoints;
 
+   this->personnage = new Personnage(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems, stats, tailleStats, actPoints, maxActPoints);
 
-   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats,actPoints,maxActPoints);
-
-   //par défaut commencer avec ces deux objects
+   //par défaut commencer avec ces deux objets
     this->personnage->ajouterItem(this->itemPossible[0]);
     this->personnage->ajouterItem(this->itemPossible[3]);
 

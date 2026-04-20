@@ -20,7 +20,7 @@ public:
    int tailleItemPossible;
 
 public:
-   Partie();
+   Partie(int hpMax = 100, int tailleInventaireACT = 4, int tailleInventaireItems = 5, int maxActPoints = 3, int atk = 10, int def = 10, int mercyGoal = 100, string nom = "Le Stagiaire", string description = "le héros de l'histoire");
    ~Partie();
 
    void demarrer();
