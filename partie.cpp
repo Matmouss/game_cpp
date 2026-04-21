@@ -217,21 +217,17 @@ void Partie::ajouterBestiaire(Monstre* &monstre){
 }
 
 Monstre* Partie::randomMonstre(string type){
-    int index = rand() % this->tailleMonstresPossibles;
-    bool trouve = false;
-    Monstre* monstre;
+    
+    //suppose que le type existe pour l'instant sinon infinite loop
 
-    while (!trouve){
-        monstre = this->monstresPossibles[index%this->tailleMonstresPossibles];
-        if (monstre->getType() == type){
-            trouve = true;
-        } else {
-            index += 1;
+    while (true)
+    {
+        int index = rand() % tailleMonstresPossibles;
+        Monstre *monstre = monstresPossibles[index];
+
+        if (monstre->getType() == type)
+        {
+            return monstre;
         }
     }
-
-    return monstre;
-
-
-
 }
