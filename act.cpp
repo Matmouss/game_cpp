@@ -13,7 +13,7 @@ Act::Act() {
 
 Act **Act::getActionsPossibles()
 {
-    static Act *actions[] = {new Dodo() ,new SerrerMain(), new Attaquer()};
+    static Act *actions[] = {new Attaquer(), new Dodo() ,new SerrerMain()};
     return actions;
 }
 
@@ -34,7 +34,7 @@ void Act::DestructActionPossibles()
 
 Act::~Act() = default;
 
-string Act::Impact(Entite& entite, Entite& entiteCible){
+string Act::Impact(Entite&, Entite&){
     return this->texte;
 }
 
@@ -44,19 +44,20 @@ string Act::Impact(Entite& entite, Entite& entiteCible){
 
 SerrerMain::SerrerMain() : Act("serrer_main", "Vous serrez la main du monstre.",2) {}; 
 
-string SerrerMain::Impact(Entite& entite, Entite& entiteCible) {
+string SerrerMain::Impact(Entite&, Entite& entiteCible) {
+
     entiteCible.setMercy(entiteCible.getMercyGoal());
-    return this->texte;
+    return entiteCible.getNom() + " est amadoué par ce serrage de main, sa Mercy est au MAX!";
 }
+
 #pragma endregion
 
 #pragma region Dodo
 
 Dodo::Dodo() : Act("dodo", "Dodo tah le cours de philo",1) {}; 
 
-string Dodo::Impact(Entite& entite, Entite& entiteCible) {
-    entite.soigner(1);
-    return this->texte;
+string Dodo::Impact(Entite& entite, Entite&) {
+    return entite.soigner(1);
 }
 #pragma endregion
 
@@ -66,6 +67,5 @@ Attaquer::Attaquer() : Act("Attaquer Simple", "ptit attaque tranquilloubilou", 1
 
 string Attaquer::Impact(Entite &entite, Entite &entiteCible)
 {
-    entite.attaquer(entiteCible);
-    return this->texte;
+    return entite.attaquer(entiteCible);
 }

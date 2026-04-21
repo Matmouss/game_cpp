@@ -6,10 +6,8 @@ using std::string;
 
 class MonstreLambda : public Monstre
 {
-private:
-   int nbActions = 2;
-
 public:
-   MonstreLambda(string nom = "Monstre", int hpMax = 10, int atk = 5, int def = 1, int mercyGoal = 100, string description = "MonstreLambda");
-   int getNbActions() ;
+   MonstreLambda(string nom, int hpMax, int atk, int def, int mercyGoal, string description, Act **inventaireACT, int tailleInventaireACT, Stat **stats, int tailleStats, int actPoints,int maxActPoints, string* dialogues, int tailleDialogues);
+   
+   ~MonstreLambda();
 };

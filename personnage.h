@@ -30,7 +30,7 @@ public:
    Item *getInventaireItems(int i) { return inventaireItems[i]; }
    int getTailleInventaire() { return tailleInventaire; }
 
-   void setNbTue(int valeur) { nbTue = valeur; }
+   void setNbTue() { nbTue += 1; }
    void setNbEpargne(int valeur) { nbEpargne = valeur; }
    void setNbVictoire(int valeur) { nbVictoire = valeur; }
    bool setInventaireItems(Item *&item, int i);

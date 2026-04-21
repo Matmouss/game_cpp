@@ -4,6 +4,7 @@
 using std::pair;
 using std::string;
 using std::vector;
+using std::to_string;
 
 #include <fstream>
 #include <sstream>
@@ -19,6 +20,7 @@ using std::vector;
 #include "personnage.h"
 #include "item.h"
 #include "entite.h"
+
 
 pair<Act**,int> initInventaireACT(string actions_str) {
     size_t pos = 0;
@@ -41,33 +43,96 @@ pair<Act**,int> initInventaireACT(string actions_str) {
     return {actions, taille};
 }
 
+pair<string*,int> initDialoguesMonstres(string dialogues_str) {
+    size_t pos = 0;
+    size_t start = 0;
+    vector<string> dialogues;
+
+    while ((pos = dialogues_str.find(";", start)) != string::npos) {
+        dialogues.push_back(dialogues_str.substr(start, pos - start));
+        start = pos + 1;
+    }
+
+    int taille = static_cast<int>(dialogues.size());
+
+    string* dialoguesMonstres = new string[taille];
+
+    for (int i = 0; i < taille; i++) {
+        dialoguesMonstres[i] = dialogues[i];
+    }
+
+    return {dialoguesMonstres, taille};
+}
+
 pair<Monstre**, int> initMonstresPossibles() {
     auto monstres = readCSV("data/monstres.csv");
 
     int nbMonstres = static_cast<int>(monstres.size()) - 1;
-    Monstre** bestiaire = new Monstre*[nbMonstres];
-    int actPts = 1;
+    Monstre** bestiaire = new Monstre*[nbMonstres]();
+    int actPts;
     
     for (int i = 1; i < static_cast<int>(monstres.size()); i++) {
-        pair<Act**, int> actions = initInventaireACT(monstres[i][7]);
-        bestiaire[i - 1] = new Monstre(
+        pair<Act**, int> actions = initInventaireACT(monstres[i][8]);
+        pair<string*, int> dialogues = initDialoguesMonstres(monstres[i][10]);
+        string type = monstres[i][2];
+        actPts = stoi(monstres[i][9]);
+
+        if (type == "lambda") {
+            bestiaire[i - 1] = new MonstreLambda(
             string(monstres[i][1]),
-            stoi(monstres[i][2]),
             stoi(monstres[i][3]),
             stoi(monstres[i][4]),
             stoi(monstres[i][5]),
-            string(monstres[i][6]),
+            stoi(monstres[i][6]),
+            string(monstres[i][7]),
             actions.first,
             actions.second,
             nullptr,
             0,
             actPts,
-            actPts);
+            actPts,
+            dialogues.first,
+            dialogues.second);
+        }
+        if (type == "mini") {
+            bestiaire[i - 1] = new MiniBoss(
+            string(monstres[i][1]),
+            stoi(monstres[i][3]),
+            stoi(monstres[i][4]),
+            stoi(monstres[i][5]),
+            stoi(monstres[i][6]),
+            string(monstres[i][7]),
+            actions.first,
+            actions.second,
+            nullptr,
+            0,
+            actPts,
+            actPts,
+            dialogues.first,
+            dialogues.second);
+        }
+        if (type == "boss") {
+            bestiaire[i - 1] = new Boss(
+            string(monstres[i][1]),
+            stoi(monstres[i][3]),
+            stoi(monstres[i][4]),
+            stoi(monstres[i][5]),
+            stoi(monstres[i][6]),
+            string(monstres[i][7]),
+            actions.first,
+            actions.second,
+            nullptr,
+            0,
+            actPts,
+            actPts,
+            dialogues.first,
+            dialogues.second);
+        }
+        
     }
 
     return {bestiaire, nbMonstres};
 }
-
 
 pair<Item **, int> initInventaires()
 {
@@ -89,16 +154,14 @@ pair<Item **, int> initInventaires()
    return {Inventaire, nbItem};
 }
 
-
-Partie::Partie()
+Partie::Partie(int hpMax,int tailleInventaireACT, int tailleInventaireItems, int maxActPoints, int atk, int def, int mercyGoal,string nom, string description)
 {
    pair<Monstre**, int> result = initMonstresPossibles();
    this->monstresPossibles = result.first;
    this->tailleMonstresPossibles = result.second;
 
-   this->tailleBestiaire = 1;
+   this->tailleBestiaire = 0;
    this->bestiaire = new Monstre*[this->tailleBestiaire]();
-   this->bestiaire[0] = this->monstresPossibles[0];
    
    this->tailleCatalogueACT = Act::nbActionsPossibles;
    this->catalogueACT = Act::getActionsPossibles();
@@ -107,29 +170,23 @@ Partie::Partie()
    this->itemPossible = result2.first;
    this->tailleItemPossible = result2.second;
 
-   int tailleInventaireACT = 4;
    Act** inventaireACT = new Act*[tailleInventaireACT]();
-   int tailleInventaireItems = 5;
    Item** inventaireItems = new Item*[tailleInventaireItems]();
 
    int tailleStats = 0;
    Stat** stats = nullptr;
-   int maxActPoints = 3;
    int actPoints = maxActPoints;
 
+   this->personnage = new Personnage(nom, hpMax, atk, def, mercyGoal, description, inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems, stats, tailleStats, actPoints, maxActPoints);
 
-   this->personnage = new Personnage("Personnage", 100, 10, 10, 10, "le héros", inventaireACT, tailleInventaireACT, inventaireItems, tailleInventaireItems,stats,tailleStats,actPoints,maxActPoints);
-
-   //par défaut commencer avec ces deux objects
-//  this->personnage->setInventaireItems(this->itemPossible[0], 0);
-//  this->personnage->setInventaireItems(this->itemPossible[3], 1);
+   //par défaut commencer avec ces deux objets
     this->personnage->ajouterItem(this->itemPossible[0]);
     this->personnage->ajouterItem(this->itemPossible[3]);
 
-    this->personnage->setAction(this->catalogueACT[1],0);
+    this->personnage->setAction(this->catalogueACT[0],0);
     this->personnage->setAction(this->catalogueACT[2],1);
-    this->personnage->setAction(this->catalogueACT[0],2);
-    this->personnage->setAction(this->catalogueACT[0],3);
+    this->personnage->setAction(this->catalogueACT[1],2);
+    this->personnage->setAction(this->catalogueACT[1],3);
 }
 
 Partie::~Partie()
@@ -157,4 +214,20 @@ void Partie::ajouterBestiaire(Monstre* &monstre){
 
    delete[] this->bestiaire;
    this->bestiaire = tmpBestiaire;
+}
+
+Monstre* Partie::randomMonstre(string type){
+    
+    //suppose que le type existe pour l'instant sinon infinite loop
+
+    while (true)
+    {
+        int index = rand() % tailleMonstresPossibles;
+        Monstre *monstre = monstresPossibles[index];
+
+        if (monstre->getType() == type)
+        {
+            return monstre;
+        }
+    }
 }
