@@ -1,3 +1,6 @@
+#ifndef AFFICHAGE_H
+#define AFFICHAGE_H
+
 #include <string>
 #include <map>
 #include <vector>
@@ -36,3 +39,5 @@ GameWindow resize_window(
 );
 
 std::string getInput(const std::map<int, std::string>& keymap);
+
+#endif
