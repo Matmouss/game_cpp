@@ -5,6 +5,7 @@
 #include <locale.h>
 #include <ncurses.h>
 #include "affichage.h"
+#include <locale.h>
 
 using std::map;
 using std::string;

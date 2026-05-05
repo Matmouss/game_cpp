@@ -177,12 +177,13 @@ Monstre* getMonstreCombat(Partie& partie_en_cours) {
 }
 
 bool VictoireCondition(Personnage& personnage) {
-    if (personnage.getHp() <= 0) return false;
+    if (personnage.getHp() <= 0 || personnage.getMercy() >= personnage.getMercyGoal()) return false;
     return true;
 }
 
 bool combatEnCours(Monstre& monstre, Personnage& personnage) {
-    if (monstre.getHp() <= 0 || monstre.getMercy() >= monstre.getMercyGoal() || personnage.getHp() <= 0) {
+    if (monstre.getHp() <= 0 || monstre.getMercy() >= monstre.getMercyGoal() || personnage.getHp() <= 0 || personnage.getMercy() >= personnage.getMercyGoal())
+    {
         return false;
     }
 

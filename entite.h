@@ -71,13 +71,13 @@ public:
     void setAction(Act* action, int i) { inventaireACT[i] = action; }
 
     string attaquer(Entite &entiteCible){
-        int degats = std::max(this->atk - entiteCible.getDef(),0);
+        int degats = this->atk + this->getStatValue("Force");
         return entiteCible.prendreDegats(degats);
     }
 
     string prendreDegats(int degats){
-        this->hp -= degats;
-        return this->nom + " prend " + std::to_string(degats) + " degats";
+        this->hp -= std::max(degats - this->getDef(),0);
+        return this->nom + " prend " + std::to_string(degats)  + " degats";
     }
 
     string soigner(int soin){

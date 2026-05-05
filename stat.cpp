@@ -31,6 +31,8 @@ void Stat::setValue(int valeur){this->valeur = valeur;}
 Stat* Stat::instancierStat(string nom){
    if (nom == "Vulnerabilite")
       return new Vulnerabilite();
+   if (nom == "Force")
+      return new Force();
    return nullptr;
 }
 
@@ -44,6 +46,15 @@ Vulnerabilite::Vulnerabilite() : Stat("Vulnerabilite"){
 }
 
 void Vulnerabilite::endTurnEffectStat()
+{
+   setValue(getValue() - 1);
+}
+Force::Force() : Stat("Force")
+{
+   this->valeur = 0;
+   this->initValeur = this->valeur;
+}
+void Force::endTurnEffectStat()
 {
    setValue(getValue() - 1);
 }

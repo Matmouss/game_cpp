@@ -35,7 +35,11 @@ string Item::utiliser(Personnage &p) {
    else if (type == "Vulnerabilite"){
       int somme = p.getStatValue("Vulnerabilite") + valeur;
       p.setStatValue("Vulnerabilite", somme);
-   } else {
+   } else if (type == "Force"){
+      int somme = p.getStatValue("Force") + valeur;
+      p.setStatValue("Force", somme);
+   } 
+   else {
       erreur = " --> Type d'item non reconnu: " + type;
    }
    return texte + erreur;

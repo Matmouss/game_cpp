@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -g -O0
-LDFLAGS = -lncurses
+LDFLAGS = -lncursesw
 
 TARGET = test
 SRC = main.cpp entite.cpp affichage.cpp act.cpp csv.cpp monstre.cpp personnage.cpp partie.cpp item.cpp stat.cpp monstrelambda.cpp miniboss.cpp boss.cpp

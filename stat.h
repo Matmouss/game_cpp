@@ -28,10 +28,19 @@ class Stat{
    };
 
 
+
    class Vulnerabilite : public Stat
    {
    public:
    Vulnerabilite();
    
    void endTurnEffectStat() override;
-};
+   };
+
+   class Force : public Stat
+   {
+   public:
+      Force();
+
+      void endTurnEffectStat() override;
+   };

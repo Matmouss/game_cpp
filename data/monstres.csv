@@ -1,5 +1,11 @@
 id,name,type,hpMax,atk,def,mercyGoal,description,Actions,maxActionPoints,Texte
-0,Robin,lambda,10,20,0,100,de l'esivl,0;1;1;,2,bla;blabla;blablabla;blablablabla;
-1,Froggit,lambda,10,45,0,100,ribbit,0;0;1;,2,Je suis froggit;ribbit;ribbit ribbit;aaaaaaaah;
-2,MimicBox,mini,10,20,0,150,mimic,0;,2,bla;blabla;blablabla;blablablabla;
-3,QueenByte,boss,10,33,0,100,byte,0;0;0;1;2;,3,bla;blabla;blablabla;blablablabla;
+0,SkeletonGuard,lambda,30,15,5,100,Un ancien garde condamné à patrouiller éternellement; il redresse son casque rouillé en te voyant approcher,0;1;1;,2,Un cliquetis résonne dans le couloir...;il ajuste son armure fissurée;ses orbites vides te fixent;il s'effondre en tas d'os;
+1,DarkBat,lambda,20,18,2,100,Une chauve-souris surexcitée qui semble prendre ce combat pour un jeu dangereux,1;1;2;,2,Une ombre traverse la torche...;elle pousse un cri moqueur;elle pique puis s’éloigne;elle s’écrase dans un couinement;
+2,SlimeMud,lambda,35,12,3,100,Une créature boueuse qui gargouille comme si elle essayait de te parler,0;0;1;,2,La boue frémit à tes pieds...;bloup... bloup...;elle tente de t’engloutir;elle se répand en flaque inerte;
+3,GoblinThief,lambda,28,22,4,100,Un gobelin nerveux qui jauge déjà ce qu’il pourra te voler; même en plein combat,1;2;2;,2,Un rire grinçant éclate;il te tourne autour;ses yeux brillent d’avidité;il détale en hurlant;
+4,OrcBrute,mini,60,30,10,120,Un orc gigantesque qui te regarde comme si tu étais juste un obstacle ennuyeux,0;1;2;2;,3,Un grognement profond secoue la pièce;il serre les poings;il frappe sans réfléchir;il s'écroule avec un soupir rageur;
+5,CursedArmor,lambda,40,20,12,100,Une armure vide qui semble fatiguée de se battre mais incapable d’arrêter,0;0;2;,2,Le métal grince tout seul...;elle avance lourdement;elle hésite un instant;elle retombe en silence;
+6,FireImp,lambda,25,26,3,100,Un petit démon de feu qui ricane comme s’il connaissait déjà l’issue du combat,1;2;2;,2,Une flamme danse soudainement;il ricane bruyamment;il jaillit dans tous les sens;il s’éteint dans un dernier éclat;
+7,SpiderQueenling,lambda,32,24,6,100,Une jeune reine araignée vexée d’être dérangée dans son royaume de toiles,0;1;2;,2,Les fils vibrent autour de toi...;elle descend lentement;elle t’observe en silence;elle se replie sur elle-même;
+8,NecromancerAdept,mini,55,28,8,130,Un apprenti nécromancien qui fait semblant d’être confiant malgré ses mains tremblantes,0;1;1;2;,3,Une voix chuchote dans l’ombre;il récite un sort;les morts frémissent;il s’effondre épuisé;
+9,DungeonOverlord,boss,120,40,15,200,Le seigneur du donjon; lassé des intrus mais presque amusé par ta témérité,0;0;1;1;2;,4,Une présence écrasante t’envahit;il te regarde de haut;il semble tester tes limites;il disparaît dans les ténèbres;

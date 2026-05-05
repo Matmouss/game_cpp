@@ -181,7 +181,8 @@ Partie::Partie(int hpMax,int tailleInventaireACT, int tailleInventaireItems, int
 
    //par défaut commencer avec ces deux objets
     this->personnage->ajouterItem(this->itemPossible[0]);
-    this->personnage->ajouterItem(this->itemPossible[3]);
+    this->personnage->ajouterItem(this->itemPossible[1]);
+    this->personnage->ajouterItem(this->itemPossible[4]);
 
     this->personnage->setAction(this->catalogueACT[0],0);
     this->personnage->setAction(this->catalogueACT[2],1);
