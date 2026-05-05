@@ -735,15 +735,19 @@ bool ouvrirInventaire(Partie& partie_en_cours, GameWindow& gw, map<int, string>&
     return true;
 }
 
-void lancerCombat(Partie& partie_en_cours, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
+bool lancerCombat(Partie& partie_en_cours, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
     Monstre* monstre = getMonstreCombat(partie_en_cours);
 
     if (Fight(*monstre, *partie_en_cours.personnage, gw, keymap, infos)) {
         appliquerVictoireCombat(partie_en_cours, monstre);
         updateInfos(*partie_en_cours.personnage, infos);
     } else {
-        // logique de gameover
+        
+        vector<string> display = {"Vous etes un nul","Appuyer sur Enter pour Continuer"};
+        afficherEtAttendre(gw, keymap, infos, display);
+        return false;
     }
+    return true;
 }
 
 
@@ -775,7 +779,7 @@ void game() {
             running = ouvrirBestiaire(partie_en_cours, gw, keymap, infos);
         } else if (choixCourt == "Fight") {
             state = "Fight";
-            lancerCombat(partie_en_cours, gw, keymap, infos);
+            running = lancerCombat(partie_en_cours, gw, keymap, infos);
         } else if (choixCourt == "Inventaire") {
             running = ouvrirInventaire(partie_en_cours, gw, keymap, infos);
         }
@@ -785,6 +789,7 @@ void game() {
 }
 
 int main() {
+    
     game();
     cout << "c'etait bien non ?" << endl;
 }
