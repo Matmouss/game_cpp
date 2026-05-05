@@ -130,11 +130,13 @@ void Entite::AddStat(Stat* stat){
 
 int Entite::getStatValue(string nom)
 {
-    for (int i = 0; i < this->tailleStats; i++)
-    {
-        if (this->stats[i]->getNom() == nom)
+    if (tailleStats != 0){
+        for (int i = 0; i < this->tailleStats; i++)
         {
-            return this->stats[i]->getValue();
+            if (this->stats[i]->getNom() == nom)
+            {
+                return this->stats[i]->getValue();
+            }
         }
     }
     Stat* temp = Stat::instancierStat(nom);
@@ -143,11 +145,14 @@ int Entite::getStatValue(string nom)
 };
 
 void Entite::setStatValue(string nom, int valeur){
+
+    if (tailleStats != 0){
     for (int i = 0; i < this->tailleStats; i++)
-    {
-        if (this->stats[i]->getNom() == nom)
         {
-            this->stats[i]->setValue(valeur);
+            if (this->stats[i]->getNom() == nom)
+            {
+                this->stats[i]->setValue(valeur);
+            }
         }
     }
 };

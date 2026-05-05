@@ -280,6 +280,7 @@ void appliquerVictoireCombat(Partie& partie_en_cours, Monstre* monstre) {
     partie_en_cours.ajouterBestiaire(monstre);
     partie_en_cours.personnage->destructionStats();
     partie_en_cours.personnage->setNbTue();
+    partie_en_cours.personnage->setAllStatsUp(5);
 }
 
 // ====================
@@ -534,6 +535,7 @@ void afficherFinCombat(
         "FIN COMBAT",
         monstre.getNom() + " | HP " + to_string(monstre.getHp()) + " | MERCY " + to_string(monstre.getMercy()),
         "Vous rangez le cadavre de monstre dans votre sac et poursuivez votre chemin...",
+        "Mais vous trouvez Un champignon et Vous sentez une force se reveiller en vous! HP,ATK,DEF + 5",
         "Appuyer sur entree pour continuer"
     };
 

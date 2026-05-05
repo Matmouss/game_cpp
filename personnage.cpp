@@ -64,3 +64,9 @@ string Personnage::utiliserItem(int i) {
     }
     return "Item inconnu";
 }
+// void Personnage::allStatsUp(int statUpValue){
+//     //this->setStatValue("hpMax", this->getStatValue("hpMax") + statUpValue);
+//     //this->setStatValue("atk", this->getStatValue("atk") + statUpValue);
+//     int a = getStatValue("def") + statUpValue;
+//      this->setStatValue("def",a);
+// }

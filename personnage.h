@@ -39,4 +39,5 @@ public:
    void ajouterItem(Item* &item);
    void retirerItem(int i);
    string utiliserItem(int i);
+   void allStatsUp(int valeur);
 };

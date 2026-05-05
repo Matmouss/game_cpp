@@ -60,6 +60,7 @@ public:
     Stat* getStats(int i) { return stats[i]; }
     int getAct() { return actPoints; }
     int getMaxAct() { return maxActPoints; }
+    virtual void setAllStatsUp(int value){ hpMax+= value; atk+= value;def+=value;}
 
     int getStatValue(string nom);
     void setStatValue(string nom, int valeur);
