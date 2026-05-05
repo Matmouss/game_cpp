@@ -31,10 +31,6 @@ struct ResultatTourJoueur {
     string message;
 };
 
-// ====================
-// OUTILS TEXTE
-// ====================
-
 string joinLines(const vector<string>& lines) {
     string result;
 
@@ -61,10 +57,6 @@ string extractDescription(const string& option) {
 
     return option.substr(pos + 3);
 }
-
-// ====================
-// LOGIQUE DE DONNEES
-// ====================
 
 string getCombatHeader(Monstre& monstre) {
     return monstre.getNom() + " | HP " + to_string(monstre.getHp()) + " | MERCY " + to_string(monstre.getMercy()) + "%";
@@ -227,10 +219,6 @@ ResultatTourJoueur nouveauResultatTourJoueur() {
 
     return resultat;
 }
-
-// ====================
-// LOGIQUE DE JEU
-// ====================
 
 ResultatTourJoueur executerActJoueur(
     Monstre& monstre,
@@ -544,6 +532,7 @@ void afficherFinCombat(
     display = {
         "FIN COMBAT",
         monstre.getNom() + " | HP " + to_string(monstre.getHp()) + " | MERCY " + to_string(monstre.getMercy()),
+        "Vous rangez le cadavre de monstre dans votre sac et poursuivez votre chemin...",
         "Appuyer sur entree pour continuer"
     };
 
@@ -741,22 +730,80 @@ bool lancerCombat(Partie& partie_en_cours, GameWindow& gw, map<int, string>& key
     if (Fight(*monstre, *partie_en_cours.personnage, gw, keymap, infos)) {
         appliquerVictoireCombat(partie_en_cours, monstre);
         updateInfos(*partie_en_cours.personnage, infos);
-    } else {
-        
-        vector<string> display = {"Vous etes un nul","Appuyer sur Enter pour Continuer"};
-        afficherEtAttendre(gw, keymap, infos, display);
+
+
+        if (partie_en_cours.personnage->getNbVictoire() == 10) {
+            infos["__mode"] = "combat";
+            infos["__title"] = "VICTOIRE";
+            infos["__combat_header"] = "VICTOIRE";
+            infos["__combat_message"] = "yay tu as tabassé le boss";
+            infos["__monster_hint"] = "SYSTEM CLEARED";
+
+            clearSidebarMenu(infos);
+
+            vector<string> display = {
+                "VICTOIRE",
+                "Vous avez gagne ALTERDUNE",
+                "Appuyer sur entree pour continuer"
+            };
+
+            afficherEtAttendre(gw, keymap, infos, display);
+
+            infos["__mode"] = "menu";
+            infos["__title"] = "MENU";
+            clearSidebarMenu(infos);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    infos["__mode"] = "combat";
+    infos["__title"] = "GAME OVER";
+    infos["__combat_header"] = "GAME OVER";
+    infos["__combat_message"] = "Vous etes un nul";
+    infos["__monster_hint"] = "PLAYER OFFLINE";
+
+    clearSidebarMenu(infos);
+
+    vector<string> display = {
+        "GAME OVER",
+        "Vous etes un nul",
+        "Appuyer sur entree pour continuer"
+    };
+
+    afficherEtAttendre(gw, keymap, infos, display);
+
+    infos["__mode"] = "menu";
+    infos["__title"] = "MENU";
+    clearSidebarMenu(infos);
+
+    return false;
+}
+
+bool menuAccueil(GameWindow& gw) {
+    string state = "ALTERDUNE";
+
+    setUIMode(infos, "menu", "ALTERDUNE");
+
+    vector<string> options = {
+        "Commencer une partie : lancer une nouvelle partie",
+        "Quitter : quitter le jeu"
+    };
+
+    string choix = Menu(gw, keymap, infos, options, state);
+    string choixCourt = stripDescription(choix);
+
+    if (choix == "quit" || choixCourt == "Quitter") {
         return false;
     }
+
     return true;
 }
 
-
-void game() {
+void game(GameWindow& gw) {
     string state = "menu";
-
-    GameWindow gw = init_ncurses();
-
-    initBinds();
 
     Partie partie_en_cours = Partie();
 
@@ -784,12 +831,19 @@ void game() {
             running = ouvrirInventaire(partie_en_cours, gw, keymap, infos);
         }
     }
-
-    end_ncurses(gw.jeu);
 }
 
 int main() {
-    
-    game();
+    GameWindow gw = init_ncurses();
+
+    initBinds();
+
+    bool commencer = menuAccueil(gw);
+    if (commencer) {
+        game(gw);
+    } 
+
+    end_ncurses(gw.jeu);
+
     cout << "c'etait bien non ?" << endl;
 }
