@@ -232,3 +232,43 @@ Monstre* Partie::randomMonstre(string type){
         }
     }
 }
+
+Item* Partie::randomItem() {
+    if (itemPossible == nullptr || tailleItemPossible <= 0) {
+        return nullptr;
+    }
+
+    int index = rand() % tailleItemPossible;
+
+    if (itemPossible[index] != nullptr) {
+        return itemPossible[index];
+    }
+
+    for (int i = 0; i < tailleItemPossible; i++) {
+        if (itemPossible[i] != nullptr) {
+            return itemPossible[i];
+        }
+    }
+
+    return nullptr;
+}
+
+Act* Partie::randomACT() {
+    if (catalogueACT == nullptr || tailleCatalogueACT <= 0) {
+        return nullptr;
+    }
+
+    int index = rand() % tailleCatalogueACT;
+
+    if (catalogueACT[index] != nullptr) {
+        return catalogueACT[index];
+    }
+
+    for (int i = 0; i < tailleCatalogueACT; i++) {
+        if (catalogueACT[i] != nullptr) {
+            return catalogueACT[i];
+        }
+    }
+
+    return nullptr;
+}

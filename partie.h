@@ -36,4 +36,6 @@ public:
    void afficherFin();
    void ajouterBestiaire(Monstre* &monstre);
    Monstre* randomMonstre(string type);
+   Item* randomItem();
+   Act* randomACT();
 };

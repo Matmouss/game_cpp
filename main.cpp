@@ -1,8 +1,7 @@
 #include <string>
-#include <map>
 #include <vector>
-#include <utility>
-#include <ncurses.h>
+#include <iostream>
+#include <cstdlib>
 #include "affichage.h"
 #include "monstre.h"
 #include "partie.h"
@@ -11,18 +10,12 @@
 #include "act.h"
 #include "entite.h"
 #include "item.h"
-#include <iostream>
-#include <cstdlib>
 
-using std::endl;
 using std::cout;
-using std::map;
+using std::endl;
 using std::string;
 using std::to_string;
 using std::vector;
-
-map<int, string> keymap;
-map<string, string> infos;
 
 struct ResultatTourJoueur {
     bool pass;
@@ -30,33 +23,6 @@ struct ResultatTourJoueur {
     bool actionEffectuee;
     string message;
 };
-
-string joinLines(const vector<string>& lines) {
-    string result;
-
-    for (size_t i = 0; i < lines.size(); ++i) {
-        result += lines[i];
-        if (i + 1 < lines.size()) result += "\n";
-    }
-
-    return result;
-}
-
-string stripDescription(const string& option) {
-    size_t pos = option.find(" : ");
-    if (pos == string::npos) pos = option.find(" | ");
-    if (pos == string::npos) return option;
-
-    return option.substr(0, pos);
-}
-
-string extractDescription(const string& option) {
-    size_t pos = option.find(" : ");
-    if (pos == string::npos) pos = option.find(" | ");
-    if (pos == string::npos) return option;
-
-    return option.substr(pos + 3);
-}
 
 string getCombatHeader(Monstre& monstre) {
     return monstre.getNom() + " | HP " + to_string(monstre.getHp()) + " | MERCY " + to_string(monstre.getMercy()) + "%";
@@ -164,15 +130,43 @@ vector<string> getInventaireOptions(Personnage& personnage) {
     return options;
 }
 
+vector<string> getOptionsRemplacementAct(Personnage& personnage, Act* nouvelleAction) {
+    vector<string> options;
+
+    for (int i = 0; i < personnage.getNbActions(); i++) {
+        Act* action = personnage.getActions(i);
+
+        if (action == nullptr) {
+            options.push_back("Emplacement vide : prendre " + nouvelleAction->identifiant);
+        } else {
+            options.push_back(action->identifiant + " : remplacer par " + nouvelleAction->identifiant);
+        }
+    }
+
+    options.push_back("Refuser : ne pas prendre " + nouvelleAction->identifiant);
+    return options;
+}
+
+vector<string> getOptionsRemplacementItem(Personnage& personnage, Item* nouvelItem) {
+    vector<string> options;
+
+    for (int i = 0; i < personnage.getTailleInventaire(); i++) {
+        Item* item = personnage.getInventaireItems(i);
+
+        if (item == nullptr) {
+            options.push_back("Emplacement vide : prendre " + nouvelItem->getNom());
+        } else {
+            options.push_back(item->getNom() + " : remplacer par " + nouvelItem->getNom());
+        }
+    }
+
+    options.push_back("Refuser : ne pas prendre " + nouvelItem->getNom());
+    return options;
+}
+
 Monstre* getMonstreCombat(Partie& partie_en_cours) {
-    if (partie_en_cours.tailleBestiaire == 5) {
-        return partie_en_cours.randomMonstre("mini");
-    }
-
-    if (partie_en_cours.tailleBestiaire == 10) {
-        return partie_en_cours.randomMonstre("boss");
-    }
-
+    if (partie_en_cours.tailleBestiaire == 4 || partie_en_cours.tailleBestiaire == 8) return partie_en_cours.randomMonstre("mini");
+    if (partie_en_cours.tailleBestiaire == 9) return partie_en_cours.randomMonstre("boss");
     return partie_en_cours.randomMonstre("lambda");
 }
 
@@ -182,19 +176,13 @@ bool VictoireCondition(Personnage& personnage) {
 }
 
 bool combatEnCours(Monstre& monstre, Personnage& personnage) {
-    if (monstre.getHp() <= 0 || monstre.getMercy() >= monstre.getMercyGoal() || personnage.getHp() <= 0 || personnage.getMercy() >= personnage.getMercyGoal())
-    {
-        return false;
-    }
-
+    if (monstre.getHp() <= 0 || monstre.getMercy() >= monstre.getMercyGoal() || personnage.getHp() <= 0 || personnage.getMercy() >= personnage.getMercyGoal()) return false;
     return true;
 }
 
 int getIndexActionChoisie(Personnage& personnage, const vector<string>& options, const string& choix) {
     for (int i = 0; i < personnage.getNbActions(); i++) {
-        if (i < static_cast<int>(options.size()) && options[i] == choix && choix != "") {
-            return i;
-        }
+        if (i < static_cast<int>(options.size()) && options[i] == choix && choix != "") return i;
     }
 
     return -1;
@@ -202,9 +190,7 @@ int getIndexActionChoisie(Personnage& personnage, const vector<string>& options,
 
 int getIndexItemChoisi(Personnage& personnage, const vector<string>& options, const string& choix) {
     for (int i = 0; i < personnage.getTailleInventaire(); i++) {
-        if (i < static_cast<int>(options.size()) && options[i] == choix) {
-            return i;
-        }
+        if (i < static_cast<int>(options.size()) && options[i] == choix) return i;
     }
 
     return -1;
@@ -221,12 +207,7 @@ ResultatTourJoueur nouveauResultatTourJoueur() {
     return resultat;
 }
 
-ResultatTourJoueur executerActJoueur(
-    Monstre& monstre,
-    Personnage& personnage,
-    const vector<string>& options,
-    const string& choix
-) {
+ResultatTourJoueur executerActJoueur(Monstre& monstre, Personnage& personnage, const vector<string>& options, const string& choix) {
     ResultatTourJoueur resultat = nouveauResultatTourJoueur();
 
     if (choix == "quit" || stripDescription(choix) == "Retour") {
@@ -244,11 +225,7 @@ ResultatTourJoueur executerActJoueur(
     return resultat;
 }
 
-ResultatTourJoueur executerItemJoueur(
-    Personnage& personnage,
-    const vector<string>& options,
-    const string& choix
-) {
+ResultatTourJoueur executerItemJoueur(Personnage& personnage, const vector<string>& options, const string& choix) {
     ResultatTourJoueur resultat = nouveauResultatTourJoueur();
 
     if (choix == "quit" || stripDescription(choix) == "Retour" || choix == "emplacment vide") {
@@ -276,6 +253,90 @@ ResultatTourJoueur executerPassJoueur() {
     return resultat;
 }
 
+bool placerActionLibre(Personnage& personnage, Act* nouvelleAction) {
+    for (int i = 0; i < personnage.getNbActions(); i++) {
+        if (personnage.getActions(i) == nullptr) {
+            personnage.setAction(nouvelleAction, i);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool placerItemLibre(Personnage& personnage, Item* nouvelItem) {
+    for (int i = 0; i < personnage.getTailleInventaire(); i++) {
+        if (personnage.getInventaireItems(i) == nullptr) {
+            personnage.setInventaireItems(nouvelItem, i);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void donnerAction(Personnage& personnage, Act* nouvelleAction) {
+    if (nouvelleAction == nullptr) return;
+
+    afficherMessageCombat("RECOMPENSE", "Vous avez gagne la competence : " + nouvelleAction->identifiant);
+
+    if (placerActionLibre(personnage, nouvelleAction)) {
+        afficherMessageCombat("RECOMPENSE", nouvelleAction->identifiant + " ajoutee aux competences");
+        return;
+    }
+
+    setCombatInfos("NOUVELLE COMPETENCE", "Choisissez une competence a remplacer", "TARGET LOCKED");
+
+    vector<string> options = getOptionsRemplacementAct(personnage, nouvelleAction);
+    string choix = Menu(options, "NOUVELLE COMPETENCE");
+
+    if (choix != "quit" && stripDescription(choix) != "Refuser") {
+        for (int i = 0; i < personnage.getNbActions(); i++) {
+            if (options[i] == choix) {
+                personnage.setAction(nouvelleAction, i);
+                afficherMessageCombat("RECOMPENSE", nouvelleAction->identifiant + " equipee");
+                return;
+            }
+        }
+    }
+
+    afficherMessageCombat("RECOMPENSE", nouvelleAction->identifiant + " refusee");
+}
+
+void donnerItem(Personnage& personnage, Item* nouvelItem) {
+    if (nouvelItem == nullptr) return;
+
+    afficherMessageCombat("RECOMPENSE", "Vous avez gagne l'objet : " + nouvelItem->getNom());
+
+    if (placerItemLibre(personnage, nouvelItem)) {
+        afficherMessageCombat("RECOMPENSE", nouvelItem->getNom() + " ajoute a l'inventaire");
+        return;
+    }
+
+    setCombatInfos("NOUVEL OBJET", "Choisissez un objet a remplacer", "TARGET LOCKED");
+
+    vector<string> options = getOptionsRemplacementItem(personnage, nouvelItem);
+    string choix = Menu(options, "NOUVEL OBJET");
+
+    if (choix != "quit" && stripDescription(choix) != "Refuser") {
+        for (int i = 0; i < personnage.getTailleInventaire(); i++) {
+            if (options[i] == choix) {
+                personnage.setInventaireItems(nouvelItem, i);
+                afficherMessageCombat("RECOMPENSE", nouvelItem->getNom() + " equipe");
+                return;
+            }
+        }
+    }
+
+    afficherMessageCombat("RECOMPENSE", nouvelItem->getNom() + " refuse");
+}
+
+void donnerRecompenses(Personnage& personnage, Act* nouvelleAction, Item* nouvelItem) {
+    donnerAction(personnage, nouvelleAction);
+    donnerItem(personnage, nouvelItem);
+    updateInfos(personnage);
+}
+
 void appliquerVictoireCombat(Partie& partie_en_cours, Monstre* monstre) {
     partie_en_cours.ajouterBestiaire(monstre);
     partie_en_cours.personnage->destructionStats();
@@ -283,278 +344,75 @@ void appliquerVictoireCombat(Partie& partie_en_cours, Monstre* monstre) {
     partie_en_cours.personnage->setAllStatsUp(5);
 }
 
-// ====================
-// ETAT AFFICHAGE
-// ====================
-
-void setUIMode(map<string, string>& infos, const string& mode, const string& title) {
-    infos["__mode"] = mode;
-    infos["__title"] = title;
+string choisirCommandeJoueur() {
+    return Menu(getActionMenu(), "COMMANDS");
 }
 
-void setSidebarMenu(map<string, string>& infos, const string& title, const vector<string>& options, int selected) {
-    vector<string> labels;
-
-    for (const string& option : options) {
-        labels.push_back(stripDescription(option));
-    }
-
-    infos["__sidebar_menu_title"] = title;
-    infos["__sidebar_menu_items"] = joinLines(labels);
-    infos["__sidebar_menu_selected"] = to_string(selected);
-
-    if (selected >= 0 && selected < static_cast<int>(options.size())) {
-        infos["__selection_detail"] = extractDescription(options[selected]);
-    } else {
-        infos["__selection_detail"] = "";
-    }
-}
-
-void clearSidebarMenu(map<string, string>& infos) {
-    infos["__sidebar_menu_title"] = "";
-    infos["__sidebar_menu_items"] = "";
-    infos["__sidebar_menu_selected"] = "-1";
-    infos["__selection_detail"] = "";
-}
-
-void setCombatInventory(Personnage& personnage, map<string, string>& infos) {
-    vector<string> lignes;
-
-    for (int i = 0; i < personnage.getTailleInventaire(); ++i) {
-        Item* item = personnage.getInventaireItems(i);
-
-        if (item == nullptr) {
-            lignes.push_back("- vide");
-        } else {
-            lignes.push_back("- " + item->getNom());
-        }
-    }
-
-    if (lignes.empty()) lignes.push_back("Inventaire vide");
-
-    infos["__inventory_items"] = joinLines(lignes);
-}
-
-void updateInfos(Personnage& personnage, map<string, string>& infos) {
-    infos["Nom"] = personnage.getNom();
-    infos["Monstres tués"] = to_string(personnage.getNbTue());
-    infos["Hp"] = to_string(personnage.getHp());
-    infos["Atk"] = to_string(personnage.getAtk());
-    infos["Def"] = to_string(personnage.getDef());
-    infos["Mercy"] = to_string(personnage.getMercy());
-    infos["ActPts"] = to_string(personnage.getAct());
-
-    vector<string> statsLines;
-
-    for (int i = 0; i < personnage.getNbStats(); i++) {
-        string nom = personnage.getStats(i)->getNom();
-        statsLines.push_back(nom + ": " + to_string(personnage.getStatValue(nom)));
-    }
-
-    infos["Stats"] = statsLines.empty() ? "-" : joinLines(statsLines);
-
-    setCombatInventory(personnage, infos);
-}
-
-void setCombatInfos(map<string, string>& infos, const string& header, const string& message, const string& hint) {
-    infos["__mode"] = "combat";
-    infos["__title"] = "COMBAT MODE";
-    infos["__combat_header"] = header;
-    infos["__combat_message"] = message;
-    infos["__monster_hint"] = hint;
-}
-
-void setCombatInfosDepuisMonstre(Monstre& monstre, map<string, string>& infos, const string& message, const string& hint) {
-    setCombatInfos(infos, getCombatHeader(monstre), message, hint);
-}
-
-vector<string> creerDisplayCombat(const string& header, const string& message) {
-    return {
-        header,
-        message,
-        "Appuyer sur entree pour continuer"
-    };
-}
-
-
-void afficher(GameWindow& gw, map<string, string>& infos, const vector<string>& display) {
-    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
-}
-
-void waitEnterOrQuit(GameWindow& gw, map<int, string>& keymap, map<string, string>& infos, const vector<string>& display) {
-    string input = getInput(keymap);
-
-    while (input != "enter" && input != "quit") {
-        if (input == "resize") {
-            gw = resize_window(gw.jeu, display, infos);
-        }
-
-        input = getInput(keymap);
-    }
-}
-
-void afficherEtAttendre(GameWindow& gw, map<int, string>& keymap, map<string, string>& infos, const vector<string>& display) {
-    afficher(gw, infos, display);
-    waitEnterOrQuit(gw, keymap, infos, display);
-}
-
-string Menu(
-    GameWindow& gw,
-    map<int, string>& keymap,
-    map<string, string>& infos,
-    vector<string>& options,
-    string& title
-) {
-    if (options.empty()) return "";
-
-    bool choisi = false;
-    int choix = 0;
-    vector<string> display;
-    bool combatContext = (infos["__mode"] == "combat");
-
-    if (!combatContext) {
-        setUIMode(infos, "menu", title);
-    } else {
-        infos["__title"] = "COMBAT MODE";
-    }
-
-    while (!choisi) {
-        display.clear();
-
-        if (combatContext) {
-            display.push_back(infos.count("__combat_header") ? infos["__combat_header"] : "TARGET UNKNOWN");
-            display.push_back(infos.count("__combat_message") ? infos["__combat_message"] : "Choisissez une commande.");
-        } else {
-            display.push_back("ROOT@RPG:~$ " + title);
-        }
-
-        setSidebarMenu(infos, title, options, choix);
-        afficher(gw, infos, display);
-
-        string input = getInput(keymap);
-
-        if (input == "quit") {
-            clearSidebarMenu(infos);
-            return "quit";
-        } else if (input == "resize") {
-            gw = resize_window(gw.jeu, display, infos);
-        } else if (input == "up" || input == "left") {
-            choix = (choix - 1 + static_cast<int>(options.size())) % static_cast<int>(options.size());
-        } else if (input == "down" || input == "right") {
-            choix = (choix + 1) % static_cast<int>(options.size());
-        } else if (input == "enter") {
-            choisi = true;
-        }
-    }
-
-    string selected = options[choix];
-    clearSidebarMenu(infos);
-
-    return selected;
-}
-
-string choisirCommandeJoueur(GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
-    vector<string> actionMenu = getActionMenu();
-    string title = "COMMANDS";
-
-    return Menu(gw, keymap, infos, actionMenu, title);
-}
-
-string choisirActJoueur(
-    Personnage& personnage,
-    GameWindow& gw,
-    map<int, string>& keymap,
-    map<string, string>& infos,
-    vector<string>& options
-) {
+string choisirActJoueur(Personnage& personnage, vector<string>& options) {
     options = getActionsOptions(personnage);
-
-    infos["__combat_message"] = "Selectionnez une competence.";
-
-    string title = "SKILLS";
-    return Menu(gw, keymap, infos, options, title);
+    setCombatMessage("Selectionnez une competence.");
+    return Menu(options, "SKILLS");
 }
 
-string choisirItemJoueur(
-    Personnage& personnage,
-    GameWindow& gw,
-    map<int, string>& keymap,
-    map<string, string>& infos,
-    vector<string>& options
-) {
+string choisirItemJoueur(Personnage& personnage, vector<string>& options) {
     options = getItemsOptions(personnage);
-
-    infos["__combat_message"] = "Selectionnez un objet.";
-
-    string title = "ITEMS";
-    return Menu(gw, keymap, infos, options, title);
+    setCombatMessage("Selectionnez un objet.");
+    return Menu(options, "ITEMS");
 }
 
-void afficherDebutCombat(Monstre& monstre, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
+void afficherDebutCombat(Monstre& monstre) {
     vector<string> display = creerDisplayCombat(getCombatHeader(monstre), monstre.getDialogues(0));
-
-    infos["__combat_header"] = display[0];
-    infos["__combat_message"] = display[1];
-
-    afficherEtAttendre(gw, keymap, infos, display);
+    setCombatInfos(display[0], display[1], "SCAN TARGET");
+    afficherEtAttendre(display);
 }
 
-void afficherDialogueCombat(Monstre& monstre, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos, vector<string>& display) {
+void afficherDialogueCombat(Monstre& monstre, vector<string>& display) {
     display[0] = getCombatHeader(monstre);
     display[1] = monstre.getDialogues(rand() % (monstre.getTailleDialogues() - 1));
     display[2] = "Appuyer sur entree pour continuer";
 
-    infos["__combat_header"] = display[0];
-    infos["__combat_message"] = display[1];
-    infos["__monster_hint"] = "TARGET RESPONSE";
-
-    setSidebarMenu(infos, "COMMANDS", getCombatSidebarMenu(), 0);
-    afficherEtAttendre(gw, keymap, infos, display);
+    setCombatInfos(display[0], display[1], "TARGET RESPONSE");
+    setSidebarMenu("COMMANDS", getCombatSidebarMenu(), 0);
+    afficherEtAttendre(display);
 }
 
-void afficherFinCombat(
-    Monstre& monstre,
-    Personnage& personnage,
-    bool victoire,
-    GameWindow& gw,
-    map<int, string>& keymap,
-    map<string, string>& infos,
-    vector<string>& display
-) {
+void afficherFinCombat(Monstre& monstre, Personnage& personnage, bool victoire, vector<string>& display) {
     display[0] = getCombatHeader(monstre);
     display[1] = monstre.getDialogues(monstre.getTailleDialogues() - 1);
     display[2] = "Appuyer sur entree pour continuer";
 
-    infos["__combat_header"] = display[0];
-    infos["__combat_message"] = display[1];
-    infos["__monster_hint"] = victoire ? "TARGET NEUTRALIZED" : "PLAYER OFFLINE";
-
-    afficherEtAttendre(gw, keymap, infos, display);
+    setCombatInfos(display[0], display[1], victoire ? "TARGET NEUTRALIZED" : "PLAYER OFFLINE");
+    afficherEtAttendre(display);
 
     display = {
         "FIN COMBAT",
-        monstre.getNom() + " | HP " + to_string(monstre.getHp()) + " | MERCY " + to_string(monstre.getMercy()),
-        "Vous rangez le cadavre de monstre dans votre sac et poursuivez votre chemin...",
-        "Mais vous trouvez Un champignon et Vous sentez une force se reveiller en vous! HP,ATK,DEF + 5",
-        "Appuyer sur entree pour continuer"
+        monstre.getNom() + " | HP " + to_string(monstre.getHp()) + " | MERCY " + to_string(monstre.getMercy())
     };
 
-    infos["__combat_header"] = display[0];
-    infos["__combat_message"] = display[1];
+    if (victoire) {
+        if (monstre.getHp() <= 0) {
+            display.push_back("Vous rangez le cadavre de monstre dans votre sac et poursuivez votre chemin...");
+        } else {
+            display.push_back("Le monstre vous donne son numéro de téléphone et s'en va en souriant.");
+        }
 
-    updateInfos(personnage, infos);
-    afficherEtAttendre(gw, keymap, infos, display);
+        display.push_back("Vous sentez une force se reveiller en vous! HP,ATK,DEF + 5");
+        display.push_back("Appuyer sur entree pour continuer");
+    }
+
+    updateInfos(personnage);
+    setCombatInfos(display[0], display[1], victoire ? "TARGET NEUTRALIZED" : "PLAYER OFFLINE");
+    afficherEtAttendre(display);
 }
 
-
-bool FightJoueur(Monstre& monstre, Personnage& personnage, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
+bool FightJoueur(Monstre& monstre, Personnage& personnage) {
     vector<string> display;
     vector<string> options;
     ResultatTourJoueur resultat = nouveauResultatTourJoueur();
 
-    setCombatInfosDepuisMonstre(monstre, infos, "Selectionnez une commande dans la console gauche.", "TARGET LOCKED");
+    setCombatInfos(getCombatHeader(monstre), "Selectionnez une commande dans la console gauche.", "TARGET LOCKED");
 
-    string choix = choisirCommandeJoueur(gw, keymap, infos);
+    string choix = choisirCommandeJoueur();
 
     if (choix == "quit") return false;
 
@@ -562,35 +420,32 @@ bool FightJoueur(Monstre& monstre, Personnage& personnage, GameWindow& gw, map<i
     string headerAvantAction = getCombatHeader(monstre);
 
     if (choixCourt == "Act") {
-        choix = choisirActJoueur(personnage, gw, keymap, infos, options);
+        choix = choisirActJoueur(personnage, options);
         resultat = executerActJoueur(monstre, personnage, options, choix);
     } else if (choixCourt == "Item") {
-        choix = choisirItemJoueur(personnage, gw, keymap, infos, options);
+        choix = choisirItemJoueur(personnage, options);
         resultat = executerItemJoueur(personnage, options, choix);
     } else if (choixCourt == "Pass") {
         resultat = executerPassJoueur();
     }
 
-    updateInfos(personnage, infos);
-    setCombatInventory(personnage, infos);
-    setSidebarMenu(infos, "COMMANDS", getActionMenu(), -1);
+    updateInfos(personnage);
+    setCombatInventory(personnage);
+    setSidebarMenu("COMMANDS", getActionMenu(), -1);
 
     if (resultat.actionEffectuee) {
         display = creerDisplayCombat(headerAvantAction, resultat.message);
-        setCombatInfos(infos, display[0], display[1], "TARGET LOCKED");
-        afficher(gw, infos, display);
+        setCombatInfos(display[0], display[1], "TARGET LOCKED");
+        afficher(display);
     }
 
-    if (!resultat.bypass && !display.empty()) {
-        waitEnterOrQuit(gw, keymap, infos, display);
-    }
+    if (!resultat.bypass && !display.empty()) waitEnterOrQuit(display);
 
-    clearSidebarMenu(infos);
-
+    clearSidebarMenu();
     return resultat.pass;
 }
 
-void FightMonstre(Monstre& monstre, Personnage& personnage, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
+void FightMonstre(Monstre& monstre, Personnage& personnage) {
     vector<string> display = {""};
 
     int index_action = rand() % monstre.getNbActions();
@@ -599,31 +454,21 @@ void FightMonstre(Monstre& monstre, Personnage& personnage, GameWindow& gw, map<
     display[0] = getCombatHeaderAct(monstre);
     display.push_back("Appuyer sur entree pour continuer");
 
-    infos["__mode"] = "combat";
-    infos["__title"] = "COMBAT MODE";
-    infos["__combat_header"] = display[0];
-    infos["__combat_message"] = display[1];
-    infos["__monster_hint"] = "HOSTILE PROCESS RUNNING";
-
-    setSidebarMenu(infos, "COMMANDS", getCombatSidebarMenu(), -1);
-    updateInfos(personnage, infos);
-
-    afficherEtAttendre(gw, keymap, infos, display);
+    setCombatInfos(display[0], display[1], "HOSTILE PROCESS RUNNING");
+    setSidebarMenu("COMMANDS", getCombatSidebarMenu(), -1);
+    updateInfos(personnage);
+    afficherEtAttendre(display);
 }
 
-bool Fight(Monstre monstre, Personnage& personnage, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
+bool Fight(Partie& partie_en_cours, Monstre& monstre, Personnage& personnage) {
     bool combatEnCours_b = true;
     bool victoire = false;
 
-    infos["__mode"] = "combat";
-    infos["__title"] = "COMBAT MODE";
-    infos["__monster_hint"] = "SCAN TARGET";
-    //infos["__monster_sprite"] = "aaaaaaaaaa";
+    setCombatInfos(getCombatHeader(monstre), "", "SCAN TARGET");
+    setCombatInventory(personnage);
+    setSidebarMenu("COMMANDS", getCombatSidebarMenu(), 0);
 
-    setCombatInventory(personnage, infos);
-    setSidebarMenu(infos, "COMMANDS", getCombatSidebarMenu(), 0);
-
-    afficherDebutCombat(monstre, gw, keymap, infos);
+    afficherDebutCombat(monstre);
 
     vector<string> display = {
         getCombatHeader(monstre),
@@ -632,18 +477,14 @@ bool Fight(Monstre monstre, Personnage& personnage, GameWindow& gw, map<int, str
     };
 
     while (combatEnCours_b) {
-        while (!FightJoueur(monstre, personnage, gw, keymap, infos) && combatEnCours(monstre, personnage) && personnage.getAct() > 0) {}
+        while (!FightJoueur(monstre, personnage) && combatEnCours(monstre, personnage) && personnage.getAct() > 0) {}
 
         combatEnCours_b = combatEnCours(monstre, personnage);
         personnage.EndTurn();
 
-        if (combatEnCours_b) {
-            afficherDialogueCombat(monstre, gw, keymap, infos, display);
-        }
+        if (combatEnCours_b) afficherDialogueCombat(monstre, display);
 
-        while (combatEnCours_b && monstre.getAct() > 0) {
-            FightMonstre(monstre, personnage, gw, keymap, infos);
-        }
+        while (combatEnCours_b && monstre.getAct() > 0) FightMonstre(monstre, personnage);
 
         combatEnCours_b = combatEnCours(monstre, personnage);
         monstre.EndTurn();
@@ -651,202 +492,122 @@ bool Fight(Monstre monstre, Personnage& personnage, GameWindow& gw, map<int, str
 
     victoire = VictoireCondition(personnage);
 
-    afficherFinCombat(monstre, personnage, victoire, gw, keymap, infos, display);
+    afficherFinCombat(monstre, personnage, victoire, display);
+    donnerRecompenses(personnage, partie_en_cours.randomACT(), partie_en_cours.randomItem());
 
-    infos["__mode"] = "menu";
-    infos["__title"] = "MENU";
-    clearSidebarMenu(infos);
+    setUIMode("menu", "MENU");
+    clearSidebarMenu();
 
     return victoire;
 }
 
+bool ouvrirBestiaire(Partie& partie_en_cours) {
+    setUIMode("menu", "BESTIAIRE");
 
-void initBinds() {
-    keymap = {
-        {KEY_UP, "up"},
-        {KEY_DOWN, "down"},
-        {KEY_LEFT, "left"},
-        {KEY_RIGHT, "right"},
-        {'z', "up"},
-        {'Z', "up"},
-        {'w', "up"},
-        {'W', "up"},
-        {'s', "down"},
-        {'S', "down"},
-        {'q', "quit"},
-        {'Q', "quit"},
-        {27, "quit"},
-        {10, "enter"},
-        {KEY_ENTER, "enter"}
-    };
-
-    infos = {
-        {"Nom", "Personnage"},
-        {"Monstres tués", "0"},
-        {"Hp", "0"},
-        {"Atk", "0"},
-        {"Def", "0"},
-        {"Mercy", "0"},
-        {"ActPts", "0"},
-        {"Stats", "0"},
-        {"__mode", "menu"},
-        {"__title", "MENU"},
-        {"__sidebar_menu_title", ""},
-        {"__sidebar_menu_items", ""},
-        {"__sidebar_menu_selected", "-1"},
-        {"__inventory_items", ""},
-        {"__combat_header", ""},
-        {"__combat_message", ""},
-        {"__selection_detail", ""},
-        {"__monster_hint", "SCAN TARGET"}
-    };
-}
-
-
-bool ouvrirBestiaire(Partie& partie_en_cours, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
-    string state = "BESTIAIRE";
-
-    setUIMode(infos, "menu", "BESTIAIRE");
-
-    vector<string> options = getBestiaireOptions(partie_en_cours);
-    string choix = Menu(gw, keymap, infos, options, state);
+    string choix = Menu(getBestiaireOptions(partie_en_cours), "BESTIAIRE");
 
     if (choix == "quit") return false;
     return true;
 }
 
-bool ouvrirInventaire(Partie& partie_en_cours, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
-    string state = "INVENTAIRE";
+bool ouvrirInventaire(Partie& partie_en_cours) {
+    setUIMode("menu", "INVENTAIRE");
 
-    setUIMode(infos, "menu", "INVENTAIRE");
-
-    vector<string> options = getInventaireOptions(*partie_en_cours.personnage);
-    string choix = Menu(gw, keymap, infos, options, state);
+    string choix = Menu(getInventaireOptions(*partie_en_cours.personnage), "INVENTAIRE");
 
     if (choix == "quit") return false;
     return true;
 }
 
-bool lancerCombat(Partie& partie_en_cours, GameWindow& gw, map<int, string>& keymap, map<string, string>& infos) {
+void afficherGameOver() {
+    clearSidebarMenu();
+    afficherMessageCombat("GAME OVER", "Vous etes un nul", "PLAYER OFFLINE");
+    setUIMode("menu", "MENU");
+    clearSidebarMenu();
+}
+
+void afficherVictoireJeu() {
+    clearSidebarMenu();
+    setCombatInfos("VICTOIRE", "yay tu as tabassé le boss", "SYSTEM CLEARED");
+
+    vector<string> display = {
+        "VICTOIRE",
+        "Vous avez gagne ALTERDUNE",
+        "Appuyer sur entree pour continuer"
+    };
+
+    afficherEtAttendre(display);
+
+    setUIMode("menu", "MENU");
+    clearSidebarMenu();
+}
+
+bool lancerCombat(Partie& partie_en_cours) {
     Monstre* monstre = getMonstreCombat(partie_en_cours);
 
-    if (Fight(*monstre, *partie_en_cours.personnage, gw, keymap, infos)) {
+    if (Fight(partie_en_cours, *monstre, *partie_en_cours.personnage)) {
         appliquerVictoireCombat(partie_en_cours, monstre);
-        updateInfos(*partie_en_cours.personnage, infos);
+        updateInfos(*partie_en_cours.personnage);
 
-
-        if (partie_en_cours.personnage->getNbVictoire() == 10) {
-            infos["__mode"] = "combat";
-            infos["__title"] = "VICTOIRE";
-            infos["__combat_header"] = "VICTOIRE";
-            infos["__combat_message"] = "yay tu as tabassé le boss";
-            infos["__monster_hint"] = "SYSTEM CLEARED";
-
-            clearSidebarMenu(infos);
-
-            vector<string> display = {
-                "VICTOIRE",
-                "Vous avez gagne ALTERDUNE",
-                "Appuyer sur entree pour continuer"
-            };
-
-            afficherEtAttendre(gw, keymap, infos, display);
-
-            infos["__mode"] = "menu";
-            infos["__title"] = "MENU";
-            clearSidebarMenu(infos);
-
+        if (partie_en_cours.personnage->getNbTue() >= 10) {
+            afficherVictoireJeu();
             return false;
         }
 
         return true;
     }
 
-    infos["__mode"] = "combat";
-    infos["__title"] = "GAME OVER";
-    infos["__combat_header"] = "GAME OVER";
-    infos["__combat_message"] = "Vous etes un nul";
-    infos["__monster_hint"] = "PLAYER OFFLINE";
-
-    clearSidebarMenu(infos);
-
-    vector<string> display = {
-        "GAME OVER",
-        "Vous etes un nul",
-        "Appuyer sur entree pour continuer"
-    };
-
-    afficherEtAttendre(gw, keymap, infos, display);
-
-    infos["__mode"] = "menu";
-    infos["__title"] = "MENU";
-    clearSidebarMenu(infos);
-
+    afficherGameOver();
     return false;
 }
 
-bool menuAccueil(GameWindow& gw) {
-    string state = "ALTERDUNE";
-
-    setUIMode(infos, "menu", "ALTERDUNE");
+bool menuAccueil() {
+    setUIMode("menu", "ALTERDUNE");
 
     vector<string> options = {
         "Commencer une partie : lancer une nouvelle partie",
         "Quitter : quitter le jeu"
     };
 
-    string choix = Menu(gw, keymap, infos, options, state);
+    string choix = Menu(options, "ALTERDUNE");
     string choixCourt = stripDescription(choix);
 
-    if (choix == "quit" || choixCourt == "Quitter") {
-        return false;
-    }
-
+    if (choix == "quit" || choixCourt == "Quitter") return false;
     return true;
 }
 
-void game(GameWindow& gw) {
-    string state = "menu";
-
+void game() {
     Partie partie_en_cours = Partie();
 
-    updateInfos((*partie_en_cours.personnage), infos);
+    updateInfos(*partie_en_cours.personnage);
 
     bool running = true;
 
     while (running) {
-        state = "MAIN MENU";
+        setUIMode("menu", "MAIN MENU");
 
-        setUIMode(infos, "menu", "MAIN MENU");
-
-        vector<string> options = getMenuPrincipalOptions();
-        string choix = Menu(gw, keymap, infos, options, state);
+        string choix = Menu(getMenuPrincipalOptions(), "MAIN MENU");
         string choixCourt = stripDescription(choix);
 
         if (choix == "quit" || choixCourt == "Quit") {
             running = false;
         } else if (choixCourt == "Bestiaire") {
-            running = ouvrirBestiaire(partie_en_cours, gw, keymap, infos);
+            running = ouvrirBestiaire(partie_en_cours);
         } else if (choixCourt == "Fight") {
-            state = "Fight";
-            running = lancerCombat(partie_en_cours, gw, keymap, infos);
+            running = lancerCombat(partie_en_cours);
         } else if (choixCourt == "Inventaire") {
-            running = ouvrirInventaire(partie_en_cours, gw, keymap, infos);
+            running = ouvrirInventaire(partie_en_cours);
         }
     }
 }
 
 int main() {
-    GameWindow gw = init_ncurses();
-
+    initInterface();
     initBinds();
 
-    bool commencer = menuAccueil(gw);
-    if (commencer) {
-        game(gw);
-    } 
+    if (menuAccueil()) game();
 
-    end_ncurses(gw.jeu);
+    fermerInterface();
 
     cout << "c'etait bien non ?" << endl;
 }

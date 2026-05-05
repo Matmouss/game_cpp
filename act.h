@@ -43,3 +43,25 @@ class Attaquer : public Act {
 
    string Impact(Entite &entite, Entite &entiteCible) override;
 };
+
+class Soigner : public Act {
+   public:
+   Soigner();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
+};
+
+
+class Sport : public Act {
+   public:
+   Sport();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
+};
+
+class Pleurer : public Act {
+   public:
+   Pleurer();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
+};
