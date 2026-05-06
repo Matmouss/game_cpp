@@ -493,7 +493,7 @@ bool Fight(Partie& partie_en_cours, Monstre& monstre, Personnage& personnage) {
     victoire = VictoireCondition(personnage);
 
     afficherFinCombat(monstre, personnage, victoire, display);
-    donnerRecompenses(personnage, partie_en_cours.randomACT(), partie_en_cours.randomItem());
+    if (victoire) {donnerRecompenses(personnage, partie_en_cours.randomACT(), partie_en_cours.randomItem());}
 
     setUIMode("menu", "MENU");
     clearSidebarMenu();
