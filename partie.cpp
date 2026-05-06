@@ -263,17 +263,29 @@ Act* Partie::randomACT() {
 
     srand(time(NULL));
 
-    int index = rand() % tailleCatalogueACT;
+    Act * temp_act = nullptr;
+    bool end = true;
+   
+    while(end)
+    {
+        end = false;
+        int index = rand() % tailleCatalogueACT;
 
-    if (catalogueACT[index] != nullptr) {
-        return catalogueACT[index];
-    }
-
-    for (int i = 0; i < tailleCatalogueACT; i++) {
-        if (catalogueACT[i] != nullptr) {
-            return catalogueACT[i];
+        if (catalogueACT[index] != nullptr)
+        {
+            temp_act = catalogueACT[index];
+        }
+        else
+        {
+            continue;
+        }
+        for (int i = 0; i < this->personnage->getNbActions(); i++)
+        {
+            if (this->personnage->getActions(i) == temp_act)
+            {
+                end = true;
+            }
         }
     }
-
-    return nullptr;
+    return temp_act;
 }

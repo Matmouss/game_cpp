@@ -24,6 +24,7 @@ Stat::~Stat() = default;
 string Stat::getNom(){return this->nom;}
 
 int Stat::getValue(){return this->valeur;}
+int Stat::getInitValue() { return this->initValeur;}
 
 void Stat::setNom(string nom) { this->nom = nom;}
 void Stat::setValue(int valeur){this->valeur = valeur;}
@@ -37,7 +38,7 @@ Stat* Stat::instancierStat(string nom){
 }
 
 void Stat::endTurnEffectStat(){
-   setValue(getValue()-1);
+   setValue(getValue() - 1);
 }
 
 Vulnerabilite::Vulnerabilite() : Stat("Vulnerabilite"){ 
@@ -49,11 +50,13 @@ void Vulnerabilite::endTurnEffectStat()
 {
    setValue(getValue() - 1);
 }
+
 Force::Force() : Stat("Force")
 {
    this->valeur = 0;
    this->initValeur = this->valeur;
 }
+
 void Force::endTurnEffectStat()
 {
    setValue(getValue() - 1);

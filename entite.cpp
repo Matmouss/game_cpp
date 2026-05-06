@@ -159,10 +159,26 @@ void Entite::setStatValue(string nom, int valeur){
 
 void Entite::EndTurn()
 {
-    for (int i = 0; i < this->getNbStats(); i++)
+    Stat **temp = this->stats;
+    int taille = this->getNbStats();
+    
+    for (int i = 0; i < taille; i++)
     {
         this->getStats(i)->endTurnEffectStat();
-    }
 
-    this->actPoints = this->maxActPoints;
+        if (this->getStats(i)->getValue() <= this->getStats(i)->getInitValue()){
+
+            temp = new Stat *[getNbStats()-1];
+
+            for (int j = 0; j < getNbStats();j++){
+                if (i != j){
+                    temp[j] = getStats(j);
+                }
+            }
+            this->tailleStats -= 1;
+        }
+    }
+        this->actPoints = this->maxActPoints;
+        this->stats = temp;
+        
 }

@@ -18,6 +18,7 @@ class Stat{
 
    string getNom();
    int getValue();
+   int getInitValue();
 
    void setNom(string nom);
    void setValue(int valeur);
@@ -26,8 +27,7 @@ class Stat{
 
    virtual void endTurnEffectStat();
    };
-
-
+   void CheckThreshold();
 
    class Vulnerabilite : public Stat
    {

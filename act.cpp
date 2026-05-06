@@ -77,7 +77,7 @@ string Attaquer::Impact(Entite &entite, Entite &entiteCible)
 
 Soigner::Soigner() : Act("Soigner", "ptit soin tranquilloubilou", 2) {};
 
-string Soigner::Impact(Entite &entite, Entite &entiteCible)
+string Soigner::Impact(Entite &entite, Entite&)
 {
     return entite.soigner(20);
 }
@@ -88,7 +88,7 @@ string Soigner::Impact(Entite &entite, Entite &entiteCible)
 
 Sport::Sport() : Act("Sport", "Un petit footing ça fait pas de mal!", 1) {};
 
-string Sport::Impact(Entite &entite, Entite &entiteCible)
+string Sport::Impact(Entite &entite, Entite&)
 {
     entite.setStatValue("Force", entite.getStatValue("Force") + 10);
     return entite.getNom() + " fait du sport et gagne 10 points de force";
@@ -100,7 +100,7 @@ string Sport::Impact(Entite &entite, Entite &entiteCible)
 
 Pleurer::Pleurer() : Act("Pleurer", "Un petit pleurage ca fait pas de mal!", 1) {};
 
-string Pleurer::Impact(Entite &entite, Entite &entiteCible)
+string Pleurer::Impact(Entite &entite, Entite&)
 {
     entite.setStatValue("Vulnerabilite", entite.getStatValue("Vulnerabilite") + 10);
     return entite.getNom() + " pleure et gagne 10 points de vulnerabilité";
