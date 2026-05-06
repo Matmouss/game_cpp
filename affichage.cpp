@@ -613,8 +613,10 @@ void setCombatInventory(Personnage& personnage) {
     vector<string> lignes;
 
     lignes.push_back("[STATS]");
-    lignes.push_back("- Force: " + to_string(personnage.getStatValue("Force")));
-    lignes.push_back("- Vulnerabilite: " + to_string(personnage.getStatValue("Vulnerabilite")));
+    for (int i = 0; i < personnage.getNbStats(); i++) {
+        string nom = personnage.getStats(i)->getNom();
+        lignes.push_back("- " + nom + ": " + to_string(personnage.getStatValue(nom)));
+    }
     lignes.push_back("");
     lignes.push_back("[ITEMS]");
 
@@ -639,8 +641,6 @@ void updateInfos(Personnage& personnage) {
     infos["Def"] = to_string(personnage.getDef());
     infos["Mercy"] = to_string(personnage.getMercy());
     infos["ActPts"] = to_string(personnage.getAct());
-    infos["Force"] = to_string(personnage.getStatValue("Force"));
-    infos["Vulnerabilite"] = to_string(personnage.getStatValue("Vulnerabilite"));
 
     vector<string> statsLines;
 
