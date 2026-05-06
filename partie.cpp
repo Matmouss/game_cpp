@@ -220,6 +220,7 @@ void Partie::ajouterBestiaire(Monstre* &monstre){
 Monstre* Partie::randomMonstre(string type){
     
     //suppose que le type existe pour l'instant sinon infinite loop
+    srand(time(NULL));
 
     while (true)
     {
@@ -237,6 +238,8 @@ Item* Partie::randomItem() {
     if (itemPossible == nullptr || tailleItemPossible <= 0) {
         return nullptr;
     }
+
+    srand(time(NULL));
 
     int index = rand() % tailleItemPossible;
 
@@ -257,6 +260,8 @@ Act* Partie::randomACT() {
     if (catalogueACT == nullptr || tailleCatalogueACT <= 0) {
         return nullptr;
     }
+
+    srand(time(NULL));
 
     int index = rand() % tailleCatalogueACT;
 

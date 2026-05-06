@@ -7,7 +7,7 @@ class Entite;
 class Act
 {
 public:
-   static const int nbActionsPossibles = 3;
+   static const int nbActionsPossibles = 6;
    static Act **getActionsPossibles();
    static void DestructActionPossibles();
    string identifiant;
