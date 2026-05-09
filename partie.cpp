@@ -220,6 +220,7 @@ void Partie::ajouterBestiaire(Monstre* &monstre){
 Monstre* Partie::randomMonstre(string type){
     
     //suppose que le type existe pour l'instant sinon infinite loop
+    srand(time(NULL));
 
     while (true)
     {
@@ -231,4 +232,60 @@ Monstre* Partie::randomMonstre(string type){
             return monstre;
         }
     }
+}
+
+Item* Partie::randomItem() {
+    if (itemPossible == nullptr || tailleItemPossible <= 0) {
+        return nullptr;
+    }
+
+    srand(time(NULL));
+
+    int index = rand() % tailleItemPossible;
+
+    if (itemPossible[index] != nullptr) {
+        return itemPossible[index];
+    }
+
+    for (int i = 0; i < tailleItemPossible; i++) {
+        if (itemPossible[i] != nullptr) {
+            return itemPossible[i];
+        }
+    }
+
+    return nullptr;
+}
+
+Act* Partie::randomACT() {
+    if (catalogueACT == nullptr || tailleCatalogueACT <= 0) {
+        return nullptr;
+    }
+
+    srand(time(NULL));
+
+    Act * temp_act = nullptr;
+    bool end = true;
+   
+    while(end)
+    {
+        end = false;
+        int index = rand() % tailleCatalogueACT;
+
+        if (catalogueACT[index] != nullptr)
+        {
+            temp_act = catalogueACT[index];
+        }
+        else
+        {
+            continue;
+        }
+        for (int i = 0; i < this->personnage->getNbActions(); i++)
+        {
+            if (this->personnage->getActions(i) == temp_act)
+            {
+                end = true;
+            }
+        }
+    }
+    return temp_act;
 }

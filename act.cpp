@@ -3,6 +3,7 @@ using std::string;
 
 #include "Act.h"
 #include "Entite.h"
+#include "Personnage.h"
 
 #pragma region Act
     
@@ -13,7 +14,7 @@ Act::Act() {
 
 Act **Act::getActionsPossibles()
 {
-    static Act *actions[] = {new Attaquer(), new Dodo() ,new SerrerMain()};
+    static Act *actions[] = {new Attaquer(), new Dodo() ,new SerrerMain(), new Soigner(), new Sport(), new Pleurer()};
     return actions;
 }
 
@@ -68,4 +69,39 @@ Attaquer::Attaquer() : Act("Attaquer Simple", "ptit attaque tranquilloubilou", 1
 string Attaquer::Impact(Entite &entite, Entite &entiteCible)
 {
     return entite.attaquer(entiteCible);
+}
+
+#pragma endregion
+
+#pragma region Soigner
+
+Soigner::Soigner() : Act("Soigner", "ptit soin tranquilloubilou", 2) {};
+
+string Soigner::Impact(Entite &entite, Entite&)
+{
+    return entite.soigner(20);
+}
+
+#pragma endregion
+
+#pragma region Sport
+
+Sport::Sport() : Act("Sport", "Un petit footing ça fait pas de mal!", 1) {};
+
+string Sport::Impact(Entite &entite, Entite&)
+{
+    entite.setStatValue("Force", entite.getStatValue("Force") + 10);
+    return entite.getNom() + " fait du sport et gagne 10 points de force";
+}
+
+#pragma endregion
+
+#pragma region Pleurer
+
+Pleurer::Pleurer() : Act("Pleurer", "Un petit pleurage ca fait pas de mal!", 1) {};
+
+string Pleurer::Impact(Entite &entite, Entite&)
+{
+    entite.setStatValue("Vulnerabilite", entite.getStatValue("Vulnerabilite") + 10);
+    return entite.getNom() + " pleure et gagne 10 points de vulnerabilité";
 }

@@ -25,13 +25,13 @@ Personnage::~Personnage() {
     delete[] inventaireItems;
 }
 
-// bool Personnage::setInventaireItems(Item* &item, int i) { 
-//     if (i < tailleInventaire &&  inventaireItems[i] == nullptr) {
-//         inventaireItems[i] = item;
-//         return true;
-//     }
-//     return false;
-// }
+bool Personnage::setInventaireItems(Item* &item, int i) { 
+    if (i < tailleInventaire) {
+        inventaireItems[i] = item;
+        return true;
+    }
+    return false;
+}
 
 
 void Personnage::ajouterItem(Item* &item) {

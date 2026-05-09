@@ -7,7 +7,7 @@ class Entite;
 class Act
 {
 public:
-   static const int nbActionsPossibles = 3;
+   static const int nbActionsPossibles = 6;
    static Act **getActionsPossibles();
    static void DestructActionPossibles();
    string identifiant;
@@ -40,6 +40,28 @@ public:
 class Attaquer : public Act {
    public:
    Attaquer();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
+};
+
+class Soigner : public Act {
+   public:
+   Soigner();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
+};
+
+
+class Sport : public Act {
+   public:
+   Sport();
+
+   string Impact(Entite &entite, Entite &entiteCible) override;
+};
+
+class Pleurer : public Act {
+   public:
+   Pleurer();
 
    string Impact(Entite &entite, Entite &entiteCible) override;
 };

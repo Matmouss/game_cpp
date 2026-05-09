@@ -5,10 +5,12 @@
 #include <locale.h>
 #include <ncurses.h>
 #include "affichage.h"
-#include <locale.h>
+#include "personnage.h"
+#include "item.h"
 
 using std::map;
 using std::string;
+using std::to_string;
 using std::vector;
 
 namespace {
@@ -19,6 +21,10 @@ namespace {
     constexpr int PAIR_DIM = 5;
     constexpr int PAIR_ALERT = 6;
     constexpr int PAIR_GHOST = 7;
+
+    GameWindow gw = {nullptr, 0, 0};
+    map<int, string> keymap;
+    map<string, string> infos;
 
     string getValue(const map<string, string>& data, const string& key, const string& fallback = "") {
         auto it = data.find(key);
@@ -147,16 +153,16 @@ namespace {
     }
 
     vector<string> monsterPlaceholder() {
-return {
-    "        _____       ",
-    "       |     |      ",
-    "       |_____|      ",
-    "          |         ",
-    "       ___|___      ",
-    "      /   |    \\    ",
-    "     /    |     \\   ",
-    "         / \\        "
-};
+        return {
+            "        _____       ",
+            "       |     |      ",
+            "       |_____|      ",
+            "          |         ",
+            "       ___|___      ",
+            "      /   |    \\    ",
+            "     /    |     \\   ",
+            "         / \\        "
+        };
     }
 
     void drawBootNoise(WINDOW* win, int maxY, int maxX) {
@@ -169,6 +175,7 @@ return {
     }
 
     void drawCenteredMainMenu(WINDOW* win, const vector<string>& state, const map<string, string>& data, int maxY, int maxX) {
+        (void)state;
         drawBootNoise(win, maxY, maxX);
 
         string title = getValue(data, "__title", "MENU");
@@ -267,17 +274,15 @@ return {
         printClipped(win, y + 6, x + 2, w - 4, "MERCY  " + mercy, 0, PAIR_TEXT);
         printClipped(win, y + 7, x + 2, w - 4, "KILLS  " + kills, 0, PAIR_TEXT);
 
-        int hpInt = 0;
-        int actInt = 0;
-        try { hpInt = std::stoi(hp); } catch (...) { hpInt = 0; }
-        try { actInt = std::stoi(actPts); } catch (...) { actInt = 0; }
+        int hpInt = getIntValue(data, "Hp", 0);
+        int actInt = getIntValue(data, "ActPts", 0);
 
         drawProgress(win, y + h - 4, x + 2, w - 4, hpInt, 100, "PV");
         drawProgress(win, y + h - 3, x + 2, w - 4, actInt, 10, "ACT");
     }
 
     void drawCombatInventory(WINDOW* win, int y, int x, int h, int w, const map<string, string>& data) {
-        drawHackerBorder(win, y, x, h, w, "INVENTORY", false);
+        drawHackerBorder(win, y, x, h, w, "INVENTORY / STATS", false);
 
         vector<string> items = splitLines(getValue(data, "__inventory_items", ""));
         if (items.empty()) items.push_back("Inventaire vide");
@@ -285,43 +290,32 @@ return {
         drawTextList(win, y + 2, x + 2, h - 3, w - 4, items, PAIR_TEXT);
     }
 
-    void drawMonsterSmall(
-    WINDOW* win,
-    int y,
-    int x,
-    int h,
-    int w,
-    const vector<string>& state,
-    const map<string, string>& data
-) {
-    drawHackerBorder(win, y, x, h, w, "TARGET", false);
-    drawScanlines(win, y, x, h, w);
+    void drawMonsterSmall(WINDOW* win, int y, int x, int h, int w, const vector<string>& state, const map<string, string>& data) {
+        drawHackerBorder(win, y, x, h, w, "TARGET", false);
+        drawScanlines(win, y, x, h, w);
 
-    string header = state.empty() ? "UNKNOWN TARGET" : state[0];
-    printClipped(win, y + 1, x + 2, w - 4, header, A_BOLD, PAIR_ALERT);
+        string header = state.empty() ? "UNKNOWN TARGET" : state[0];
+        printClipped(win, y + 1, x + 2, w - 4, header, A_BOLD, PAIR_ALERT);
 
-    vector<string> sprite = splitLines(getValue(data, "__monster_sprite", ""));
+        vector<string> sprite = splitLines(getValue(data, "__monster_sprite", ""));
+        if (sprite.empty()) sprite = monsterPlaceholder();
 
-    if (sprite.empty()) {
-        sprite = monsterPlaceholder();
+        int spriteH = static_cast<int>(sprite.size());
+        int spriteW = 0;
+
+        for (const string& line : sprite) {
+            spriteW = std::max(spriteW, static_cast<int>(line.size()));
+        }
+
+        int sy = y + 3 + std::max(0, (h - 5 - spriteH) / 2);
+        int sx = x + 2 + std::max(0, (w - 4 - spriteW) / 2);
+
+        for (int i = 0; i < spriteH && sy + i < y + h - 2; ++i) {
+            printClipped(win, sy + i, sx, w - 4, sprite[i], A_BOLD, PAIR_TEXT);
+        }
+
+        printClipped(win, y + h - 2, x + 2, w - 4, getValue(data, "__monster_hint", "scan actif"), A_BLINK, PAIR_DIM);
     }
-
-    int spriteH = static_cast<int>(sprite.size());
-    int spriteW = 0;
-
-    for (const string& line : sprite) {
-        spriteW = std::max(spriteW, static_cast<int>(line.size()));
-    }
-
-    int sy = y + 3 + std::max(0, (h - 5 - spriteH) / 2);
-    int sx = x + 2 + std::max(0, (w - 4 - spriteW) / 2);
-
-    for (int i = 0; i < spriteH && sy + i < y + h - 2; ++i) {
-        printClipped(win, sy + i, sx, w - 4, sprite[i], A_BOLD, PAIR_TEXT);
-    }
-
-    printClipped(win, y + h - 2, x + 2, w - 4, getValue(data, "__monster_hint", "scan actif"), A_BLINK, PAIR_DIM);
-}
 
     void drawCombatLog(WINDOW* win, int y, int x, int h, int w, const vector<string>& state, const map<string, string>& data) {
         drawHackerBorder(win, y, x, h, w, "OUTPUT", true);
@@ -377,6 +371,31 @@ return {
     }
 }
 
+string joinLines(const vector<string>& lines) {
+    string result;
+
+    for (size_t i = 0; i < lines.size(); ++i) {
+        result += lines[i];
+        if (i + 1 < lines.size()) result += "\n";
+    }
+
+    return result;
+}
+
+string stripDescription(const string& option) {
+    size_t pos = option.find(" : ");
+    if (pos == string::npos) pos = option.find(" | ");
+    if (pos == string::npos) return option;
+    return option.substr(0, pos);
+}
+
+string extractDescription(const string& option) {
+    size_t pos = option.find(" : ");
+    if (pos == string::npos) pos = option.find(" | ");
+    if (pos == string::npos) return "";
+    return option.substr(pos + 3);
+}
+
 WINDOW* creer_boite_jeu(int hauteur, int largeur) {
     int starty = (LINES - hauteur) / 2;
     int startx = (COLS - largeur) / 2;
@@ -386,11 +405,7 @@ WINDOW* creer_boite_jeu(int hauteur, int largeur) {
     return win;
 }
 
-void dessiner_boite_jeu(
-    WINDOW* win,
-    const vector<string>& state,
-    const map<string, string>& data
-) {
+void dessiner_boite_jeu(WINDOW* win, const vector<string>& state, const map<string, string>& data) {
     if (win == nullptr) return;
 
     werase(win);
@@ -471,13 +486,7 @@ void end_ncurses(WINDOW* jeu) {
     endwin();
 }
 
-WINDOW* displayState(
-    WINDOW* jeu,
-    int hauteur,
-    int largeur,
-    const vector<string>& state,
-    const map<string, string>& infos
-) {
+WINDOW* displayState(WINDOW* jeu, int hauteur, int largeur, const vector<string>& state, const map<string, string>& infos) {
     if (jeu != nullptr) delwin(jeu);
 
     jeu = creer_boite_jeu(hauteur, largeur);
@@ -486,11 +495,7 @@ WINDOW* displayState(
     return jeu;
 }
 
-GameWindow resize_window(
-    WINDOW* jeu,
-    const vector<string>& state,
-    const map<string, string>& infos
-) {
+GameWindow resize_window(WINDOW* jeu, const vector<string>& state, const map<string, string>& infos) {
     if (jeu != nullptr) delwin(jeu);
 
     clear();
@@ -519,4 +524,227 @@ string getInput(const map<int, string>& keymap) {
     if (it != keymap.end()) return it->second;
 
     return std::to_string(ch);
+}
+
+void initInterface() {
+    gw = init_ncurses();
+}
+
+void fermerInterface() {
+    end_ncurses(gw.jeu);
+    gw = {nullptr, 0, 0};
+}
+
+void initBinds() {
+    keymap = {
+        {KEY_UP, "up"},
+        {KEY_DOWN, "down"},
+        {KEY_LEFT, "left"},
+        {KEY_RIGHT, "right"},
+        {'z', "up"},
+        {'Z', "up"},
+        {'w', "up"},
+        {'W', "up"},
+        {'s', "down"},
+        {'S', "down"},
+        {'q', "quit"},
+        {'Q', "quit"},
+        {27, "quit"},
+        {10, "enter"},
+        {KEY_ENTER, "enter"}
+    };
+
+    infos = {
+        {"Nom", "Personnage"},
+        {"Monstres tués", "0"},
+        {"Hp", "0"},
+        {"Atk", "0"},
+        {"Def", "0"},
+        {"Mercy", "0"},
+        {"ActPts", "0"},
+        {"Stats", "0"},
+        {"Force", "0"},
+        {"Vulnerabilite", "0"},
+        {"__mode", "menu"},
+        {"__title", "MENU"},
+        {"__sidebar_menu_title", ""},
+        {"__sidebar_menu_items", ""},
+        {"__sidebar_menu_selected", "-1"},
+        {"__inventory_items", ""},
+        {"__combat_header", ""},
+        {"__combat_message", ""},
+        {"__selection_detail", ""},
+        {"__monster_hint", "SCAN TARGET"},
+        {"__monster_sprite", ""}
+    };
+}
+
+void setUIMode(const string& mode, const string& title) {
+    infos["__mode"] = mode;
+    infos["__title"] = title;
+}
+
+void setSidebarMenu(const string& title, const vector<string>& options, int selected) {
+    vector<string> labels;
+
+    for (const string& option : options) {
+        labels.push_back(stripDescription(option));
+    }
+
+    infos["__sidebar_menu_title"] = title;
+    infos["__sidebar_menu_items"] = joinLines(labels);
+    infos["__sidebar_menu_selected"] = to_string(selected);
+
+    if (selected >= 0 && selected < static_cast<int>(options.size())) {
+        infos["__selection_detail"] = extractDescription(options[selected]);
+    } else {
+        infos["__selection_detail"] = "";
+    }
+}
+
+void clearSidebarMenu() {
+    infos["__sidebar_menu_title"] = "";
+    infos["__sidebar_menu_items"] = "";
+    infos["__sidebar_menu_selected"] = "-1";
+    infos["__selection_detail"] = "";
+}
+
+void setCombatInventory(Personnage& personnage) {
+    vector<string> lignes;
+
+    lignes.push_back("[STATS]");
+    for (int i = 0; i < personnage.getNbStats(); i++) {
+        string nom = personnage.getStats(i)->getNom();
+        lignes.push_back("- " + nom + ": " + to_string(personnage.getStatValue(nom)));
+    }
+    lignes.push_back("");
+    lignes.push_back("[ITEMS]");
+
+    for (int i = 0; i < personnage.getTailleInventaire(); ++i) {
+        Item* item = personnage.getInventaireItems(i);
+
+        if (item == nullptr) {
+            lignes.push_back("- vide");
+        } else {
+            lignes.push_back("- " + item->getNom());
+        }
+    }
+
+    infos["__inventory_items"] = joinLines(lignes);
+}
+
+void updateInfos(Personnage& personnage) {
+    infos["Nom"] = personnage.getNom();
+    infos["Monstres tués"] = to_string(personnage.getNbTue());
+    infos["Hp"] = to_string(personnage.getHp());
+    infos["Atk"] = to_string(personnage.getAtk());
+    infos["Def"] = to_string(personnage.getDef());
+    infos["Mercy"] = to_string(personnage.getMercy());
+    infos["ActPts"] = to_string(personnage.getAct());
+
+    vector<string> statsLines;
+
+    for (int i = 0; i < personnage.getNbStats(); i++) {
+        string nom = personnage.getStats(i)->getNom();
+        statsLines.push_back(nom + ": " + to_string(personnage.getStatValue(nom)));
+    }
+
+    infos["Stats"] = statsLines.empty() ? "-" : joinLines(statsLines);
+
+    setCombatInventory(personnage);
+}
+
+void setCombatInfos(const string& header, const string& message, const string& hint) {
+    infos["__mode"] = "combat";
+    infos["__title"] = "COMBAT MODE";
+    infos["__combat_header"] = header;
+    infos["__combat_message"] = message;
+    infos["__monster_hint"] = hint;
+}
+
+void setCombatMessage(const string& message) {
+    infos["__combat_message"] = message;
+}
+
+vector<string> creerDisplayCombat(const string& header, const string& message) {
+    return {
+        header,
+        message,
+        "Appuyer sur entree pour continuer"
+    };
+}
+
+void afficher(const vector<string>& display) {
+    gw.jeu = displayState(gw.jeu, gw.hauteur, gw.largeur, display, infos);
+}
+
+void waitEnterOrQuit(const vector<string>& display) {
+    string input = getInput(keymap);
+
+    while (input != "enter" && input != "quit") {
+        if (input == "resize") {
+            gw = resize_window(gw.jeu, display, infos);
+        }
+
+        input = getInput(keymap);
+    }
+}
+
+void afficherEtAttendre(const vector<string>& display) {
+    afficher(display);
+    waitEnterOrQuit(display);
+}
+
+void afficherMessageCombat(const string& titre, const string& texte, const string& hint) {
+    setCombatInfos(titre, texte, hint);
+    afficherEtAttendre(creerDisplayCombat(titre, texte));
+}
+
+string Menu(vector<string> options, string title) {
+    if (options.empty()) return "";
+
+    bool choisi = false;
+    int choix = 0;
+    vector<string> display;
+    bool combatContext = (infos["__mode"] == "combat");
+
+    if (!combatContext) {
+        setUIMode("menu", title);
+    } else {
+        infos["__title"] = "COMBAT MODE";
+    }
+
+    while (!choisi) {
+        display.clear();
+
+        if (combatContext) {
+            display.push_back(infos.count("__combat_header") ? infos["__combat_header"] : "TARGET UNKNOWN");
+            display.push_back(infos.count("__combat_message") ? infos["__combat_message"] : "Choisissez une commande.");
+        } else {
+            display.push_back("ROOT@RPG:~$ " + title);
+        }
+
+        setSidebarMenu(title, options, choix);
+        afficher(display);
+
+        string input = getInput(keymap);
+
+        if (input == "quit") {
+            clearSidebarMenu();
+            return "quit";
+        } else if (input == "resize") {
+            gw = resize_window(gw.jeu, display, infos);
+        } else if (input == "up" || input == "left") {
+            choix = (choix - 1 + static_cast<int>(options.size())) % static_cast<int>(options.size());
+        } else if (input == "down" || input == "right") {
+            choix = (choix + 1) % static_cast<int>(options.size());
+        } else if (input == "enter") {
+            choisi = true;
+        }
+    }
+
+    string selected = options[choix];
+    clearSidebarMenu();
+
+    return selected;
 }
