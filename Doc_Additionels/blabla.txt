@@ -1,4 +1,0 @@
-liste des taches:
-
-- mettre l'option fight comme une act (le bouton fight devient une act)
-- faire la logique de fight des montres (notamment act) (faire ça dans fight monstre dans main.cpp)
